@@ -1,10 +1,8 @@
 import pygame
+import pygame_gui
 import random
-from towers import *
-from hero import *
-from drones import *
-from maps import *
-from collectible import *
+from drones import*
+from EnemyFile import*
 
 pygame.init()
 
@@ -14,6 +12,61 @@ win = pygame.display.set_mode((windowwidth, windowheight))
 pygame.display.set_caption("Drone Tests")
 black = (0, 0, 0)
 white = (255,255,255)
+
+class Drone:
+    droneloc = []
+    def __init__(self):
+        self.x = 0
+        self.y = 0
+        self.width = 20
+        self.height = 20
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        self.xgoal = 0
+        self.ygoal = 0
+        Drone.droneloc.append(self)
+    def tick(self):
+        for d in Drone.droneloc:
+            if d != self and d.rect.colliderect(self.rect):
+                xory = random.randint(0,3)
+                if xory == 1:
+                    self.x = d.xgoal + d.width + 5
+                    self.xgoal = d.xgoal + d.width + 5
+                if xory == 0:
+                    self.y = d.ygoal + d.height + 5
+                    self.ygoal = d.ygoal + d.height + 5
+                if xory == 2:
+                    self.x = d.xgoal - d.width - 5
+                    self.xgoal = d.xgoal - d.width - 5
+                if xory == 3:
+                    self.y = d.ygoal - d.height - 5
+                    self.ygoal = d.ygoal - d.height - 5
+        if keys[pygame.K_e] == True:
+            Mx,My = pygame.mouse.get_pos()
+            Mx += -10
+            My += -10
+            self.xgoal,self.ygoal = Mx,My
+
+        if self.x < self.xgoal:
+            self.x += 5
+        if self.x > self.xgoal:
+            self.x += -5
+        if self.y < self.ygoal:
+            self.y += 5
+        if self.y > self.ygoal:
+            self.y += -5
+
+        if self.x > windowwidth - self.width:
+            self.x = windowwidth - self.width
+        if self.x < 0:
+            self.x = 0
+        if self.y > windowwidth - self.height:
+            self.y = windowwidth - self.height
+        if self.y < 0:
+            self.y = 0
+
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+
+
 
 drone= Drone()
 drone2 = Drone()
@@ -51,71 +104,53 @@ drone33 = Drone()
 drone34 = Drone()
 drone35 = Drone()
 
+manager = pygame_gui.UIManager((800, 800))
+play_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((350, 275), (100, 50)),
+                                            text='PLAY',
+                                            manager=manager)
+clock = pygame.time.Clock()
 run = True
+
 while run:
+    time_delta = clock.tick(60) / 1000.0
     pygame.time.delay(25)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-
-
             run = False
+
+        if event.type == pygame.USEREVENT:
+            if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                if event.ui_element == play_button:
+                    print('[Insert Text Here]')
+        manager.process_events(event)
+    manager.update(time_delta)
 
     keys = pygame.key.get_pressed()
 
     win.fill(black)
-    drone.tick(keys, win)
-    drone2.tick(keys, win)
-    drone3.tick(keys, win)
-    drone4.tick(keys, win)
-    drone5.tick(keys, win)
-    drone6.tick(keys, win)
-    drone7.tick(keys, win)
-    drone8.tick(keys, win)
-    drone9.tick(keys, win)
-    drone10.tick(keys, win)
-    drone11.tick(keys, win)
-    drone12.tick(keys, win)
-    drone13.tick(keys, win)
-    drone14.tick(keys, win)
-    drone15.tick(keys, win)
-    drone16.tick(keys, win)
-    drone17.tick(keys, win)
-    drone18.tick(keys, win)
-    drone19.tick(keys, win)
-    drone20.tick(keys, win)
-    drone21.tick(keys, win)
-    drone22.tick(keys, win)
-    drone23.tick(keys, win)
-    drone24.tick(keys, win)
-    drone25.tick(keys, win)
-    drone26.tick(keys, win)
-    drone27.tick(keys, win)
-    drone28.tick(keys, win)
-    drone29.tick(keys, win)
-    drone30.tick(keys, win)
-    drone31.tick(keys, win)
-    drone32.tick(keys, win)
-    drone33.tick(keys, win)
-    drone34.tick(keys, win)
-    drone35.tick(keys, win)
+    manager.draw_ui(win)
+    drone.tick()
+    drone2.tick()
+    drone3.tick()
+    drone4.tick()
+    drone5.tick()
+    drone6.tick()
+    drone7.tick()
+    drone8.tick()
+    drone9.tick()
+    drone10.tick()
+    drone11.tick()
+    drone12.tick()
+    drone13.tick()
+    drone14.tick()
+    drone15.tick()
+    drone16.tick()
+    drone17.tick()
+    drone18.tick()
+    drone19.tick()
+    drone20.tick()
+    drone21.tick()
+    drone22.tick()
     pygame.display.update()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
