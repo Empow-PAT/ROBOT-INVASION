@@ -4,6 +4,14 @@ path = [[0,800],[400,400]]
 robots = []
 points = 0
 
+black = (0, 0, 0)
+white = (255,255,255)
+red = (255,0,0)
+dimGray = (105,105,105)
+blue = (25,35,255)
+darkGray = (50,50,200)
+darkerGray = (20,20,20)
+
 class Robot():
     def __init__(self,dis,speed,maxH,color):
        self.distance = dis
@@ -38,4 +46,21 @@ class Robot():
             self.y += self.speed
         if self.y > path[1][self.pathstep]:
             self.y += -self.speed
+
+class Normal(Robot):
+    def __init__(self):
+        Robot.__init__(self,0,2,4,dimGray)
+
+class Speedy(Robot):
+    def __init__(self):
+        Robot.__init__(self,0,4,3,blue)
+
+class Slow(Robot):
+    def __init__(self):
+        Robot.__init__(self,0,0.5,10,darkGray)
+
+class SlowBoss(Robot):
+    def __init__(self):
+        Robot.__init__(self,0,0.5,100,darkerGray)
+
 
