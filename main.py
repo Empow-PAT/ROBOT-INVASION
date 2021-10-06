@@ -54,7 +54,9 @@ drone34 = Drone()
 drone35 = Drone()
 
 
-
+robot = Normal()
+robot2 = Speedy()
+robot3 = Slow()
 run = True
 while run:
     pygame.time.delay(25)
