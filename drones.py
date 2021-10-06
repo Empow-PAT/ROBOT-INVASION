@@ -54,7 +54,7 @@ class Fire:
             Fire.fireloc.remove(self)
             return
 
-        if self.firey == self.y and self.firex == self.x:
+        if (self.firey <= self.y + 10 and self.firey >= self.y -10) and (self.firex <= self.x + 10 and self.firex >= self.x -10):
             Fire.fireloc.remove(self)
             return
 
