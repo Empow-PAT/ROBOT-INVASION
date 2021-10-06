@@ -53,7 +53,7 @@ drone33 = Drone()
 drone34 = Drone()
 drone35 = Drone()
 
-robot = Robot(2,340,450,2,10,red)
+
 
 run = True
 while run:
@@ -103,7 +103,8 @@ while run:
     drone33.tick(keys, win)
     drone34.tick(keys, win)
     drone35.tick(keys, win)
-    robot.tick(win)
+    for r in robots:
+        r.tick(win)
     pygame.display.update()
 
 
