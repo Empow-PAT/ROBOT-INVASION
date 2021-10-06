@@ -2,6 +2,8 @@ import pygame
 
 path = [[0,800],[400,400]]
 robots = []
+points = 0
+
 class Robot():
     def __init__(self,dis,speed,maxH,color):
        self.distance = dis
@@ -24,6 +26,8 @@ class Robot():
                 a = path[0][self.pathstep]
             except IndexError:
                 robots.remove(self)
+                global points
+                points += 1
                 return
 
         if self.x < path[0][self.pathstep]:
