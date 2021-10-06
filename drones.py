@@ -14,8 +14,8 @@ purple_blue = (138,43,226)
 class Dummy:
     enemyloc = []
     def __init__(self):
-        self.x = 100
-        self.y = 100
+        self.x = random.randint(0,400)
+        self.y = random.randint(0,400)
         self.health = 20
         self.width = 20
         self.height = 20
@@ -31,17 +31,19 @@ class Dummy:
 
 class Fire:
     fireloc = []
-    def __init__(self,x,y):
+    def __init__(self,x,y,firey,firex):
         self.x = x
         self.y = y
         self.health = 1
         self.width = 1
         self.height = 1
+        self.firex = firex
+        self.firey = firey
         self.xvel = 0
         self.yvel = 0
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         Fire.fireloc.append(self)
-    def tick(self, win, firex, firey):
+    def tick(self, win):
         for e in Dummy.enemyloc:
             if e.rect.colliderect(self.rect):
                 e.health -= self.health
@@ -52,13 +54,17 @@ class Fire:
             Fire.fireloc.remove(self)
             return
 
-        if firex < self.x:
+        if self.firey == self.y and self.firex == self.x:
+            Fire.fireloc.remove(self)
+            return
+
+        if self.firex < self.x:
             self.xvel = -1
-        if firex > self.x:
+        if self.firex > self.x:
             self.xvel = 1
-        if firey < self.y:
+        if self.firey < self.y:
             self.yvel = -1
-        if firey > self.y:
+        if self.firey > self.y:
             self.yvel = 1
 
         self.x += self.xvel
@@ -113,15 +119,15 @@ class Drone:
         if self.y > self.ygoal:
             self.y += -1
         for e in Dummy.enemyloc:
-            if (self.x - e.x <= 200 and self.x - e.x >= -200) and (self.y - e.y <= 200 and self.y - e.y >= -200):
+            if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
                 self.color = red
                 self.firex = e.x
                 self.firey = e.y
-                if len(Fire.fireloc) <= 10:
-                    fire = Fire(self.x,self.y)
+                if len(Fire.fireloc) <= 15:
+                    fire = Fire(self.x,self.y,self.firey,self.firex)
                     Fire.fireloc.append(fire)
                 for f in Fire.fireloc:
-                    f.tick(win, self.firex, self.firey)
+                    f.tick(win)
 
         if self.x > windowwidth - self.width:
             self.x = windowwidth - self.width

@@ -18,7 +18,7 @@ white = (255,255,255)
 
 for i in range(35):
     drone = Drone()
-for i in range(1):
+for i in range(20):
     dummy = Dummy()
 
 run = True
