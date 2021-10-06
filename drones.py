@@ -16,6 +16,7 @@ class Drone:
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.xgoal = 0
         self.ygoal = 0
+        self.image = pygame.image.load ( "Art\Drone.png" )
         Drone.droneloc.append(self)
     def tick(self, keys, win):
         for d in Drone.droneloc:
@@ -34,6 +35,7 @@ class Drone:
                     self.y = d.ygoal - d.height - 5
                     self.ygoal = d.ygoal - d.height - 5
         if keys[pygame.K_e] == True:
+            win.blit ( self.image, (self.x, self.y) )
             Mx,My = pygame.mouse.get_pos()
             Mx += -10
             My += -10
@@ -57,5 +59,5 @@ class Drone:
         if self.y < 0:
             self.y = 0
 
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        pygame.draw.rect(win, white, self.rect)
+        #self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        #pygame.draw.rect(win, white, self.rect)

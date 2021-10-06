@@ -12,8 +12,8 @@ windowwidth = 800
 windowheight = 800
 win = pygame.display.set_mode((windowwidth, windowheight))
 pygame.display.set_caption("Drone Tests")
-black = (0, 0, 0)
-white = (255,255,255)
+black = (0, 191, 255)
+white = (255,0,255)
 
 drone= Drone()
 drone2 = Drone()
