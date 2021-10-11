@@ -3,6 +3,7 @@ import random
 from towers import *
 from hero import *
 from drones import *
+from robots import  *
 from maps import *
 from collectible import *
 
@@ -13,20 +14,24 @@ windowheight = 800
 
 win = pygame.display.set_mode((windowwidth, windowheight))
 pygame.display.set_caption("Drone Tests")
-black = (0, 191, 255)
-white = (255,0,255)
-
+black = (0, 0, 0)
+white = (255,255,255)
+red = (255,0,0)
 for i in range(35):
     drone = Drone()
 for i in range(20):
     dummy = Dummy()
 
+
+robot = Normal()
+robot2 = Speedy()
+robot3 = Slow()
 run = True
 while run:
-    win = pygame.display.set_mode((windowwidth, windowheight))
     pygame.time.delay(6)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+
 
             run = False
 
@@ -37,6 +42,8 @@ while run:
         d.tick(keys, win)
     for dummy in Dummy.enemyloc:
         dummy.tick(keys, win)
+    for r in robots:
+        r.tick(win)
 
     pygame.display.update()
 
