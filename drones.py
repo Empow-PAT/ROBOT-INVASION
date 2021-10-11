@@ -20,9 +20,6 @@ class Dummy:
         self.width = 20
         self.height = 20
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        self.xgoal = 0
-        self.ygoal = 0
-        self.image = pygame.image.load("Art\Drone.png")
 
         Dummy.enemyloc.append(self)
     def tick(self, keys, win):
@@ -88,6 +85,7 @@ class Drone:
         self.xgoal = 400
         self.ygoal = 400
         self.color = white
+        #self.image = pygame.image.load("Art\Drone.png")
         Drone.droneloc.append(self)
     def tick(self, keys, win):
         if self.y == self.ygoal and self.x == self.xgoal:
@@ -142,6 +140,6 @@ class Drone:
         if self.y < 0:
             self.y = 0
 
-        win.blit(self.image, (self.x, self.y))
+        #win.blit(self.image, (self.x, self.y))
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        #pygame.draw.rect(win, self.color, self.rect)
+        pygame.draw.rect(win, self.color, self.rect)
