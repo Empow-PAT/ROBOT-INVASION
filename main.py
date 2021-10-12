@@ -21,6 +21,7 @@ for i in range(35):
 for i in range(20):
     dummy = Dummy()
 
+
 run = True
 while run:
     win = pygame.display.set_mode((windowwidth, windowheight))
