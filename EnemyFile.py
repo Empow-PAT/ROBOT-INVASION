@@ -1,6 +1,7 @@
 import pygame
 import random
 import math
+from drones import *
 
 windowwidth = 800
 windowheight = 800
@@ -12,18 +13,22 @@ FireRed = (255, 69, 0)
 class Enemy_tower:
     def __init__(self):
         self.x = 400
+        self.health = 100
         self.projectile_timer = 0
         self.y = 400
         self.width = 20
         self.height = 100
         self.direction = 0
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        Dummy.enemyloc.append(self)
     def tick(self, keys, win):
         self.projectile_timer +=1
         if self.projectile_timer == 10:
             self.direction += 8
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         pygame.draw.rect(win, RandoColor, self.rect)
+        if self.health <= 0:
+            Dummy.enemyloc.remove(self)
 
 class Enemy_projectile:
     def __init__(self, enemy_tower):

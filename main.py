@@ -19,14 +19,16 @@ pygame.display.set_caption("Drone Tests")
 black = (0, 0, 0)
 white = (255,255,255)
 red = (255,0,0)
-for i in range(35):
+for i in range(50):
     drone = Drone()
-for i in range(20):
+for i in range(0):
     dummy = Dummy()
-
+for i in range(1):
+    enemy = Enemy_tower()
 robot = Normal()
 robot2 = Speedy()
 robot3 = Slow()
+
 manager = pygame_gui.UIManager((800, 800))
 play_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((350, 275), (100, 50)),
                                             text='PLAY',
@@ -58,7 +60,6 @@ while run:
         dummy.tick(keys, win)
     for r in Robot.robots:
         r.tick(win)
-
     pygame.display.update()
 
 
