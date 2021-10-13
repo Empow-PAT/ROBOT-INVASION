@@ -1,7 +1,7 @@
 import pygame
 
-path = [[0,800],[400,400]]
-robots = []
+path = [[100,200,431,31,122,456,200,700,734],[400,100,500,200,13,124,123,143,12]]
+
 points = 0
 
 black = (0, 0, 0)
@@ -13,6 +13,7 @@ darkGray = (50,50,200)
 darkerGray = (20,20,20)
 
 class Robot():
+    robots = []
     def __init__(self,dis,speed,maxH,color):
        self.distance = dis
        self.speed = speed
@@ -22,7 +23,7 @@ class Robot():
        self.pathstep = 0
        self.x = path[0][self.pathstep]
        self.y = path[1][self.pathstep]
-       robots.append(self)
+       Robot.robots.append(self)
     def draw(self,win):
         rect = pygame.Rect(self.x,self.y,20,20)
         pygame.draw.rect(win,self.color ,rect)
@@ -33,7 +34,7 @@ class Robot():
             try:
                 a = path[0][self.pathstep]
             except IndexError:
-                robots.remove(self)
+                Robot.robots.remove(self)
                 global points
                 points += 1
                 return

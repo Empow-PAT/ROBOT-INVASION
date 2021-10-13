@@ -23,9 +23,10 @@ for i in range(35):
     drone = Drone()
 for i in range(20):
     dummy = Dummy()
+for i in range(1):
+    robot = Normal()
 
 
-robot = Normal()
 robot2 = Speedy()
 robot3 = Slow()
 manager = pygame_gui.UIManager((800, 800))
@@ -54,10 +55,10 @@ while run:
     win.fill(black)
     manager.draw_ui(win)
     for d in Drone.droneloc:
-        d.tick(keys, win, wall)
+        d.tick(keys, win)
     for dummy in Dummy.enemyloc:
         dummy.tick(keys, win)
-    for r in robots:
+    for r in Robot.robots:
         r.tick(win)
 
     pygame.display.update()
