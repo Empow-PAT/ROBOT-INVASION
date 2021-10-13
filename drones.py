@@ -12,16 +12,7 @@ red = (255,0,0)
 purple_blue = (138,43,226)
 
 
-class Wall:
-    def __init__(self):
-        self.x = 200
-        self.y = 200
-        self.width = 100
-        self.height = 100
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-    def tick(self, keys, win):
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        pygame.draw.rect(win, purple_blue, self.rect)
+
 
 
 class Dummy:
@@ -152,18 +143,6 @@ class Drone:
             self.y = windowwidth - self.height
         if self.y < 0:
             self.y = 0
-
-
-        if wall.rect.colliderect(self.rect):
-            if (wall.y <= self.y + 17 and wall.y >= self.y -17):
-                self.y -= 17
-            if not(wall.y <= self.y + 17 and wall.y >= self.y -17):
-                self.y += 17
-
-            if (wall.x <= self.x + 17 and wall.x >= self.x -17):
-                self.x -= 17
-            if not(wall.x <= self.x + 17 and wall.x >= self.x -17):
-                self.x += 17
 
 
 

@@ -23,7 +23,6 @@ for i in range(35):
     drone = Drone()
 for i in range(20):
     dummy = Dummy()
-wall = Wall()
 
 
 robot = Normal()
@@ -36,8 +35,7 @@ play_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((350, 275),
 clock = pygame.time.Clock()
 run = True
 while run:
-    time_delta = clock.tick(60) / 1000.0
-    pygame.time.delay(25)
+    pygame.time.delay(6)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -50,7 +48,6 @@ while run:
                 if event.ui_element == play_button:
                     print('[Insert Text Here]')
         manager.process_events(event)
-    manager.update(time_delta)
 
     keys = pygame.key.get_pressed()
 
@@ -60,7 +57,6 @@ while run:
         d.tick(keys, win, wall)
     for dummy in Dummy.enemyloc:
         dummy.tick(keys, win)
-    wall.tick(keys, win)
     for r in robots:
         r.tick(win)
 
