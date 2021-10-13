@@ -144,8 +144,10 @@ class Drone:
         if self.y < 0:
             self.y = 0
 
-
-
+        for e in Dummy.enemyloc:
+            if e.rect.colliderect(self.rect):
+                self.health -= 1
+                e.health -= 1
         if self.health <= 0:
             Drone.droneloc.remove(self)
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
