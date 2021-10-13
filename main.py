@@ -14,7 +14,7 @@ windowheight = 800
 
 win = pygame.display.set_mode((windowwidth, windowheight))
 pygame.display.set_caption("Drone Tests")
-black = (0, 0, 0)
+deadgreen = (120, 150, 0)
 white = (255,255,255)
 red = (255,0,0)
 for i in range(35):
@@ -37,7 +37,7 @@ while run:
 
     keys = pygame.key.get_pressed()
 
-    win.fill(black)
+    win.fill(deadgreen)
     for d in Drone.droneloc:
         d.tick(keys, win)
     for dummy in Dummy.enemyloc:
