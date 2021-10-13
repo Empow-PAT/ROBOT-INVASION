@@ -98,6 +98,7 @@ class Drone:
         self.xgoal = 400
         self.ygoal = 400
         self.color = white
+        #self.image = pygame.image.load("Art\Drone.png")
         Drone.droneloc.append(self)
     def tick(self, keys, win, wall):
         if self.y == self.ygoal and self.x == self.xgoal:
