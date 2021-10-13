@@ -23,10 +23,8 @@ for i in range(35):
     drone = Drone()
 for i in range(20):
     dummy = Dummy()
-for i in range(1):
-    robot = Normal()
 
-
+robot = Normal()
 robot2 = Speedy()
 robot3 = Slow()
 manager = pygame_gui.UIManager((800, 800))
