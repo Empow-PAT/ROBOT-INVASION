@@ -154,8 +154,16 @@ class Drone:
 
 
         if wall.rect.colliderect(self.rect):
-            if (self.width - self.x) <= (wall.width - wall.x):
+            if (wall.y <= self.y + 17 and wall.y >= self.y -17):
+                self.y -= 17
+            if not(wall.y <= self.y + 17 and wall.y >= self.y -17):
+                self.y += 17
+
+            if (wall.x <= self.x + 17 and wall.x >= self.x -17):
+                self.x -= 17
+            if not(wall.x <= self.x + 17 and wall.x >= self.x -17):
                 self.x += 17
+
 
 
         if self.health <= 0:
