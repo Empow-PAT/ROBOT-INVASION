@@ -20,7 +20,7 @@ for i in range(35):
     drone = Drone()
 for i in range(20):
     dummy = Dummy()
-
+wall = Wall()
 
 run = True
 while run:
@@ -35,10 +35,10 @@ while run:
 
     win.fill(black)
     for d in Drone.droneloc:
-        d.tick(keys, win)
+        d.tick(keys, win, wall)
     for dummy in Dummy.enemyloc:
         dummy.tick(keys, win)
-
+    wall.tick(keys, win)
     pygame.display.update()
 
 

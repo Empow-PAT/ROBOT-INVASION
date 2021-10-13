@@ -12,6 +12,17 @@ red = (255,0,0)
 purple_blue = (138,43,226)
 
 
+class Wall:
+    def __init__(self):
+        self.x = 200
+        self.y = 200
+        self.width = 100
+        self.height = 100
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+    def tick(self, keys, win):
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        pygame.draw.rect(win, purple_blue, self.rect)
+
 
 class Dummy:
     enemyloc = []
@@ -88,7 +99,7 @@ class Drone:
         self.ygoal = 400
         self.color = white
         Drone.droneloc.append(self)
-    def tick(self, keys, win):
+    def tick(self, keys, win, wall):
         if self.y == self.ygoal and self.x == self.xgoal:
             self.color = white
         if self.y != self.ygoal and self.x != self.xgoal:
@@ -140,6 +151,11 @@ class Drone:
             self.y = windowwidth - self.height
         if self.y < 0:
             self.y = 0
+
+
+        if wall.rect.colliderect(self.rect):
+            if (self.width - self.x) <= (wall.width - wall.x):
+                self.x += 17
 
 
         if self.health <= 0:
