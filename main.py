@@ -20,10 +20,12 @@ black = (0, 0, 0)
 white = (255,255,255)
 red = (255,0,0)
 def Play():
-    for i in range(35):
+    for i in range(50):
         drone = Drone()
-    for i in range(20):
+    for i in range(0):
         dummy = Dummy()
+    for i in range(1):
+        enemy = Enemy_tower()
 
 
     robot = Normal()
@@ -32,7 +34,7 @@ def Play():
     run = True
     while run:
 
-        pygame.time.delay(25)
+        pygame.time.delay(6)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -45,15 +47,15 @@ def Play():
             d.tick(keys, win)
         for dummy in Dummy.enemyloc:
             dummy.tick(keys, win)
-        for r in robots:
+        for r in Robot.robots:
             r.tick(win)
 
         pygame.display.update()
 image_surface = pygame.image.load("Art\PlayButton.jpg"),
 manager = pygame_gui.UIManager((800, 800))
 play_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((350, 275), (100, 50)),
-                                        text = "",
-                                        manager=manager)
+                                            text='PLAY',
+                                            manager=manager)
 clock = pygame.time.Clock()
 
 run2 = True
