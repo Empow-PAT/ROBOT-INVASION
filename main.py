@@ -14,7 +14,6 @@ pygame.init()
 windowwidth = 800
 windowheight = 800
 Background = pygame.image.load("Art/Robot Invasion Title.jpg")
-moneytime = 0
 
 win = pygame.display.set_mode((windowwidth, windowheight))
 pygame.display.set_caption("Robot Invasion")
@@ -22,6 +21,9 @@ black = (0, 0, 0)
 white = (255,255,255)
 red = (255,0,0)
 def Play():
+    manager2 = pygame_gui.UIManager((800, 800))
+    moneytime = 0
+    money = 40
     for i in range(35):
         drone = Drone()
     for i in range(20):
@@ -36,10 +38,13 @@ def Play():
     # ROBOTBUYBUTTONS
     normal = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((0, 750), (100, 50)),
                                           text='Normal: $5',
-                                          manager=manager)
+                                          manager=manager2)
     speedy = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((100, 750), (100, 50)),
-                                          run = True
+                                          text='Speedy: $10',
+                                          manager=manager2)
+    run = True
     while run:
+        time_delta = clock.tick(60) / 1000.0
 
         pygame.time.delay(6)
 
@@ -57,8 +62,8 @@ def Play():
                         if money >= 10:
                             Speedy()
                             money -= 10
-            manager.process_events(event)
-
+            manager2.process_events(event)
+        manager2.update(time_delta)
         keys = pygame.key.get_pressed()
 
         win.fill(black)
@@ -71,11 +76,12 @@ def Play():
         moneytime += 1
         if moneytime == 40:
             moneytime = 0
-            for r in robots:
+            for r in Robot.robots:
                 money += r.moneyGive
         moneyText = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((650, 0), (150, 50)),
                                                     text="$ " + str(money),
-                                                    manager=manager)
+                                                    manager=manager2)
+        manager2.draw_ui(win)
         pygame.display.update()
 image_surface = pygame.image.load("Art\PlayButton.jpg"),
 manager = pygame_gui.UIManager((800, 800))
@@ -91,14 +97,11 @@ while run2:
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-
-
             run2 = False
 
         if event.type == pygame.USEREVENT:
             if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == play_button:
-                    print('[Insert Text Here]')
                     Play()
         manager.process_events(event)
     manager.update(time_delta)
