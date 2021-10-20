@@ -22,6 +22,7 @@ deadgreen = (120, 150, 0)
 white = (255,255,255)
 red = (255,0,0)
 def Play():
+    global run2
     manager2 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
     moneytime = 0
     money = 40
@@ -52,6 +53,7 @@ def Play():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+                run2 = False
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
 
@@ -116,22 +118,3 @@ while run2:
     manager.draw_ui(win)
 
     pygame.display.update()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
