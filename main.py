@@ -22,7 +22,7 @@ deadgreen = (120, 150, 0)
 white = (255,255,255)
 red = (255,0,0)
 def Play():
-    manager2 = pygame_gui.UIManager((800, 800))
+    manager2 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
     moneytime = 0
     money = 40
     for i in range(35):
@@ -80,15 +80,17 @@ def Play():
             for r in Robot.robots:
                 money += r.moneyGive
         moneyText = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((650, 0), (150, 50)),
-                                                    text="$ " + str(money),
-                                                    manager=manager2)
+                                                text="$ " + str(money),
+                                                manager=manager2)
         manager2.draw_ui(win)
         pygame.display.update()
-image_surface = pygame.image.load("Art\PlayButton.jpg"),
-manager = pygame_gui.UIManager((800, 800))
+
+
+manager = pygame_gui.UIManager((800, 800), 'gui_theme.json')
 play_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((350, 275), (100, 50)),
-                                            text='PLAY',
-                                            manager=manager)
+                                           text='',
+                                           object_id="mainplay",
+                                           manager=manager)
 clock = pygame.time.Clock()
 
 run2 = True
@@ -112,7 +114,6 @@ while run2:
     win.fill(black)
     win.blit(Background,(0,0))
     manager.draw_ui(win)
-
 
     pygame.display.update()
 

@@ -99,7 +99,7 @@ class Drone:
         if self.y == self.ygoal and self.x == self.xgoal:
             self.image = pygame.image.load ( "Art\Drone.png" )
         if self.y != self.ygoal and self.x != self.xgoal:
-            self.image = pygame.image.load ( "Art\Drone.png" )
+            self.image = pygame.image.load ( "Art\DroneMove.png" )
         for d in Drone.droneloc:
             if d != self and d.rect.colliderect(self.rect):
                 xory = random.randint(0,3)
