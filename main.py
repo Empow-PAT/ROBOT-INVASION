@@ -36,6 +36,7 @@ def Play():
     robot = Normal()
     robot2 = Speedy()
     robot3 = Slow()
+    ST=ShootingTower()
     # ROBOTBUYBUTTONS
     normal = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((0, 750), (100, 50)),
                                           text='Normal: $5',
@@ -74,6 +75,7 @@ def Play():
             dummy.tick(keys, win)
         for r in Robot.robots:
             r.tick(win)
+        ST.tick()
         moneytime += 1
         if moneytime == 40:
             moneytime = 0
