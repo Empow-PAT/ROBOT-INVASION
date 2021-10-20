@@ -1,10 +1,12 @@
 import pygame
+import pygame_gui
 
 path = [[100,200,431,31,122,456,200,700,734],[400,100,500,200,13,124,123,143,12]]
 
 points = 0
+money = 40
 
-black = (0, 0, 0)
+black = (235, 89, 235)
 white = (255,255,255)
 red = (255,0,0)
 dimGray = (105,105,105)
@@ -14,12 +16,13 @@ darkerGray = (20,20,20)
 
 class Robot():
     robots = []
-    def __init__(self,dis,speed,maxH,color):
+    def __init__(self,dis,speed,maxH,color,moneyGive):
        self.distance = dis
        self.speed = speed
        self.maxHealth = maxH
        self.health = self.maxHealth
        self.color = color
+       self.moneyGive = moneyGive
        self.pathstep = 0
        self.x = path[0][self.pathstep]
        self.y = path[1][self.pathstep]
@@ -50,18 +53,24 @@ class Robot():
 
 class Normal(Robot):
     def __init__(self):
-        Robot.__init__(self,0,2,4,dimGray)
+        Robot.__init__(self,0,2,4,dimGray,5)
 
 class Speedy(Robot):
     def __init__(self):
-        Robot.__init__(self,0,4,3,blue)
+        Robot.__init__(self,0,4,3,blue,6)
 
 class Slow(Robot):
     def __init__(self):
-        Robot.__init__(self,0,0.5,10,darkGray)
+        Robot.__init__(self,0,0.5,10,darkGray,10)
 
 class SlowBoss(Robot):
     def __init__(self):
-        Robot.__init__(self,0,0.5,100,darkerGray)
+        Robot.__init__(self,0,0.5,100,darkerGray,50)
+
+class DeathKing(Robot):
+    def __init__(self):
+        Robot.__init__(self,0,0.2,500000,black,5000)
+
+
 
 
