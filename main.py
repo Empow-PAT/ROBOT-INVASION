@@ -20,9 +20,9 @@ black = (0, 0, 0)
 white = (255,255,255)
 red = (255,0,0)
 def Play():
-    for i in range(50):
+    for i in range(35):
         drone = Drone()
-    for i in range(0):
+    for i in range(20):
         dummy = Dummy()
     for i in range(1):
         enemy = Enemy_tower()
