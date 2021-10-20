@@ -1,7 +1,7 @@
 import pygame
 import pygame_gui
 
-path = [[100,200,431,31,122,456,200,700,734],[400,100,500,200,13,124,123,143,12]]
+path = [[0,800],[400,400]]
 
 points = 0
 
@@ -66,6 +66,10 @@ class Slow(Robot):
 class SlowBoss(Robot):
     def __init__(self):
         Robot.__init__(self,0,0.5,100,darkerGray,50)
+
+class DeathGuard(Robot):
+    def __init__(self):
+        Robot.__init__(self,0,0.2,250000,black,2500)
 
 class DeathKing(Robot):
     def __init__(self):

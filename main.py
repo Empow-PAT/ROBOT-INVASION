@@ -33,9 +33,6 @@ def Play():
         enemy = Enemy_tower()
 
 
-    robot = Normal()
-    robot2 = Speedy()
-    robot3 = Slow()
     # ROBOTBUYBUTTONS
     normal = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((0, 750), (100, 50)),
                                           text='Normal: $5',
@@ -43,6 +40,18 @@ def Play():
     speedy = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((100, 750), (100, 50)),
                                           text='Speedy: $10',
                                           manager=manager2)
+    slow = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((200, 750), (100, 50)),
+                                          text='Slow: $50',
+                                          manager=manager2)
+    slowBoss = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 750), (100, 50)),
+                                        text='Slow Boss: $1000',
+                                        manager=manager2)
+    deathGuard = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((400, 750), (100, 50)),
+                                            text='Death Guard: $100000',
+                                            manager=manager2)
+    deathKing = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((500, 750), (100, 50)),
+                                              text='Death Guard: $1000000',
+                                              manager=manager2)
     run = True
     while run:
         time_delta = clock.tick(60) / 1000.0
@@ -63,6 +72,18 @@ def Play():
                         if money >= 10:
                             Speedy()
                             money -= 10
+                    if event.ui_element == slow:
+                        if money >= 50:
+                            Slow()
+                            money -= 50
+                    if event.ui_element == slowBoss:
+                        if money >= 1000:
+                            SlowBoss()
+                            money -= 1000
+                    if event.ui_element == deathGuard:
+                        if money >= 100000:
+                            DeathGuard()
+                            money -= 100000
             manager2.process_events(event)
         manager2.update(time_delta)
         keys = pygame.key.get_pressed()
