@@ -23,7 +23,7 @@ for i in range(50):
     drone = Drone()
 for i in range(0):
     dummy = Dummy()
-for i in range(1):
+for i in range(0):
     enemy = Enemy_tower()
 robot = Normal()
 robot2 = Speedy()
