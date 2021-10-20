@@ -1,6 +1,5 @@
 import pygame
 import random
-
 droned = 2
 windowwidth = 800
 windowheight = 800
@@ -15,6 +14,8 @@ purple_blue = (180,40,255)
 #purple_blue = (128,0,128)
 #purple_blue = (220,20,60)
 #purple_blue = (255,255,0)
+
+
 
 
 class Dummy:
@@ -36,6 +37,67 @@ class Dummy:
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         pygame.draw.rect(win, mint_green, self.rect)
 
+
+class Glitch:
+    boss = []
+    def __init__(self):
+        self.addh = 800
+        self.addw = 800
+        self.x = 700
+        self.y = 400
+        self.health = random.randint(50, 500)
+        self.width = random.randint(10,100)
+        self.height = random.randint(10,100)
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        self.gboss = True
+        Glitch.boss.append(self)
+
+    def tick(self, win):
+        if self.health <= 0:
+            death_pain = random.randint(0,2)
+            if death_pain == 1:
+                self.addw = 800
+                self.addh = 800
+                Glitch.boss.remove(self)
+                return
+            if death_pain == 0:
+                self.x = random.randint(200,600)
+                self.y = random.randint(200, 600)
+                self.health = 1000
+            if death_pain == 2:
+                for e in Drone.droneloc:
+                    if (self.x - e.x <= 100 and self.x - e.x >= -100) and (self.y - e.y <= 100 and self.y - e.y >= -100):
+                        e.health = 0
+                self.addw = 800
+                self.addh = 800
+                Glitch.boss.remove(self)
+                return
+
+        time = random.randint(1,100)
+        if time == 1:
+            attack = random.randint(0,3)
+            if attack == 0:
+                self.x = random.randint(200, 600)
+                self.y = random.randint(200, 600)
+            if attack == 1:
+                #enemys spawning here
+                spawn = 0
+            if attack == 2:
+                for d in Drone.droneloc:
+                    d.x = random.randint(200, 600)
+                    d.y = random.randint(200, 600)
+
+            if attack == 3:
+                self.addh = random.randint(100,1200)
+                self.addw = random.randint(100,1200)
+            if attack == 4:
+                for d in Drone.droneloc:
+                    d.x = random.randint(200, 600)
+                    d.y = random.randint(200, 600)
+        # Import tower img here
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        pygame.draw.rect(win, red, self.rect)
+
 class Fire:
     fireloc = []
     def __init__(self,x,y,firey,firex):
@@ -49,9 +111,14 @@ class Fire:
         self.xvel = 0
         self.yvel = 0
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        Fire.fireloc.append(self)
     def tick(self, win):
         for e in Dummy.enemyloc:
+            if e.rect.colliderect(self.rect):
+                e.health -= self.health
+                self.health -= 1
+                Fire.fireloc.remove(self)
+                return
+        for e in Glitch.boss:
             if e.rect.colliderect(self.rect):
                 e.health -= self.health
                 self.health -= 1
@@ -61,21 +128,20 @@ class Fire:
             Fire.fireloc.remove(self)
             return
 
-        if (self.firey <= self.y + 10 and self.firey >= self.y -10) and (self.firex <= self.x + 10 and self.firex >= self.x -10):
+        if self.y == self.firey and self.x == self.firex:
             Fire.fireloc.remove(self)
             return
 
         if self.firex < self.x:
-            self.xvel = -1
+            self.x += -1
         if self.firex > self.x:
-            self.xvel = 1
+            self.x += 1
         if self.firey < self.y:
-            self.yvel = -1
+            self.y += -1
         if self.firey > self.y:
-            self.yvel = 1
+            self.y += 1
 
-        self.x += self.xvel
-        self.y += self.yvel
+
 
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         pygame.draw.rect(win, purple_blue, self.rect)
@@ -132,22 +198,31 @@ class Drone:
         for e in Dummy.enemyloc:
             if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
                 self.image = pygame.image.load ( "Art\DroneAngry.png" )
-                self.firex = e.x
-                self.firey = e.y
+                self.firex = e.x + e.width/2
+                self.firey = e.y + e.height/2
                 if len(Fire.fireloc) <= 15:
-                    fire = Fire(self.x,self.y,self.firey,self.firex)
-                    Fire.fireloc.append(fire)
+                    Fire.fireloc.append(Fire(self.x,self.y,self.firey,self.firex))
                 for f in Fire.fireloc:
                     f.tick(win)
+        for e in Glitch.boss:
+            if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
+                self.image = pygame.image.load("Art\DroneAngry.png")
+                self.firex = e.x + e.width/2
+                self.firey = e.y + e.height/2
+                if len(Fire.fireloc) <= 15:
+                    Fire.fireloc.append(Fire(self.x, self.y, self.firey, self.firex))
+                for f in Fire.fireloc:
+                    f.tick(win)
+
 
         if self.x > windowwidth - self.width:
             self.x = windowwidth - self.width
         if self.x < 0:
-            self.x = 0
-        if self.y > windowwidth - self.height:
-            self.y = windowwidth - self.height
+            self.x = 0 + self.width
+        if self.y > windowheight - self.height:
+            self.y = windowheight - self.height
         if self.y < 0:
-            self.y = 0
+            self.y = 0 + self.height
 
         for e in Dummy.enemyloc:
             if e.rect.colliderect(self.rect):

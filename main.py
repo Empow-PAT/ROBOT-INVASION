@@ -4,7 +4,7 @@ import random
 from towers import *
 from hero import *
 from drones import *
-from robots import  *
+from robots import *
 from maps import *
 from collectible import *
 from EnemyFile import*
@@ -16,12 +16,19 @@ windowheight = 800
 Background = pygame.image.load("Art/Robot Invasion Title.jpg")
 
 win = pygame.display.set_mode((windowwidth, windowheight))
+boss = True
+game_virus = False
 pygame.display.set_caption("Robot Invasion")
 black = (0, 0, 0)
 deadgreen = (120, 150, 0)
 white = (255,255,255)
 red = (255,0,0)
+
+
 def Play():
+    bosscount = 0
+    windowwidth = 800
+    windowheight = 800
     manager2 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
     moneytime = 0
     money = 40
@@ -29,9 +36,8 @@ def Play():
         drone = Drone()
     for i in range(20):
         dummy = Dummy()
-    for i in range(1):
+    for i in range(0):
         enemy = Enemy_tower()
-
 
     robot = Normal()
     robot2 = Speedy()
@@ -45,6 +51,8 @@ def Play():
                                           manager=manager2)
     run = True
     while run:
+        win = pygame.display.set_mode((windowwidth, windowheight))
+
         time_delta = clock.tick(60) / 1000.0
 
         pygame.time.delay(6)
@@ -74,6 +82,18 @@ def Play():
             dummy.tick(keys, win)
         for r in Robot.robots:
             r.tick(win)
+        if boss == True and bosscount == 0:
+            glitch = Glitch()
+            bosscount = len(Glitch.boss)
+        if boss == True:
+            for b in Glitch.boss:
+                if game_virus == True:
+                    glitch = Glitch()
+                b.tick(win)
+                windowwidth = b.addw
+                windowheight = b.addh
+                pygame.display.update()
+
         moneytime += 1
         if moneytime == 40:
             moneytime = 0
@@ -110,7 +130,6 @@ while run2:
     manager.update(time_delta)
 
     keys = pygame.key.get_pressed()
-
     win.fill(black)
     win.blit(Background,(0,0))
     manager.draw_ui(win)
