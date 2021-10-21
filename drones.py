@@ -25,9 +25,9 @@ class Dummy:
         self.y = random.randint(0,400)
         self.health = 20
         self.width = 20
-        self.height = 20
+        self.height = 50
+        self.image = pygame.image.load("Art\Tower Dude.jpg")
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-
         Dummy.enemyloc.append(self)
     def tick(self, keys, win):
         if self.health <= 0:
@@ -35,7 +35,7 @@ class Dummy:
             return
     #Import tower img here
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        pygame.draw.rect(win, mint_green, self.rect)
+        win.blit(self.image,(self.x,self.y))
 
 
 class Glitch:

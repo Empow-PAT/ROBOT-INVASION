@@ -4,7 +4,7 @@ import random
 from towers import *
 from hero import *
 from drones import *
-from robots import *
+from robots import  *
 from maps import *
 from collectible import *
 from EnemyFile import*
@@ -14,6 +14,7 @@ pygame.init()
 windowwidth = 800
 windowheight = 800
 Background = pygame.image.load("Art/Robot Invasion Title.jpg")
+bglevel = pygame.image.load("Art/BackgroundPicture.png")
 
 win = pygame.display.set_mode((windowwidth, windowheight))
 boss = True
@@ -29,6 +30,7 @@ def Play():
     bosscount = 0
     windowwidth = 800
     windowheight = 800
+    global run2
     manager2 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
     moneytime = 0
     money = 40
@@ -36,12 +38,14 @@ def Play():
         drone = Drone()
     for i in range(20):
         dummy = Dummy()
-    for i in range(0):
+    for i in range(1):
         enemy = Enemy_tower()
+
 
     robot = Normal()
     robot2 = Speedy()
     robot3 = Slow()
+    ST=ShootingTower()
     # ROBOTBUYBUTTONS
     normal = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((0, 750), (100, 50)),
                                           text='Normal: $5',
@@ -60,6 +64,7 @@ def Play():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+                run2 = False
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
 
@@ -75,13 +80,15 @@ def Play():
         manager2.update(time_delta)
         keys = pygame.key.get_pressed()
 
-        win.fill(deadgreen)
+        win.blit(bglevel, (0, 0))
+
         for d in Drone.droneloc:
             d.tick(keys, win)
         for dummy in Dummy.enemyloc:
             dummy.tick(keys, win)
         for r in Robot.robots:
             r.tick(win)
+        ST.tick()
         if boss == True and bosscount == 0:
             glitch = Glitch()
             bosscount = len(Glitch.boss)
