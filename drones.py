@@ -1,7 +1,7 @@
 import pygame
 import random
 
-
+droned = 2
 windowwidth = 800
 windowheight = 800
 black = (0, 0, 0)
@@ -9,7 +9,13 @@ white = (255,255,255)
 grey = (134,134,134)
 mint_green = (111,222,123)
 red = (255,0,0)
-purple_blue = (138,43,226)
+purple_blue = (180,40,255)
+#purple_blue = (199,21,133)
+#purple_blue = (255,0,255)
+#purple_blue = (128,0,128)
+#purple_blue = (220,20,60)
+#purple_blue = (255,255,0)
+
 
 class Dummy:
     enemyloc = []
@@ -18,17 +24,17 @@ class Dummy:
         self.y = random.randint(0,400)
         self.health = 20
         self.width = 20
-        self.height = 20
+        self.height = 50
+        self.image = pygame.image.load("Art\Tower Dude.jpg")
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-
         Dummy.enemyloc.append(self)
     def tick(self, keys, win):
         if self.health <= 0:
             Dummy.enemyloc.remove(self)
             return
-
+    #Import tower img here
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        pygame.draw.rect(win, mint_green, self.rect)
+        win.blit(self.image,(self.x,self.y))
 
 class Fire:
     fireloc = []
@@ -77,6 +83,7 @@ class Fire:
 class Drone:
     droneloc = []
     def __init__(self):
+        self.health = 10
         self.x = 400
         self.y = 400
         self.width = 17
@@ -85,29 +92,31 @@ class Drone:
         self.xgoal = 400
         self.ygoal = 400
         self.color = white
-        #self.image = pygame.image.load("Art\Drone.png")
+        self.image = pygame.image.load("Art\Drone.png")
+        self.image = pygame.transform.scale(self.image,(self.width, self.height))
         Drone.droneloc.append(self)
     def tick(self, keys, win):
         if self.y == self.ygoal and self.x == self.xgoal:
-            self.color = white
+            self.image = pygame.image.load ( "Art\Drone.png" )
         if self.y != self.ygoal and self.x != self.xgoal:
-            self.color = grey
+            self.image = pygame.image.load ( "Art\DroneMove.png" )
         for d in Drone.droneloc:
             if d != self and d.rect.colliderect(self.rect):
                 xory = random.randint(0,3)
                 if xory == 1:
-                    self.x = d.x + d.width + 2
-                    self.xgoal = d.xgoal + d.width + 2
+                    self.x = d.x + d.width + droned
+                    self.xgoal = d.xgoal + d.width + droned
                 if xory == 0:
-                    self.y = d.y + d.height + 2
-                    self.ygoal = d.ygoal + d.height + 2
+                    self.y = d.y + d.height + droned
+                    self.ygoal = d.ygoal + d.height + droned
                 if xory == 2:
-                    self.x = d.x - d.width - 2
-                    self.xgoal = d.xgoal - d.width - 2
+                    self.x = d.x - d.width - droned
+                    self.xgoal = d.xgoal - d.width - droned
                 if xory == 3:
-                    self.y = d.y - d.height - 2
-                    self.ygoal = d.ygoal - d.height - 2
+                    self.y = d.y - d.height - droned
+                    self.ygoal = d.ygoal - d.height - droned
         if keys[pygame.K_e] == True:
+            self.image = pygame.image.load ( "Art\DroneMove.png" )
             Mx,My = pygame.mouse.get_pos()
             Mx += -10
             My += -10
@@ -122,7 +131,7 @@ class Drone:
             self.y += -1
         for e in Dummy.enemyloc:
             if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
-                self.color = red
+                self.image = pygame.image.load ( "Art\DroneAngry.png" )
                 self.firex = e.x
                 self.firey = e.y
                 if len(Fire.fireloc) <= 15:
@@ -140,6 +149,14 @@ class Drone:
         if self.y < 0:
             self.y = 0
 
-        #win.blit(self.image, (self.x, self.y))
+        for e in Dummy.enemyloc:
+            if e.rect.colliderect(self.rect):
+                self.health -= 1
+                e.health -= 1
+        if self.health <= 0:
+            Drone.droneloc.remove(self)
+
+        self.image = pygame.transform.scale ( self.image, (self.width, self.height) )
+        win.blit(self.image, (self.x, self.y))
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        pygame.draw.rect(win, self.color, self.rect)
+        #pygame.draw.rect(win, self.color, self.rect)
