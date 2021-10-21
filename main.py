@@ -14,6 +14,7 @@ pygame.init()
 windowwidth = 800
 windowheight = 800
 Background = pygame.image.load("Art/Robot Invasion Title.jpg")
+bglevel = pygame.image.load("Art/BackgroundPicture.png")
 
 win = pygame.display.set_mode((windowwidth, windowheight))
 pygame.display.set_caption("Robot Invasion")
@@ -69,7 +70,8 @@ def Play():
         manager2.update(time_delta)
         keys = pygame.key.get_pressed()
 
-        win.fill(deadgreen)
+        win.blit(bglevel, (0, 0))
+
         for d in Drone.droneloc:
             d.tick(keys, win)
         for dummy in Dummy.enemyloc:
@@ -118,3 +120,4 @@ while run2:
     manager.draw_ui(win)
 
     pygame.display.update()
+
