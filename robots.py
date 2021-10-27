@@ -1,7 +1,6 @@
 import pygame
 import pygame_gui
-
-path = [[100,200],[400,100]]
+from maps import *
 
 points = 0
 

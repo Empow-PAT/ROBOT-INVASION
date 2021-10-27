@@ -44,8 +44,8 @@ class Glitch:
     def __init__(self):
         self.addh = 800
         self.addw = 800
-        self.x = 700
-        self.y = 400
+        self.x = random.randint(0,800)
+        self.y = random.randint(0,800)
         self.health = random.randint(50, 500)
         self.width = random.randint(10,100)
         self.height = random.randint(10,100)
@@ -130,9 +130,8 @@ class Glitch:
                 self.addh = 800
                 self.addw = 800
             if attack == 8:
-                for d in Drone.droneloc:
-                    d.x = 400
-                    d.y = 400
+                self.x = random.randint(200, 600)
+                self.y = random.randint(200, 600)
             if attack == 9:
                 self.stick = False
             if attack == 10:
@@ -277,12 +276,16 @@ class Drone:
 
         if self.x > windowwidth - self.width:
             self.x = windowwidth - self.width
+            self.xgrav = 0
         if self.x < 0:
             self.x = 0 + self.width
+            self.xgrav = 0
         if self.y > windowheight - self.height:
             self.y = windowheight - self.height
+            self.ygrav = 0
         if self.y < 0:
             self.y = 0 + self.height
+            self.ygrav = 0
 
         for e in Dummy.enemyloc:
             if e.rect.colliderect(self.rect):
