@@ -8,6 +8,7 @@ from robots import  *
 from maps import *
 from collectible import *
 from EnemyFile import*
+import time
 
 pygame.init()
 
@@ -15,6 +16,8 @@ windowwidth = 800
 windowheight = 800
 Background = pygame.image.load("Art/Robot Invasion Title.jpg")
 bglevel = pygame.image.load("Art/BackgroundPicture.png")
+
+
 
 win = pygame.display.set_mode((windowwidth, windowheight))
 pygame.display.set_caption("Robot Invasion")
@@ -26,6 +29,10 @@ def Play():
     global run2
     manager2 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
     moneytime = 0
+    robotTime = 0
+    # WAVESTUFF
+    waveQueue = []
+    wave = 0
     money = 40
     for i in range(35):
         drone = Drone()
@@ -33,11 +40,6 @@ def Play():
         dummy = Dummy()
     for i in range(1):
         enemy = Enemy_tower()
-
-
-    robot = Normal()
-    robot2 = Speedy()
-    robot3 = Slow()
     ST=ShootingTower()
     # ROBOTBUYBUTTONS
     normal = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((0, 750), (100, 50)),
@@ -58,6 +60,11 @@ def Play():
     deathKing = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((500, 750), (100, 50)),
                                               text='Death Guard: $1000000',
                                               manager=manager2)
+    waveStart = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((600, 750), (100, 50)),
+                                             text='Start Wave!',
+                                             manager=manager2)
+
+    spawnStart = False
     run = True
     while run:
         time_delta = clock.tick(60) / 1000.0
@@ -73,29 +80,46 @@ def Play():
 
                     if event.ui_element == normal:
                         if money >= 5:
-                            Normal()
+                            waveQueue.append("Normal")
                             money -= 5
                     if event.ui_element == speedy:
                         if money >= 10:
-                            Speedy()
+                            waveQueue.append("Speedy")
                             money -= 10
                     if event.ui_element == slow:
                         if money >= 50:
-                            Slow()
+                            waveQueue.append("Slow")
                             money -= 50
                     if event.ui_element == slowBoss:
                         if money >= 1000:
-                            SlowBoss()
+                            waveQueue.append("SlowBoss")
                             money -= 1000
                     if event.ui_element == deathGuard:
                         if money >= 100000:
-                            DeathGuard()
+                            waveQueue.append("DeathGuard")
                             money -= 100000
+                    if event.ui_element == waveStart:
+                        if len(Robot.robots) == 0:
+                            spawnStart = True
+                            wave += 1
+
+
+
+
             manager2.process_events(event)
         manager2.update(time_delta)
         keys = pygame.key.get_pressed()
 
         win.blit(bglevel, (0, 0))
+
+        if spawnStart:
+            for r in waveQueue:
+                if robotTime>10:
+                    robotTime = 0
+                    spawnRobot(r)
+                    waveQueue.remove(r)
+            if len(waveQueue) == 0:
+                spawnStart = False
 
         for d in Drone.droneloc:
             d.tick(keys, win)
@@ -105,12 +129,16 @@ def Play():
             r.tick(win)
         ST.tick()
         moneytime += 1
+        robotTime += 1
         if moneytime == 40:
             moneytime = 0
             for r in Robot.robots:
                 money += r.moneyGive
         moneyText = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((650, 0), (150, 50)),
                                                 text="$ " + str(money),
+                                                manager=manager2)
+        waveText = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((100, 0), (150, 50)),
+                                                text="Wave: " + str(wave),
                                                 manager=manager2)
         manager2.draw_ui(win)
         pygame.display.update()
