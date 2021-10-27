@@ -14,6 +14,7 @@ pygame.init()
 windowwidth = 800
 windowheight = 800
 Background = pygame.image.load("Art/Robot Invasion Title.jpg")
+bglevel = pygame.image.load("Art/BackgroundPicture.png")
 
 win = pygame.display.set_mode((windowwidth, windowheight))
 pygame.display.set_caption("Robot Invasion")
@@ -22,6 +23,7 @@ deadgreen = (120, 150, 0)
 white = (255,255,255)
 red = (255,0,0)
 def Play():
+    global run2
     manager2 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
     moneytime = 0
     money = 40
@@ -33,6 +35,10 @@ def Play():
         enemy = Enemy_tower()
 
 
+    robot = Normal()
+    robot2 = Speedy()
+    robot3 = Slow()
+    ST=ShootingTower()
     # ROBOTBUYBUTTONS
     normal = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((0, 750), (100, 50)),
                                           text='Normal: $5',
@@ -61,6 +67,7 @@ def Play():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+                run2 = False
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
 
@@ -88,13 +95,15 @@ def Play():
         manager2.update(time_delta)
         keys = pygame.key.get_pressed()
 
-        win.fill(deadgreen)
+        win.blit(bglevel, (0, 0))
+
         for d in Drone.droneloc:
             d.tick(keys, win)
         for dummy in Dummy.enemyloc:
             dummy.tick(keys, win)
         for r in Robot.robots:
             r.tick(win)
+        ST.tick()
         moneytime += 1
         if moneytime == 40:
             moneytime = 0
@@ -137,22 +146,4 @@ while run2:
     manager.draw_ui(win)
 
     pygame.display.update()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
