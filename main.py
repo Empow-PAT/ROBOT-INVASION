@@ -34,8 +34,6 @@ def Play():
     money = 40
     for i in range(35):
         drone = Drone()
-    for i in range(20):
-        dummy = Dummy()
     for i in range(0):
         enemy = Enemy_tower()
 
