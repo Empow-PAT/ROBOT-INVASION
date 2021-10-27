@@ -29,9 +29,9 @@ def Play():
     money = 40
     for i in range(35):
         drone = Drone()
-    for i in range(20):
-        dummy = Dummy()
-    for i in range(1):
+    for i in range(2):
+        shoot = ShootingTower()
+    for i in range(0):
         enemy = Enemy_tower()
 
 
@@ -75,11 +75,10 @@ def Play():
 
         for d in Drone.droneloc:
             d.tick(keys, win)
-        for dummy in Dummy.enemyloc:
-            dummy.tick(keys, win)
+        for shoot in ShootingTower.enemyloc:
+            shoot.tick(keys, win)
         for r in Robot.robots:
             r.tick(win)
-        ST.tick()
         moneytime += 1
         if moneytime == 40:
             moneytime = 0

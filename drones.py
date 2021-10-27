@@ -1,6 +1,10 @@
 import pygame
 import random
+import towers
 
+windowwidth = 800
+windowheight = 800
+win = pygame.display.set_mode((windowwidth, windowheight))
 droned = 2
 windowwidth = 800
 windowheight = 800
@@ -16,25 +20,47 @@ purple_blue = (180,40,255)
 #purple_blue = (220,20,60)
 #purple_blue = (255,255,0)
 
-
-class Dummy:
+class ShootingTower:
     enemyloc = []
     def __init__(self):
-        self.x = random.randint(0,400)
-        self.y = random.randint(0,400)
-        self.health = 20
-        self.width = 20
-        self.height = 50
-        self.image = pygame.image.load("Art\Tower Dude.jpg")
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        Dummy.enemyloc.append(self)
+        self.x = 200
+        self.y = 400
+        self.health = 10
+        self.width = 100
+        self.height = 100
+        self.image = pygame.image.load ( "Art/TowerPlaceHolder.png" )
+        self.rect = pygame.Rect ( self.x, self.y, self.width, self.height )
+
+
+        ShootingTower.enemyloc.append (self)
     def tick(self, keys, win):
         if self.health <= 0:
-            Dummy.enemyloc.remove(self)
+            ShootingTower.enemyloc.remove(self)
             return
-    #Import tower img here
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        win.blit(self.image,(self.x,self.y))
+        self.image = pygame.image.load ( "Art/TowerPlaceHolder.png" )
+        self.image = pygame.transform.scale ( self.image, (self.width, self.height))
+        win.blit ( self.image, (self.x, self.y) )
+        self.rect = pygame.Rect ( self.x, self.y, self.width, self.height )
+
+#class Dummy:
+ #   enemyloc = []
+  #  def __init__(self):
+   #     self.x = random.randint(0,400)
+    #    self.y = random.randint(0,400)
+     #   self.health = 20
+      #  self.width = 20
+       # self.height = 20
+        #self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+
+#        Dummy.enemyloc.append(self)
+ #   def tick(self, keys, win):
+  #      if self.health <= 0:
+   #         Dummy.enemyloc.remove(self)
+    #        return
+    #Import tower img here
+     #   self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+      #  pygame.draw.rect(win, mint_green, self.rect)
 
 class Fire:
     fireloc = []
@@ -51,10 +77,10 @@ class Fire:
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         Fire.fireloc.append(self)
     def tick(self, win):
-        for e in Dummy.enemyloc:
+        for e in ShootingTower.enemyloc:
             if e.rect.colliderect(self.rect):
                 e.health -= self.health
-                self.health -= 1
+                self.health -= 10
                 Fire.fireloc.remove(self)
                 return
         if self.health <= 0:
@@ -84,8 +110,8 @@ class Drone:
     droneloc = []
     def __init__(self):
         self.health = 10
-        self.x = 400
-        self.y = 400
+        self.x = 114
+        self.y = 113
         self.width = 17
         self.height = 17
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
@@ -129,7 +155,7 @@ class Drone:
             self.y += 1
         if self.y > self.ygoal:
             self.y += -1
-        for e in Dummy.enemyloc:
+        for e in ShootingTower.enemyloc:
             if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
                 self.image = pygame.image.load ( "Art\DroneAngry.png" )
                 self.firex = e.x
@@ -149,7 +175,7 @@ class Drone:
         if self.y < 0:
             self.y = 0
 
-        for e in Dummy.enemyloc:
+        for e in ShootingTower.enemyloc:
             if e.rect.colliderect(self.rect):
                 self.health -= 1
                 e.health -= 1
