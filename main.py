@@ -16,7 +16,7 @@ windowheight = 800
 Background = pygame.image.load("Art/Robot Invasion Title.jpg")
 
 win = pygame.display.set_mode((windowwidth, windowheight))
-boss = True
+boss = False
 game_virus = False
 pygame.display.set_caption("Robot Invasion")
 black = (0, 0, 0)
@@ -32,6 +32,9 @@ def Play():
     manager2 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
     moneytime = 0
     money = 40
+    for i in range(1):
+        shootingtower = ShootingTower(random.randint(100,700),random.randint(100,700))
+        buildertower = BuilderTower()
     for i in range(35):
         drone = Drone()
     for i in range(0):
@@ -55,6 +58,7 @@ def Play():
 
         pygame.time.delay(6)
 
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -74,10 +78,14 @@ def Play():
         keys = pygame.key.get_pressed()
 
         win.fill(deadgreen)
+        for e in ShootingTower.towers:
+            e.tick(keys, win)
+        for b in EnemyBuilderDrone.eDrones:
+            b.tick(keys, win)
+        for enemy in Dummy.enemyloc:
+            enemy.tick(keys, win)
         for d in Drone.droneloc:
-            d.tick(keys, win)
-        for dummy in Dummy.enemyloc:
-            dummy.tick(keys, win)
+            d.tick(keys, win, EnemyBuilderDrone)
         for r in Robot.robots:
             r.tick(win)
         if boss == True and bosscount == 0:

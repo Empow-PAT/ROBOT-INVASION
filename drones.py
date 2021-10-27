@@ -10,6 +10,7 @@ mint_green = (111,222,123)
 red = (255,0,0)
 purple_blue = (180,40,255)
 blue = (0,0,255)
+green = (0,255,0)
 #purple_blue = (199,21,133)
 #purple_blue = (255,0,255)
 #purple_blue = (128,0,128)
@@ -142,6 +143,8 @@ class Glitch:
                 self.y = random.randint(200, 600)
         if self.stick == True:
             pygame.draw.rect(win, blue, self.irect)
+        else:
+            self.irect = pygame.Rect(0, 0, 0, 0)
 
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         glitch_effect = random.randint(1,2)
@@ -151,6 +154,9 @@ class Glitch:
 class Fire:
     fireloc = []
     def __init__(self,x,y,firey,firex):
+        self.color = purple_blue
+        self.testx = 0
+        self.testy = 0
         self.x = x
         self.y = y
         self.health = 1
@@ -160,46 +166,102 @@ class Fire:
         self.firey = firey
         self.xvel = 0
         self.yvel = 0
+
+        if self.firex < self.x:
+            self.xvel = -1
+        elif self.firex > self.x:
+            self.xvel = 1
+
+        if self.firey < self.y:
+            self.yvel = -1
+        elif self.firey > self.y:
+            self.yvel = 1
+
+        if (self.x - firex >= 0) and (self.y - firey <= 40 and self.y - firey >= -40):
+            self.yvel = 0
+            self.xvel = -1
+        if (self.x - firex <= 0) and (self.y - firey <= 40 and self.y - firey >= -40):
+            self.yvel = 0
+            self.xvel = 1
+
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-    def tick(self, win):
+    def tick(self, win, EnemyBuilderDrone):
+
         for e in Dummy.enemyloc:
             if e.rect.colliderect(self.rect):
                 e.health -= self.health
-                self.health -= 1
+                self.health = 0
                 Fire.fireloc.remove(self)
                 return
         for e in Glitch.boss:
             if e.rect.colliderect(self.rect):
                 e.health -= self.health
-                self.health -= 1
+                self.health = 0
                 Fire.fireloc.remove(self)
                 return
         for e in Glitch.boss:
             if e.irect.colliderect(self.rect):
-                self.health -= 1
+                self.health = 0
                 Fire.fireloc.remove(self)
                 return
-        if self.health <= 0:
+        for e in EnemyBuilderDrone.eDrones:
+            if e.rect.colliderect(self.rect):
+                e.health -= self.health
+                self.health = 0
+                Fire.fireloc.remove(self)
+                return
+
+        if self.xvel <= -1:
+            self.testx = 0
+
+            if self.firex <= self.x:
+                self.x += self.xvel
+            if self.firex >= self.x:
+                self.x += self.xvel
+                self.testx = 1
+
+        if self.xvel >= 1:
+            self.testx = 0
+
+            if self.firex >= self.x:
+                self.x += self.xvel
+            if self.firex <= self.x:
+                self.x += self.xvel
+                self.testx = 1
+
+
+
+
+        if self.yvel <= -1:
+            self.testy = 0
+
+            if self.firey <= self.y:
+                self.y += self.yvel
+            if self.firey >= self.y:
+                self.y += self.yvel
+                self.testy = 1
+
+        if self.yvel >= 1:
+            self.testy = 0
+
+            if self.firey >= self.y:
+                self.y += self.yvel
+            if self.firey <= self.y:
+                self.y += self.yvel
+                self.testy = 1
+
+
+        if self.testy and self.testx:
             Fire.fireloc.remove(self)
             return
 
-        if self.y == self.firey and self.x == self.firex:
+        if self.health <= 0 or self.y == self.firey and self.x == self.firex:
             Fire.fireloc.remove(self)
             return
-
-        if self.firex < self.x:
-            self.x += -1
-        if self.firex > self.x:
-            self.x += 1
-        if self.firey < self.y:
-            self.y += -1
-        if self.firey > self.y:
-            self.y += 1
-
 
 
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        pygame.draw.rect(win, purple_blue, self.rect)
+        pygame.draw.rect(win, self.color, self.rect)
 
 class Drone:
     droneloc = []
@@ -218,7 +280,7 @@ class Drone:
         self.image = pygame.image.load("Art\Drone.png")
         self.image = pygame.transform.scale(self.image,(self.width, self.height))
         Drone.droneloc.append(self)
-    def tick(self, keys, win):
+    def tick(self, keys, win, EnemyBuilderDrone):
         self.x += self.xgrav
         self.y += self.ygrav
         if self.y == self.ygoal and self.x == self.xgoal:
@@ -254,6 +316,7 @@ class Drone:
             self.y += 1
         if self.y > self.ygoal:
             self.y += -1
+        self.image = pygame.image.load("Art\Drone.png")
         for e in Dummy.enemyloc:
             if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
                 self.image = pygame.image.load ( "Art\DroneAngry.png" )
@@ -261,8 +324,6 @@ class Drone:
                 self.firey = e.y + e.height/2
                 if len(Fire.fireloc) <= 15:
                     Fire.fireloc.append(Fire(self.x,self.y,self.firey,self.firex))
-                for f in Fire.fireloc:
-                    f.tick(win)
         for e in Glitch.boss:
             if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
                 self.image = pygame.image.load("Art\DroneAngry.png")
@@ -270,9 +331,16 @@ class Drone:
                 self.firey = e.y + e.height/2
                 if len(Fire.fireloc) <= 15:
                     Fire.fireloc.append(Fire(self.x, self.y, self.firey, self.firex))
-                for f in Fire.fireloc:
-                    f.tick(win)
+        for e in EnemyBuilderDrone.eDrones:
+            if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
+                self.image = pygame.image.load ( "Art\DroneAngry.png" )
+                self.firex = e.x + e.width/2
+                self.firey = e.y + e.height/2
+                if len(Fire.fireloc) <= 15:
+                    Fire.fireloc.append(Fire(self.x,self.y,self.firey,self.firex))
 
+        for f in Fire.fireloc:
+            f.tick(win, EnemyBuilderDrone)
 
         if self.x > windowwidth - self.width:
             self.x = windowwidth - self.width
