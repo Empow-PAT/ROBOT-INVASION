@@ -9,17 +9,18 @@ from maps import *
 from collectible import *
 from EnemyFile import*
 import time
+from pygame.locals import *
 
 pygame.init()
 
 windowwidth = 800
 windowheight = 800
-Background = pygame.image.load("Art/Robot Invasion Title.jpg")
-bglevel = pygame.image.load("Art/BackgroundPicture.png")
+Background = pygame.image.load("Art/Robot Invasion Title.jpg").convert_alpha()
+bglevel = pygame.image.load("Art/BackgroundPicture.png").convert_alpha()
 
 
 
-win = pygame.display.set_mode((windowwidth, windowheight))
+win = pygame.display.set_mode((windowwidth, windowheight), DOUBLEBUF)
 pygame.display.set_caption("Robot Invasion")
 black = (0, 0, 0)
 deadgreen = (120, 150, 0)
@@ -69,7 +70,7 @@ def Play():
     while run:
         time_delta = clock.tick(60) / 1000.0
 
-        pygame.time.delay(6)
+        #pygame.time.delay(6)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

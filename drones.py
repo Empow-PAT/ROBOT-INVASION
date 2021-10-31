@@ -28,7 +28,7 @@ class ShootingTower:
         self.health = 10
         self.width = 100
         self.height = 100
-        self.image = pygame.image.load ( "Art/TowerPlaceHolder.png" )
+        self.image = pygame.image.load ( "Art/TowerPlaceHolder.png" ).convert_alpha()
         self.rect = pygame.Rect ( self.x, self.y, self.width, self.height )
 
 
@@ -38,7 +38,7 @@ class ShootingTower:
             ShootingTower.enemyloc.remove(self)
             return
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        self.image = pygame.image.load ( "Art/TowerPlaceHolder.png" )
+        self.image = pygame.image.load ( "Art/TowerPlaceHolder.png" ).convert_alpha()
         self.image = pygame.transform.scale ( self.image, (self.width, self.height))
         win.blit ( self.image, (self.x, self.y) )
         self.rect = pygame.Rect ( self.x, self.y, self.width, self.height )
@@ -118,14 +118,14 @@ class Drone:
         self.xgoal = 400
         self.ygoal = 400
         self.color = white
-        self.image = pygame.image.load("Art\Drone.png")
+        self.image = pygame.image.load("Art\Drone.png").convert_alpha()
         self.image = pygame.transform.scale(self.image,(self.width, self.height))
         Drone.droneloc.append(self)
     def tick(self, keys, win):
         if self.y == self.ygoal and self.x == self.xgoal:
-            self.image = pygame.image.load ( "Art\Drone.png" )
+            self.image = pygame.image.load ( "Art\Drone.png" ).convert_alpha()
         if self.y != self.ygoal and self.x != self.xgoal:
-            self.image = pygame.image.load ( "Art\DroneMove.png" )
+            self.image = pygame.image.load ( "Art\DroneMove.png" ).convert_alpha()
         for d in Drone.droneloc:
             if d != self and d.rect.colliderect(self.rect):
                 xory = random.randint(0,3)
@@ -142,7 +142,7 @@ class Drone:
                     self.y = d.y - d.height - droned
                     self.ygoal = d.ygoal - d.height - droned
         if keys[pygame.K_e] == True:
-            self.image = pygame.image.load ( "Art\DroneMove.png" )
+            self.image = pygame.image.load ( "Art\DroneMove.png" ).convert_alpha()
             Mx,My = pygame.mouse.get_pos()
             Mx += -10
             My += -10
@@ -157,7 +157,7 @@ class Drone:
             self.y += -1
         for e in ShootingTower.enemyloc:
             if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
-                self.image = pygame.image.load ( "Art\DroneAngry.png" )
+                self.image = pygame.image.load ( "Art\DroneAngry.png" ).convert_alpha()
                 self.firex = e.x
                 self.firey = e.y
                 if len(Fire.fireloc) <= 15:

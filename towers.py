@@ -10,7 +10,7 @@ class ShootingTower:
                 self.health = 400
                 self.width = 100
                 self.height = 100
-                self.image = pygame.image.load ( "Art/TowerPlaceHolder.png")
+                self.image = pygame.image.load ( "Art/TowerPlaceHolder.png").convert_alpha()
                 self.rect = pygame.Rect ( self.x, self.y, self.width, self.height )
         def tick(self):
                 self.image = pygame.transform.scale ( self.image, (self.width, self.height) )
