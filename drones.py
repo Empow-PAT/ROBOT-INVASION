@@ -1,6 +1,7 @@
 import pygame
 import random
 import towers
+import math
 
 windowwidth = 800
 windowheight = 800
@@ -25,7 +26,7 @@ class ShootingTower:
     def __init__(self):
         self.x = 200
         self.y = 400
-        self.health = 10
+        self.health = 10000
         self.width = 40
         self.height = 100
         self.image = pygame.image.load ( "Art/Tower Dude.jpg" ).convert_alpha()
@@ -34,10 +35,23 @@ class ShootingTower:
 
         ShootingTower.enemyloc.append (self)
     def tick(self, keys, win):
+        #mx, my = Drone.drone.get_pos()
+        #dx, dy = mx - self.centerx, my - self.centery
+        #angle = math.degrees ( math.atan2 ( -dy, dx ) ) - correction_angle
+        #rot_image = pygame.transform.rotate ( self, angle )
+        #rot_image_rect = rot_image.get_rect ( center=self.center )
+        for e in Fire.fireloc:
+            if e.rect.colliderect ( self.rect ):
+                self.health -= 10
+                e.health -= 10
+                Fire.fireloc.remove ( e )
         if self.health <= 0:
             ShootingTower.enemyloc.remove(self)
             return
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        if self.health == 0:
+            ShootingTower.enemyloc.remove(self)
+            return
+        #self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.image = pygame.image.load ( "Art/Tower Dude.jpg" ).convert_alpha()
         self.image = pygame.transform.scale ( self.image, (self.width, self.height))
         win.blit ( self.image, (self.x, self.y) )
@@ -77,17 +91,7 @@ class Fire:
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         Fire.fireloc.append(self)
     def tick(self, win):
-        for e in ShootingTower.enemyloc:
-            if e.rect.colliderect(self.rect):
-                e.health -= self.health
-                self.health -= 10
-                Fire.fireloc.remove(self)
-                return
         if self.health <= 0:
-            Fire.fireloc.remove(self)
-            return
-
-        if (self.firey <= self.y + 10 and self.firey >= self.y -10) and (self.firex <= self.x + 10 and self.firex >= self.x -10):
             Fire.fireloc.remove(self)
             return
 
@@ -162,7 +166,7 @@ class Drone:
                 self.firey = e.y
                 if len(Fire.fireloc) <= 15:
                     fire = Fire(self.x,self.y,self.firey,self.firex)
-                    Fire.fireloc.append(fire)
+                    #Fire.fireloc.append(fire)
                 for f in Fire.fireloc:
                     f.tick(win)
 

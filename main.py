@@ -19,67 +19,12 @@ Background = pygame.image.load("Art/Robot Invasion Title.jpg").convert_alpha()
 bglevel = pygame.image.load("Art/BackgroundPicture.png").convert_alpha()
 
 
-
 win = pygame.display.set_mode((windowwidth, windowheight), DOUBLEBUF)
 pygame.display.set_caption("Robot Invasion")
 black = (0, 0, 0)
 deadgreen = (120, 150, 0)
 white = (255,255,255)
-gray = (40, 40,40)
 red = (255,0,0)
-def HowToPlay():
-    run3 = True
-    manager3 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
-
-
-
-    BackButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((20,20), (90, 50)),
-                                                  text='',
-                                                  object_id="back_button",
-                                                  manager=manager3)
-    while run3:
-        time_delta = clock.tick(60) / 1000.0
-
-        pygame.time.delay(6)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run3 = False
-            if event.type == pygame.USEREVENT:
-                if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                    if event.ui_element == BackButton:
-                        run3 = False
-            manager3.process_events(event)
-        manager3.update(time_delta)
-        win.blit(pygame.image.load("Art/MenuBackground.jpg"), (0,0))
-        manager3.draw_ui(win)
-        pygame.display.update()
-
-def Store():
-    run4 = True
-    manager4 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
-
-    BackButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((20, 20), (90, 50)),
-                                              text='',
-                                              object_id="back_button",
-                                              manager=manager4)
-    while run4:
-        time_delta = clock.tick(60) / 1000.0
-
-        pygame.time.delay(6)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run4 = False
-            if event.type == pygame.USEREVENT:
-                if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                    if event.ui_element == BackButton:
-                        run4 = False
-            manager4.process_events(event)
-        manager4.update(time_delta)
-        win.fill(gray)
-        manager4.draw_ui(win)
-        pygame.display.update()
 def Play():
     global run2
     manager2 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
@@ -91,11 +36,10 @@ def Play():
     money = 40
     for i in range(35):
         drone = Drone()
-    for i in range(2):
+    for i in range(1):
         shoot = ShootingTower()
     for i in range(0):
         enemy = Enemy_tower()
-    ST=ShootingTower()
     # ROBOTBUYBUTTONS
     normal = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((0, 750), (100, 50)),
                                           text='Normal: $5',
@@ -180,6 +124,7 @@ def Play():
             d.tick(keys, win)
         for shoot in ShootingTower.enemyloc:
             shoot.tick(keys, win)
+            print (shoot.health)
         for r in Robot.robots:
             r.tick(win)
         moneytime += 1
@@ -199,20 +144,11 @@ def Play():
 
 
 manager = pygame_gui.UIManager((800, 800), 'gui_theme.json')
-play_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((350, 210), (120, 75)),
+play_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((350, 275), (100, 50)),
                                            text='',
                                            object_id="mainplay",
                                            manager=manager)
-how_to_play_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((350, 310), (120, 75)),
-                                           text='',
-                                           object_id="HowToPlay",
-                                           manager=manager)
-store_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((350, 410), (120, 75)),
-                                           text='',
-                                           object_id="Store_Button",
-                                           manager=manager)
 clock = pygame.time.Clock()
-
 
 run2 = True
 while run2:
@@ -227,10 +163,6 @@ while run2:
             if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == play_button:
                     Play()
-                if event.ui_element == how_to_play_button:
-                    HowToPlay()
-                if event.ui_element ==store_button:
-                    Store()
         manager.process_events(event)
     manager.update(time_delta)
 
