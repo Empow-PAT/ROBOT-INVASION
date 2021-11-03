@@ -89,6 +89,7 @@ def Play():
     waveQueue = []
     wave = 0
     money = 40
+    hero = BlazeBot()
     for i in range(35):
         drone = Drone()
     for i in range(2):
@@ -182,6 +183,7 @@ def Play():
             shoot.tick(keys, win)
         for r in Robot.robots:
             r.tick(win)
+        hero.tick(win,keys)
         moneytime += 1
         robotTime += 1
         if moneytime == 40:
