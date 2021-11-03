@@ -26,9 +26,9 @@ class ShootingTower:
         self.x = 200
         self.y = 400
         self.health = 10
-        self.width = 100
+        self.width = 40
         self.height = 100
-        self.image = pygame.image.load ( "Art/TowerPlaceHolder.png" ).convert_alpha()
+        self.image = pygame.image.load ( "Art/Tower Dude.jpg" ).convert_alpha()
         self.rect = pygame.Rect ( self.x, self.y, self.width, self.height )
 
 
@@ -38,7 +38,7 @@ class ShootingTower:
             ShootingTower.enemyloc.remove(self)
             return
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        self.image = pygame.image.load ( "Art/TowerPlaceHolder.png" ).convert_alpha()
+        self.image = pygame.image.load ( "Art/Tower Dude.jpg" ).convert_alpha()
         self.image = pygame.transform.scale ( self.image, (self.width, self.height))
         win.blit ( self.image, (self.x, self.y) )
         self.rect = pygame.Rect ( self.x, self.y, self.width, self.height )
