@@ -29,17 +29,24 @@ class ShootingTower:
         self.health = 10000
         self.width = 40
         self.height = 100
-        self.image = pygame.image.load ( "Art/Tower Dude.jpg" ).convert_alpha()
         self.rect = pygame.Rect ( self.x, self.y, self.width, self.height )
-
+        self.image = pygame.image.load ( "Art/Tower Dude.jpg" ).convert_alpha()
+        self.image = pygame.transform.scale ( self.image, (self.width, self.height))
+        self.origimage = self.image
 
         ShootingTower.enemyloc.append (self)
     def tick(self, keys, win):
-        #mx, my = Drone.drone.get_pos()
-        #dx, dy = mx - self.centerx, my - self.centery
-        #angle = math.degrees ( math.atan2 ( -dy, dx ) ) - correction_angle
-        #rot_image = pygame.transform.rotate ( self, angle )
-        #rot_image_rect = rot_image.get_rect ( center=self.center )
+        mindist = 100000
+        closest = False
+        for drone in Drone.droneloc:
+            dist = math.hypot(drone.x - self.x, drone.y - self.y)
+            if dist < mindist:
+                closest = drone
+
+        dx, dy = closest.x - self.x, closest.y - self.y
+        angle = math.degrees ( math.atan2 ( -dy, dx ) )
+        print(angle)
+        self.image = pygame.transform.rotate ( self.origimage, angle )
         for e in Fire.fireloc:
             if e.rect.colliderect ( self.rect ):
                 self.health -= 10
@@ -51,11 +58,7 @@ class ShootingTower:
         if self.health == 0:
             ShootingTower.enemyloc.remove(self)
             return
-        #self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        self.image = pygame.image.load ( "Art/Tower Dude.jpg" ).convert_alpha()
-        self.image = pygame.transform.scale ( self.image, (self.width, self.height))
         win.blit ( self.image, (self.x, self.y) )
-        self.rect = pygame.Rect ( self.x, self.y, self.width, self.height )
 
 #class Dummy:
  #   enemyloc = []
