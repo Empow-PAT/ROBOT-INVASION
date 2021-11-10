@@ -98,15 +98,8 @@ def Play():
         buildertower = BuilderTower()
     for i in range(35):
         drone = Drone()
-    for i in range(2):
-        shoot = ShootingTower()
     for i in range(0):
         enemy = Enemy_tower()
-    ST=ShootingTower()
-
-    robot = Normal()
-    robot2 = Speedy()
-    robot3 = Slow()
     # ROBOTBUYBUTTONS
     normal = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((0, 750), (100, 50)),
                                           text='Normal: $5',
@@ -192,9 +185,9 @@ def Play():
                 spawnStart = False
 
         for d in Drone.droneloc:
-            d.tick(keys, win)
-        for shoot in ShootingTower.enemyloc:
-            shoot.tick(keys, win, EnemyBuilderDrone)
+            d.tick(keys, win, EnemyBuilderDrone)
+        for shoot in ShootingTower.towers:
+            shoot.tick(keys, win)
         for r in Robot.robots:
             r.tick(win)
         hero.tick(win,keys)
