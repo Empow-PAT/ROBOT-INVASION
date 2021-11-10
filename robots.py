@@ -4,7 +4,6 @@ from maps import *
 
 points = 0
 
-
 black = (235, 89, 235)
 white = (255,255,255)
 red = (255,0,0)
@@ -66,10 +65,16 @@ class SlowBoss(Robot):
     def __init__(self):
         Robot.__init__(self,0,0.5,100,darkerGray,50)
 
+class DeathGuard(Robot):
+    def __init__(self):
+        Robot.__init__(self,0,0.2,250000,black,2500)
+
 class DeathKing(Robot):
     def __init__(self):
         Robot.__init__(self,0,0.2,500000,black,5000)
 
+def spawnRobot(robotType):
+    globals()[robotType]()
 
 
 

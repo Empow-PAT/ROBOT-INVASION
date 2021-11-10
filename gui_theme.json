@@ -1,16 +1,48 @@
- {
-     "defaults": {
-         "colours": {
-         }
-     },
-     "mainplay": {
-         "images": {
-             "normal_image": {
-                 "path": "Art/PlayButton.jpg"
-             },
-             "hovered_image": {
-                 "path": "Art/PlayButton.jpg"
-             }
-         }
-     }
- }
+{
+  "defaults": {
+    "colours": {
+    }
+  },
+  "mainplay": {
+    "images": {
+      "normal_image": {
+        "path": "Art/PlayButton.jpg"
+      },
+      "hovered_image": {
+        "path": "Art/PlayButton-pressed.jpg"
+      }
+    }
+  },
+  "HowToPlay": {
+    "images": {
+      "normal_image": {
+        "path": "Art/How To Play.jpg"
+      },
+      "hovered_image": {
+        "path": "Art/How To Play-pressed.jpg"
+      }
+    }
+  },
+  "back_button": {
+    "images": {
+      "normal_image": {
+        "path": "Art/Back_button.jpg"
+      },
+      "hovered_image": {
+        "path": "Art/Back_button.jpg"
+      }
+    }
+  },
+  "Store_Button": {
+    "images": {
+      "normal_image": {
+        "path": "Art/Store-Button.jpg"
+      },
+      "hovered_image": {
+        "path": "Art/Store-Button-Pressed.jpg"
+      }
+    }
+  }
+}
+
+

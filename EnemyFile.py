@@ -20,7 +20,7 @@ class Enemy_tower:
         self.height = 100
         self.direction = 0
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        Dummy.enemyloc.append(self)
+        ShootingTower.enemyloc.append(self)
     def tick(self, keys, win):
         self.projectile_timer += 1
         if self.projectile_timer == 10:
@@ -28,7 +28,7 @@ class Enemy_tower:
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         pygame.draw.rect(win, RandoColor, self.rect)
         if self.health <= 0:
-            Dummy.enemyloc.remove(self)
+            ShootingTower.enemyloc.remove(self)
 
 class Enemy_projectile:
     eproj = []
