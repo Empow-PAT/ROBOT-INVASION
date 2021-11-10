@@ -14,6 +14,7 @@ white = (255,255,255)
 grey = (134,134,134)
 mint_green = (111,222,123)
 red = (255,0,0)
+yellow = (255, 255, 0)
 purple_blue = (180,40,255)
 #purple_blue = (199,21,133)
 #purple_blue = (255,0,255)
@@ -108,7 +109,7 @@ class Fire:
         self.y += self.yvel
 
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        pygame.draw.rect(win, purple_blue, self.rect)
+        pygame.draw.rect(win, yellow, self.rect)
 
 class Drone:
     droneloc = []

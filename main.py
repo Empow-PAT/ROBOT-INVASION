@@ -97,6 +97,7 @@ def Play():
     for i in range(0):
         enemy = Enemy_tower()
     ST=ShootingTower()
+    coolGuyMgee = TowerFire((90,90),(600,600),win)
     # ROBOTBUYBUTTONS
     normal = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((0, 750), (100, 50)),
                                           text='Normal: $5',
@@ -123,7 +124,7 @@ def Play():
     spawnStart = False
     run = True
     while run:
-        time_delta = clock.tick(60) / 1000.0
+        time_delta = clock.tick(30) / 1000.0
 
         #pygame.time.delay(6)
 
@@ -183,6 +184,8 @@ def Play():
             shoot.tick(keys, win)
         for r in Robot.robots:
             r.tick(win)
+        for f in TowerFire.towerFire:
+            f.tick()
         hero.tick(win,keys)
         moneytime += 1
         robotTime += 1
