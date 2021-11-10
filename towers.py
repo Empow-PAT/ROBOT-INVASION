@@ -30,16 +30,17 @@ class TowerFire():
 
 
 
-class ShootingTower:
+class ShootingTower():
     towers = []
-    def __init__(self,damage,range,reloadTime,x,y):
+    def __init__(self,damage,range,reloadTime):
         self.dame = damage
         self.range = range
         self.reloadTime = reloadTime
-        self.x = x
-        self.y = y
+        self.x = 221
+        self.y = 341
         self.closest = None
         self.timer = 0
+        ShootingTower.towers.append(self)
     def findRobot(self):
         self.closest = None
         closest = False

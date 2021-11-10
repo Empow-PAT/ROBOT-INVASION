@@ -92,12 +92,9 @@ def Play():
     hero = BlazeBot()
     for i in range(35):
         drone = Drone()
-    for i in range(2):
-        shoot = ShootingTower()
     for i in range(0):
         enemy = Enemy_tower()
-    ST=ShootingTower()
-    coolGuyMgee = TowerFire((90,90),(600,600),win)
+    ST = ShootingTower(1,1000,13)
     # ROBOTBUYBUTTONS
     normal = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((0, 750), (100, 50)),
                                           text='Normal: $5',
@@ -186,6 +183,8 @@ def Play():
             r.tick(win)
         for f in TowerFire.towerFire:
             f.tick()
+        for t in ShootingTower.towers:
+            t.tick()
         hero.tick(win,keys)
         moneytime += 1
         robotTime += 1
