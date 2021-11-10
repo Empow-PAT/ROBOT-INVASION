@@ -36,22 +36,24 @@ class ShootingTower:
 
         ShootingTower.enemyloc.append (self)
     def tick(self, keys, win):
-        mindist = 100000
-        closest = False
-        for drone in Drone.droneloc:
-            dist = math.hypot(drone.x - self.x, drone.y - self.y)
-            if dist < mindist:
-                closest = drone
+        if len ( Drone.droneloc ) > 0:
 
-        dx, dy = closest.x - self.x, closest.y - self.y
-        angle = math.degrees ( math.atan2 ( -dy, dx ) )
-        print(angle)
-        self.image = pygame.transform.rotate ( self.origimage, angle )
+            mindist = 100000
+            closest = False
+            for drone in Drone.droneloc:
+                dist = math.hypot(drone.x - self.x, drone.y - self.y)
+                if dist < mindist:
+                    closest = drone
+                    print(self.health)
+            dx, dy = closest.x - self.x, closest.y - self.y
+            angle = math.degrees ( math.atan2 ( -dy, dx ) )
+            print(angle)
+            self.image = pygame.transform.rotate ( self.origimage, angle )
         for e in Fire.fireloc:
             if e.rect.colliderect ( self.rect ):
                 self.health -= 10
                 e.health -= 10
-                Fire.fireloc.remove ( e )
+                Fire.fireloc.remove (e)
         if self.health <= 0:
             ShootingTower.enemyloc.remove(self)
             return
@@ -117,8 +119,8 @@ class Drone:
     droneloc = []
     def __init__(self):
         self.health = 10
-        self.x = 114
-        self.y = 113
+        self.x = 0
+        self.y = 0
         self.width = 17
         self.height = 17
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
@@ -140,14 +142,15 @@ class Drone:
                     self.x = d.x + d.width + droned
                     self.xgoal = d.xgoal + d.width + droned
                 if xory == 0:
-                    self.y = d.y + d.height + droned
-                    self.ygoal = d.ygoal + d.height + droned
+                   self.y = d.y + d.height + droned
+                   self.ygoal = d.ygoal + d.height + droned
                 if xory == 2:
                     self.x = d.x - d.width - droned
                     self.xgoal = d.xgoal - d.width - droned
                 if xory == 3:
-                    self.y = d.y - d.height - droned
-                    self.ygoal = d.ygoal - d.height - droned
+                   self.y = d.y - d.height - droned
+                   self.ygoal = d.ygoal - d.height - droned
+
         if keys[pygame.K_e] == True:
             self.image = pygame.image.load ( "Art\DroneMove.png" ).convert_alpha()
             Mx,My = pygame.mouse.get_pos()
