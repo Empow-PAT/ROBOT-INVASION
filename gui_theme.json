@@ -42,6 +42,16 @@
         "path": "Art/Store-Button-Pressed.jpg"
       }
     }
+  },
+  "drone_button1": {
+    "images": {
+      "normal_image": {
+        "path": "Art/Drone Button.png"
+      },
+      "hovered_image": {
+        "path": "Art/Drone Button.png"
+      }
+    }
   }
 }
 
