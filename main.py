@@ -63,6 +63,11 @@ def Store():
                                               text='',
                                               object_id="back_button",
                                               manager=manager4)
+    DroneButton1 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((120,75), (90, 50)),
+                                              text='',
+                                              object_id="drone_button1",
+                                              manager=manager4)
+
     while run4:
         time_delta = clock.tick(60) / 1000.0
 
@@ -75,6 +80,10 @@ def Store():
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == BackButton:
                         run4 = False
+                    if event.ui_element == DroneButton1:
+                        for drone in Drone.droneloc:
+
+                            drone.change_skin()
             manager4.process_events(event)
         manager4.update(time_delta)
         win.fill(gray)
