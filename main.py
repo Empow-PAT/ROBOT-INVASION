@@ -163,6 +163,10 @@ def Play():
             manager2.process_events(event)
         manager2.update(time_delta)
         keys = pygame.key.get_pressed()
+        if keys[pygame.K_h] == True:
+            Drone.droneloc = []
+            for i in range ( 35 ):
+                drone = Drone ()
 
         win.blit(bglevel, (0, 0))
 
