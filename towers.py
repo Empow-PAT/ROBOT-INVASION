@@ -62,8 +62,6 @@ class EnemyBuilderDrone:
                 self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
                 pygame.draw.rect(win, red, self.rect)
 
-
-
 class BuilderTower:
         def __init__(self):
                 self.x = 400
@@ -86,3 +84,5 @@ class BuilderTower:
                 #win.blit(self.image, (self.x, self.y))
                 self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
                 pygame.draw.rect(win, blue, self.rect)
+
+                

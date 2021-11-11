@@ -18,8 +18,6 @@ green = (0,255,0)
 #purple_blue = (255,255,0)
 
 
-
-
 class Dummy:
     enemyloc = []
     def __init__(self):
@@ -38,7 +36,6 @@ class Dummy:
     #Import tower img here
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         pygame.draw.rect(win, red, self.rect)
-
 
 class Glitch:
     boss = []
