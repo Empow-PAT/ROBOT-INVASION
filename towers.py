@@ -30,32 +30,32 @@ class TowerFire():
 
 
 
-class ShootingTower():
+class Tower():
     towers = []
-    def __init__(self,damage,range,reloadTime):
-        self.dame = damage
+    def __init__(self,damage,range,reloadTime,x,y,win):
+        self.damage = damage
         self.range = range
         self.reloadTime = reloadTime
-        self.x = 221
-        self.y = 341
-        self.closest = None
+        self.x = x
+        self.y = y
+        self.closest = False
         self.timer = 0
-        ShootingTower.towers.append(self)
+        self.win = win
+        Tower.towers.append(self)
     def findRobot(self):
-        self.closest = None
-        closest = False
+        self.closest = False
         for robot in Robot.robots:
-            dist = math.hypot(robot.x - self.x, robot.y - self.y)
+            dist = abs(robot.x - self.x)+abs(robot.y - self.y)
             if dist < self.range:
-                closest = robot
+                self.closest = robot
 
-        dx, dy = closest.x - self.x, closest.y - self.y
-        angle = math.degrees(math.atan2(-dy, dx))
     def tick(self):
         self.timer += 1
         self.findRobot()
         if self.timer >= self.reloadTime:
-            newFire = TowerFire()
-            self.timer = 0
+            if not self.closest == False:
+                newFire = TowerFire((self.closest.x,self.closest.y),(self.x,self.y),win)
+                self.closest.health -= self.damage
+                self.timer = 0
 
 

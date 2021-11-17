@@ -97,13 +97,13 @@ def Play():
     # WAVESTUFF
     waveQueue = []
     wave = 0
-    money = 40
+    money = 10
     hero = BlazeBot()
     for i in range(35):
         drone = Drone()
     for i in range(0):
         enemy = Enemy_tower()
-    ST = ShootingTower(1,1000,13)
+    ST = Tower(1,1000,13,333,333,win)
     # ROBOTBUYBUTTONS
     normal = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((0, 750), (100, 50)),
                                           text='Normal: $5',
@@ -196,7 +196,7 @@ def Play():
             r.tick(win)
         for f in TowerFire.towerFire:
             f.tick()
-        for t in ShootingTower.towers:
+        for t in Tower.towers:
             t.tick()
         hero.tick(win,keys)
         moneytime += 1
