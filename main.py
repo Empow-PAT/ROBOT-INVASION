@@ -35,6 +35,7 @@ def Play():
     for i in range(1):
         shootingtower = ShootingTower(random.randint(100,700),random.randint(100,700))
         buildertower = BuilderTower()
+
     for i in range(35):
         drone = Drone()
     for i in range(0):
@@ -88,6 +89,8 @@ def Play():
             d.tick(keys, win, EnemyBuilderDrone)
         for r in Robot.robots:
             r.tick(win)
+        for f in Fire.fireloc:
+            f.tick(win)
         if boss == True and bosscount == 0:
             glitch = Glitch()
             bosscount = len(Glitch.boss)

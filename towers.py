@@ -1,12 +1,15 @@
 import pygame
 import random
+from drones import *
 windowwidth = 800
 windowheight = 800
 win = pygame.display.set_mode((windowwidth, windowheight))
 blue = (0,0,255)
 red = (255,0,0)
 green = (0,255,0)
-
+white = (255,255,255)
+black = (0,0,0)
+grey = (134,134,134)
 
 class ShootingTower:
         towers = []
@@ -34,13 +37,23 @@ class EnemyBuilderDrone:
                 self.xgoal = random.randint(100,700)
                 self.ygoal = random.randint(100,700)
                 self.health = 5
+                self.futurex = None
+                self.futurey = None
                 self.width = 10
                 self.height = 10
-                # self.image = pygame.image.load( "Art/TowerPlaceHolder.png")
+                if self.x < self.xgoal:
+                        self.xvel = 1
+                if self.x > self.xgoal:
+                        self.xvel = -1
+                if self.y < self.ygoal:
+                        self.yvel = 1
+                if self.y > self.ygoal:
+                        self.yvel = -1
                 self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
                 EnemyBuilderDrone.eDrones.append(self)
 
         def tick(self, keys, win):
+
 
                 if self.x < self.xgoal:
                         self.x += 1
@@ -51,10 +64,16 @@ class EnemyBuilderDrone:
                 if self.y > self.ygoal:
                         self.y -= 1
 
+                self.futurex = self.xvel * 50
+                self.futurey = self.yvel * 50
+
                 if self.y == self.ygoal and self.x == self.xgoal:
                         shootingtower = ShootingTower(self.x,self.y)
                         EnemyBuilderDrone.eDrones.remove(self)
                         return
+
+
+
                 if self.health <= 0:
                         EnemyBuilderDrone.eDrones.remove(self)
                 # self.image = pygame.transform.scale( self.image, (self.width, self.height))
@@ -70,7 +89,6 @@ class BuilderTower:
                 self.width = 50
                 self.height = 50
                 self.buildspawn = 0
-                #self.image = pygame.image.load( "Art/TowerPlaceHolder.png")
                 self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
                 ShootingTower.towers.append(self)
         def tick(self, keys, win):
@@ -85,4 +103,4 @@ class BuilderTower:
                 self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
                 pygame.draw.rect(win, blue, self.rect)
 
-                
+
