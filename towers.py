@@ -41,6 +41,8 @@ class EnemyBuilderDrone:
                 self.futurey = None
                 self.width = 10
                 self.height = 10
+                self.yvel = 0
+                self.xvel = 0
                 if self.x < self.xgoal:
                         self.xvel = 1
                 if self.x > self.xgoal:

@@ -160,6 +160,7 @@ class Fire:
         self.width = 2
         self.height = 2
         self.die = 0
+        self.target = target
         self.firex = target.x + target.futurex + random.randint(-15,15)
         self.firey = target.y + target.futurey + random.randint(-15,15)
         self.EnemyBuilderDrone = EnemyBuilderDrone
@@ -168,30 +169,11 @@ class Fire:
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
     def tick(self, win):
 
-        for e in Dummy.enemyloc:
-            if e.rect.colliderect(self.rect):
-                e.health -= self.health
-                self.health = 0
-                Fire.fireloc.remove(self)
-                return
-        for e in Glitch.boss:
-            if e.rect.colliderect(self.rect):
-                e.health -= self.health
-                self.health = 0
-                Fire.fireloc.remove(self)
-                return
-        for e in Glitch.boss:
-            if e.irect.colliderect(self.rect):
-                self.health = 0
-                Fire.fireloc.remove(self)
-                return
-        for e in self.EnemyBuilderDrone.eDrones:
-            if e.rect.colliderect(self.rect):
-                e.health -= self.health
-                self.health = 0
-                Fire.fireloc.remove(self)
-                return
-
+        if self.target.rect.colliderect(self.rect):
+            self.target.health -= self.health
+            self.health = 0
+            Fire.fireloc.remove(self)
+            return
 
         if self.x > windowwidth - self.width:
             Fire.fireloc.remove(self)
@@ -307,7 +289,7 @@ class Drone:
             self.ygrav = 0
 
         self.reload += 1
-        if self.reload >= 30:
+        if self.reload >= 60:
             self.fired = False
             self.reload = 0
 
@@ -318,3 +300,4 @@ class Drone:
         win.blit(self.image, (self.x, self.y))
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         #pygame.draw.rect(win, self.color, self.rect)
+

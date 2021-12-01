@@ -19,6 +19,8 @@ class Enemy_tower:
         self.width = 20
         self.height = 100
         self.direction = 0
+        self.futurex = 0
+        self.futurey = 0
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         Dummy.enemyloc.append(self)
     def tick(self, keys, win):

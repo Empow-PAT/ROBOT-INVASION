@@ -38,7 +38,7 @@ def Play():
 
     for i in range(35):
         drone = Drone()
-    for i in range(0):
+    for i in range(1):
         enemy = Enemy_tower()
 
     robot = Normal()
