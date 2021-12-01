@@ -32,12 +32,14 @@ def Play():
     manager2 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
     moneytime = 0
     money = 40
-    for i in range(1):
+    #EDrones and Shooting towers
+    for i in range(0):
         shootingtower = ShootingTower(random.randint(100,700),random.randint(100,700))
         buildertower = BuilderTower()
-
+    #Drones you control
     for i in range(35):
         drone = Drone()
+    #Enemy Tower
     for i in range(1):
         enemy = Enemy_tower()
 

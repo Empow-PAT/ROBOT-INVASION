@@ -37,8 +37,8 @@ class EnemyBuilderDrone:
                 self.xgoal = random.randint(100,700)
                 self.ygoal = random.randint(100,700)
                 self.health = 5
-                self.futurex = None
-                self.futurey = None
+                self.futurex = 0
+                self.futurey = 0
                 self.width = 10
                 self.height = 10
                 self.yvel = 0
