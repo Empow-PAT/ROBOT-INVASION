@@ -22,6 +22,49 @@ purple_blue = (180,40,255)
 #purple_blue = (220,20,60)
 #purple_blue = (255,255,0)
 
+
+class Dummy:
+    enemyloc = []
+    def __init__(self):
+        self.x = 400
+        self.y = 400
+        self.health = 20
+        self.width = 20
+        self.height = 20
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+
+        Dummy.enemyloc.append(self)
+    def tick(self, win):
+
+
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        pygame.draw.rect(win, red, self.rect)
+
+class Glitch:
+    boss = []
+    def __init__(self):
+        self.addh = 800
+        self.addw = 800
+        self.x = random.randint(0,800)
+        self.y = random.randint(0,800)
+        self.health = random.randint(50, 500)
+        self.width = random.randint(10,100)
+        self.height = random.randint(10,100)
+        self.stick = False
+        self.futurex = 0
+        self.futurey = 0
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        self.irect = pygame.Rect(self.x + self.height, self.y + self.width, self.height, self.width)
+        Glitch.boss.append(self)
+
+    def tick(self, win):
+        if self.health <= 0:
+            ShootingTower.enemyloc.remove(self)
+            return
+        if self.health == 0:
+            ShootingTower.enemyloc.remove(self)
+            return
+        win.blit ( self.image, (self.x, self.y) )
 class ShootingTower:
     enemyloc = []
     def __init__(self):
@@ -63,55 +106,52 @@ class ShootingTower:
             return
         win.blit ( self.image, (self.x, self.y) )
 
-#class Dummy:
- #   enemyloc = []
-  #  def __init__(self):
-   #     self.x = random.randint(0,400)
-    #    self.y = random.randint(0,400)
-     #   self.health = 20
-      #  self.width = 20
-       # self.height = 20
-        #self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-
-#        Dummy.enemyloc.append(self)
- #   def tick(self, keys, win):
-  #      if self.health <= 0:
-   #         Dummy.enemyloc.remove(self)
-    #        return
-    #Import tower img here
-     #   self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-      #  pygame.draw.rect(win, mint_green, self.rect)
-
 class Fire:
     fireloc = []
-    def __init__(self,x,y,firey,firex):
+    def __init__(self,x,y,target,EnemyBuilderDrone):
+        self.color = purple_blue
+        self.testx = 0
+        self.testy = 0
         self.x = x
         self.y = y
         self.health = 1
-        self.width = 1
-        self.height = 1
-        self.firex = firex
-        self.firey = firey
-        self.xvel = 0
-        self.yvel = 0
+        self.width = 2
+        self.height = 2
+        self.die = 0
+        self.target = target
+        self.firex = target.x + target.futurex + random.randint(-15,15)
+        self.firey = target.y + target.futurey + random.randint(-15,15)
+        self.EnemyBuilderDrone = EnemyBuilderDrone
+        self.xvel = (self.firex - self.x)
+        self.yvel = (self.firey - self.y)
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        Fire.fireloc.append(self)
     def tick(self, win):
-        if self.health <= 0:
+
+        if self.target.rect.colliderect(self.rect):
+            self.target.health -= self.health
+            self.health = 0
             Fire.fireloc.remove(self)
             return
 
-        if self.firex < self.x:
-            self.xvel = -1
-        if self.firex > self.x:
-            self.xvel = 1
-        if self.firey < self.y:
-            self.yvel = -1
-        if self.firey > self.y:
-            self.yvel = 1
+        if self.x > windowwidth - self.width:
+            Fire.fireloc.remove(self)
+            return
+        if self.x < 0:
+            Fire.fireloc.remove(self)
+            return
+        if self.y > windowheight - self.height:
+            Fire.fireloc.remove(self)
+            return
+        if self.y < 0:
+            Fire.fireloc.remove(self)
+            return
+        if self.die >= 100:
+            Fire.fireloc.remove(self)
+            return
 
-        self.x += self.xvel
-        self.y += self.yvel
+        self.x += self.xvel/50
+        self.y += self.yvel/50
+        self.die += 1
 
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         pygame.draw.rect(win, yellow, self.rect)
@@ -130,8 +170,12 @@ class Drone:
         self.xgoal = 400
         self.ygoal = 400
         self.color = white
-
-        self.image = pygame.image.load("Art\Drone.png").convert_alpha()
+        self.fired = False
+        self.firelimit = 30
+        self.reload = 0
+        self.ygrav = 0
+        self.xgrav = 0
+        self.image = pygame.image.load("Art\Drone.png")
         self.image = pygame.transform.scale(self.image,(self.width, self.height))
 
 
@@ -191,14 +235,23 @@ class Drone:
             self.y += -1
         for e in ShootingTower.enemyloc:
             if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
-                self.image = pygame.image.load ( "Art\DroneAngry.png" ).convert_alpha()
-                self.firex = e.x
-                self.firey = e.y
-                if len(Fire.fireloc) <= 15:
-                    fire = Fire(self.x,self.y,self.firey,self.firex)
-                    #Fire.fireloc.append(fire)
-                for f in Fire.fireloc:
-                    f.tick(win)
+                self.image = pygame.image.load ( "Art\DroneAngry.png" )
+                if len(Fire.fireloc) < self.firelimit and self.fired == False:
+                    self.fired = True
+                    Fire.fireloc.append(Fire(self.x,self.y,e,EnemyBuilderDrone))
+        for e in Glitch.boss:
+            if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
+                self.image = pygame.image.load("Art\DroneAngry.png")
+                if len(Fire.fireloc) < self.firelimit and self.fired == False:
+                    self.fired = True
+                    Fire.fireloc.append(Fire(self.x, self.y,e,EnemyBuilderDrone))
+        for e in EnemyBuilderDrone.eDrones:
+            if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
+                self.image = pygame.image.load ( "Art\DroneAngry.png" )
+                if len(Fire.fireloc) < self.firelimit and self.fired == False:
+                    self.fired = True
+                    Fire.fireloc.append(Fire(self.x,self.y,e,EnemyBuilderDrone))
+
 
         if self.x > windowwidth - self.width:
             self.x = windowwidth - self.width
@@ -208,6 +261,11 @@ class Drone:
             self.y = windowwidth - self.height
         if self.y < 0:
             self.y = 0
+
+        self.reload += 1
+        if self.reload >= 60:
+            self.fired = False
+            self.reload = 0
 
         for e in ShootingTower.enemyloc:
             if e.rect.colliderect(self.rect):
