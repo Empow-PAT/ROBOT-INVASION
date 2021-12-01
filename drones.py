@@ -21,19 +21,17 @@ green = (0,255,0)
 class Dummy:
     enemyloc = []
     def __init__(self):
-        self.x = random.randint(0,400)
-        self.y = random.randint(0,400)
+        self.x = 400
+        self.y = 400
         self.health = 20
         self.width = 20
         self.height = 20
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
         Dummy.enemyloc.append(self)
-    def tick(self, keys, win):
-        if self.health <= 0:
-            Dummy.enemyloc.remove(self)
-            return
-    #Import tower img here
+    def tick(self, win):
+
+
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         pygame.draw.rect(win, red, self.rect)
 
@@ -48,6 +46,8 @@ class Glitch:
         self.width = random.randint(10,100)
         self.height = random.randint(10,100)
         self.stick = False
+        self.futurex = 0
+        self.futurey = 0
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.irect = pygame.Rect(self.x + self.height, self.y + self.width, self.height, self.width)
         Glitch.boss.append(self)
