@@ -12,12 +12,13 @@ import time
 from pygame.locals import *
 
 pygame.init()
-drone_skin = 0
+
 windowwidth = 800
 windowheight = 800
 Background = pygame.image.load("Art/Robot Invasion Title.jpg").convert_alpha()
 bglevel = pygame.image.load("Art/BackgroundPicture.png").convert_alpha()
-
+global drone_skin
+drone_skin = 0
 
 
 win = pygame.display.set_mode((windowwidth, windowheight), DOUBLEBUF)
@@ -81,7 +82,8 @@ def Store():
                     if event.ui_element == BackButton:
                         run4 = False
                     if event.ui_element == DroneButton1:
-                       drone_skin = 1
+                        global drone_skin
+                        drone_skin = 1
             manager4.process_events(event)
         manager4.update(time_delta)
         win.fill(gray)
