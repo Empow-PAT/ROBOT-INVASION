@@ -4,7 +4,7 @@ import random
 from towers import *
 from hero import *
 from drones import *
-from robots import *
+from robots import  *
 from maps import *
 from collectible import *
 from EnemyFile import*
@@ -12,16 +12,15 @@ import time
 from pygame.locals import *
 
 pygame.init()
-
+drone_skin = 0
 windowwidth = 800
 windowheight = 800
 Background = pygame.image.load("Art/Robot Invasion Title.jpg").convert_alpha()
 bglevel = pygame.image.load("Art/BackgroundPicture.png").convert_alpha()
 
 
-win = pygame.display.set_mode((windowwidth, windowheight))
-boss = False
-game_virus = False
+
+win = pygame.display.set_mode((windowwidth, windowheight), DOUBLEBUF)
 pygame.display.set_caption("Robot Invasion")
 black = (0, 0, 0)
 deadgreen = (120, 150, 0)
@@ -64,7 +63,7 @@ def Store():
                                               text='',
                                               object_id="back_button",
                                               manager=manager4)
-    DroneButton1 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((120,75), (90, 50)),
+    DroneButton1 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((200, 100), (120, 70)),
                                               text='',
                                               object_id="drone_button1",
                                               manager=manager4)
@@ -82,40 +81,27 @@ def Store():
                     if event.ui_element == BackButton:
                         run4 = False
                     if event.ui_element == DroneButton1:
-                        for drone in Drone.droneloc:
-
-                            drone.change_skin()
+                       drone_skin = 1
             manager4.process_events(event)
         manager4.update(time_delta)
         win.fill(gray)
         manager4.draw_ui(win)
         pygame.display.update()
 def Play():
-    bosscount = 0
-    windowwidth = 800
-    windowheight = 800
+    global run2
     manager2 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
     moneytime = 0
     robotTime = 0
     # WAVESTUFF
     waveQueue = []
     wave = 0
-    money = 10
+    money = 40
     hero = BlazeBot()
-    for i in range(1):
-        shootingtower = ShootingTower(random.randint(100,700),random.randint(100,700))
-        buildertower = BuilderTower()
     for i in range(35):
-        drone = Drone()
+        drone = Drone(drone_skin)
     for i in range(0):
         enemy = Enemy_tower()
-    ST = Tower(1,1000,13,333,333,win)
     # ROBOTBUYBUTTONS
-
-    my_dict = {'colour': '#008000'}
-    Exit = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((0, 0), (100, 67)),
-                                          text='Exit',
-                                          manager=manager2)
     normal = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((0, 750), (100, 50)),
                                           text='Normal: $5',
                                           manager=manager2)
@@ -141,16 +127,14 @@ def Play():
     spawnStart = False
     run = True
     while run:
-        win = pygame.display.set_mode((windowwidth, windowheight))
-
-        time_delta = clock.tick(60) / 1000.0
+        time_delta = clock.tick(30) / 1000.0
 
         #pygame.time.delay(6)
-
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+                run2 = False
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
 
@@ -191,8 +175,6 @@ def Play():
                 drone = Drone ()
 
         win.blit(bglevel, (0, 0))
-        for b in EnemyBuilderDrone.eDrones:
-            b.tick(keys, win)
 
         if spawnStart:
             for r in waveQueue:
@@ -204,28 +186,14 @@ def Play():
                 spawnStart = False
 
         for d in Drone.droneloc:
-            d.tick(keys, win, EnemyBuilderDrone)
-        for shoot in ShootingTower.towers:
+            d.tick(keys, win)
+        for shoot in ShootingTower.enemyloc:
             shoot.tick(keys, win)
         for r in Robot.robots:
             r.tick(win)
         for f in TowerFire.towerFire:
             f.tick()
-        for t in Tower.towers:
-            t.tick()
         hero.tick(win,keys)
-        if boss == True and bosscount == 0:
-            glitch = Glitch()
-            bosscount = len(Glitch.boss)
-        if boss == True:
-            for b in Glitch.boss:
-                if game_virus == True:
-                    glitch = Glitch()
-                b.tick(win)
-                windowwidth = b.addw
-                windowheight = b.addh
-                pygame.display.update()
-
         moneytime += 1
         robotTime += 1
         if moneytime == 40:
@@ -279,6 +247,7 @@ while run2:
     manager.update(time_delta)
 
     keys = pygame.key.get_pressed()
+
     win.fill(black)
     win.blit(Background,(0,0))
     manager.draw_ui(win)
