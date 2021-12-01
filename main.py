@@ -97,10 +97,11 @@ def Play():
     manager2 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
     moneytime = 0
     robotTime = 0
+    tower = Tower(1,100,10,120,280,win)
     # WAVESTUFF
     waveQueue = []
     wave = 0
-    money = 40
+    money = 10
     hero = BlazeBot()
     bosscount = 0
     #EDrones and Shooting towers
@@ -228,6 +229,8 @@ def Play():
 
         for f in TowerFire.towerFire:
             f.tick()
+        for t in Tower.towers:
+            t.tick()
         hero.tick(win,keys)
         moneytime += 1
         robotTime += 1
