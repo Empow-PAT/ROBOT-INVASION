@@ -27,7 +27,6 @@ deadgreen = (120, 150, 0)
 white = (255,255,255)
 gray = (40, 40,40)
 red = (255,0,0)
-
 def HowToPlay():
     run3 = True
     manager3 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
@@ -98,13 +97,13 @@ def Play():
     # WAVESTUFF
     waveQueue = []
     wave = 0
-    money = 40
+    money = 10
     hero = BlazeBot()
     for i in range(35):
         drone = Drone()
     for i in range(0):
         enemy = Enemy_tower()
-    #ST = ShootingTower(1,1000,13)
+    ST = Tower(1,1000,13,333,333,win)
     # ROBOTBUYBUTTONS
 
     my_dict = {'colour': '#008000'}
@@ -174,6 +173,7 @@ def Play():
 
 
 
+
             manager2.process_events(event)
         manager2.update(time_delta)
         keys = pygame.key.get_pressed()
@@ -201,8 +201,8 @@ def Play():
             r.tick(win)
         for f in TowerFire.towerFire:
             f.tick()
-        #for t in ShootingTower.towers:
-         #   t.tick()
+        for t in Tower.towers:
+            t.tick()
         hero.tick(win,keys)
         moneytime += 1
         robotTime += 1
@@ -234,6 +234,7 @@ store_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((350, 410)
                                            object_id="Store_Button",
                                            manager=manager)
 clock = pygame.time.Clock()
+
 
 run2 = True
 while run2:
