@@ -4,7 +4,6 @@ from maps import *
 
 points = 0
 
-
 black = (235, 89, 235)
 white = (255,255,255)
 red = (255,0,0)
@@ -49,6 +48,17 @@ class Robot():
             self.y += self.speed
         if self.y > path[1][self.pathstep]:
             self.y += -self.speed
+        mousePos = pygame.mouse.get_pos()
+        manager2 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
+        #if mousePos[0] > self.x and mousePos[0] < self.x+20 or mousePos[0] < self.x and mousePos[0] > self.x-20:
+          #  if mousePos[1] > self.y and mousePos[1] < self.y+20 or mousePos[1] < self.y and mousePos[1] > self.y-20:
+        ShowHealth = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((200,200),(50, 50)),
+                                                    text=str(self.health)+"/"+str(self.maxHealth),
+                                                    manager=manager2)
+        if self.health <=0:
+            Robot.robots.remove(self)
+            del self
+
 
 class Normal(Robot):
     def __init__(self):
@@ -66,10 +76,16 @@ class SlowBoss(Robot):
     def __init__(self):
         Robot.__init__(self,0,0.5,100,darkerGray,50)
 
+class DeathGuard(Robot):
+    def __init__(self):
+        Robot.__init__(self,0,0.2,250000,black,2500)
+
 class DeathKing(Robot):
     def __init__(self):
         Robot.__init__(self,0,0.2,500000,black,5000)
 
+def spawnRobot(robotType):
+    globals()[robotType]()
 
 
 

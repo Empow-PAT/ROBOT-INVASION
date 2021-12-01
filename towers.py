@@ -1,4 +1,6 @@
 import pygame
+import math
+from robots import *
 import random
 from drones import *
 windowwidth = 800
@@ -10,6 +12,8 @@ green = (0,255,0)
 white = (255,255,255)
 black = (0,0,0)
 grey = (134,134,134)
+yellow = (255, 255, 0)
+
 
 class ShootingTower:
         towers = []
@@ -82,6 +86,53 @@ class EnemyBuilderDrone:
                 # win.blit(self.image, (self.x, self.y))
                 self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
                 pygame.draw.rect(win, red, self.rect)
+
+class TowerFire():
+    towerFire = []
+    def __init__(self,endPosition,startPosition,win):
+        self.endPosition = endPosition
+        self.startPosition = startPosition
+        self.win = win
+        self.counter = 0
+        TowerFire.towerFire.append(self)
+
+
+    def tick(self):
+        pygame.draw.line(win, yellow,self.startPosition, self.endPosition, 3)
+        self.counter += 1
+        if self.counter >= 2:
+            TowerFire.towerFire.remove(self)
+            del self
+
+class Tower():
+    towers = []
+    def __init__(self,damage,range,reloadTime,x,y,win):
+        self.damage = damage
+        self.range = range
+        self.reloadTime = reloadTime
+        self.x = x
+        self.y = y
+        self.closest = False
+        self.timer = 0
+        self.win = win
+        Tower.towers.append(self)
+    def findRobot(self):
+        self.closest = False
+        for robot in Robot.robots:
+            dist = abs(robot.x - self.x)+abs(robot.y - self.y)
+            if dist < self.range:
+                self.closest = robot
+
+    def tick(self):
+        self.timer += 1
+        self.findRobot()
+        if self.timer >= self.reloadTime:
+            if not self.closest == False:
+                newFire = TowerFire((self.closest.x,self.closest.y),(self.x,self.y),win)
+                self.closest.health -= self.damage
+                self.timer = 0
+
+
 
 class BuilderTower:
         def __init__(self):
