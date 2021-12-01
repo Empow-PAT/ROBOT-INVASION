@@ -12,12 +12,13 @@ import time
 from pygame.locals import *
 
 pygame.init()
-drone_skin = 0
+
 windowwidth = 800
 windowheight = 800
 Background = pygame.image.load("Art/Robot Invasion Title.jpg").convert_alpha()
 bglevel = pygame.image.load("Art/BackgroundPicture.png").convert_alpha()
-
+global drone_skin
+drone_skin = 0
 
 
 win = pygame.display.set_mode((windowwidth, windowheight), DOUBLEBUF)
@@ -81,7 +82,8 @@ def Store():
                     if event.ui_element == BackButton:
                         run4 = False
                     if event.ui_element == DroneButton1:
-                       drone_skin = 1
+                        global drone_skin
+                        drone_skin = 1
             manager4.process_events(event)
         manager4.update(time_delta)
         win.fill(gray)
@@ -98,9 +100,17 @@ def Play():
     wave = 0
     money = 10
     hero = BlazeBot()
+    #EDrones and Shooting towers
+    for i in range(0):
+        shootingtower = ShootingTower(random.randint(100,700),random.randint(100,700))
+        buildertower = BuilderTower()
+    #Drones you control
     for i in range(35):
         drone = Drone(drone_skin)
     for i in range(0):
+        drone = Drone()
+    #Enemy Tower
+    for i in range(1):
         enemy = Enemy_tower()
     # ROBOTBUYBUTTONS
     normal = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((0, 750), (100, 50)),
@@ -192,6 +202,20 @@ def Play():
             shoot.tick(keys, win)
         for r in Robot.robots:
             r.tick(win)
+        for f in Fire.fireloc:
+            f.tick(win)
+        if boss == True and bosscount == 0:
+            glitch = Glitch()
+            bosscount = len(Glitch.boss)
+        if boss == True:
+            for b in Glitch.boss:
+                if game_virus == True:
+                    glitch = Glitch()
+                b.tick(win)
+                windowwidth = b.addw
+                windowheight = b.addh
+                pygame.display.update()
+
         for f in TowerFire.towerFire:
             f.tick()
         for t in Tower.towers:
