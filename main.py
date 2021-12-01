@@ -16,7 +16,9 @@ windowheight = 800
 Background = pygame.image.load("Art/Robot Invasion Title.jpg")
 
 win = pygame.display.set_mode((windowwidth, windowheight))
-boss = False
+glitchBoss = False
+boidBoss = True
+
 game_virus = False
 pygame.display.set_caption("Robot Invasion")
 black = (0, 0, 0)
@@ -93,17 +95,25 @@ def Play():
             r.tick(win)
         for f in Fire.fireloc:
             f.tick(win)
-        if boss == True and bosscount == 0:
+        if glitchBoss == True and bosscount == 0:
             glitch = Glitch()
-            bosscount = len(Glitch.boss)
-        if boss == True:
-            for b in Glitch.boss:
-                if game_virus == True:
-                    glitch = Glitch()
+            bosscount += 1
+        if glitchBoss == True:
+            if game_virus == True:
+                glitch = Glitch()
+            for b in Glitch.glitchboss:
                 b.tick(win)
                 windowwidth = b.addw
                 windowheight = b.addh
                 pygame.display.update()
+        if boidBoss == True and bosscount == 0:
+            for i in range(10):
+                boid = Boid()
+            bosscount += 1
+        if boidBoss == True:
+            for b in Boid.boidbosses:
+                b.tick(win)
+
 
         moneytime += 1
         if moneytime == 40:

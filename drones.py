@@ -35,8 +35,9 @@ class Dummy:
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         pygame.draw.rect(win, red, self.rect)
 
+#Bosses
 class Glitch:
-    boss = []
+    glitchboss = []
     def __init__(self):
         self.addh = 800
         self.addw = 800
@@ -50,7 +51,7 @@ class Glitch:
         self.futurey = 0
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.irect = pygame.Rect(self.x + self.height, self.y + self.width, self.height, self.width)
-        Glitch.boss.append(self)
+        Glitch.glitchboss.append(self)
 
     def tick(self, win):
         if self.health <= 0:
@@ -61,7 +62,7 @@ class Glitch:
                 for d in Drone.droneloc:
                     d.ygrav = 0
                     d.xgrav = 0
-                Glitch.boss.remove(self)
+                Glitch.glitchboss.remove(self)
                 return
             if death_pain == 0:
                 self.x = random.randint(200,600)
@@ -76,7 +77,7 @@ class Glitch:
                 for d in Drone.droneloc:
                     d.ygrav = 0
                     d.xgrav = 0
-                Glitch.boss.remove(self)
+                Glitch.glitchboss.remove(self)
                 return
 
         time = random.randint(1,100)
@@ -147,6 +148,52 @@ class Glitch:
         glitch_effect = random.randint(1,2)
         if glitch_effect == 1:
             pygame.draw.rect(win, red, self.rect)
+class Boid:
+    boidbosses = []
+    def __init__(self):
+        self.x = 400
+        self.y = 600
+        self.xvel = 0
+        self.yvel = 0
+        self.health = 10
+        self.futurex = 0
+        self.futurey = 0
+        self.target = None
+        self.targetnum = random.randint(0,len(Drone.droneloc) -1)
+        self.width = 5
+        self.height = 15
+        self.triangle = [(self.x - self.width,self.y),
+                         (self.x + self.width,self.y),
+                         (self.x,self.y + self.height)]
+
+        Boid.boidbosses.append(self)
+    def tick(self, win):
+
+        if self.target != Drone.droneloc[self.targetnum]:
+            self.targetnum = random.randint(0,len(Drone.droneloc) -1)
+            self.target = Drone.droneloc[self.targetnum]
+
+        self.futurex = self.xvel * 50
+        self.futurey = self.yvel * 50
+
+        self.y += self.yvel
+        self.x += self.xvel
+
+        self.tdx = self.target.x - self.x
+        self.tdy = self.target.y - self.y
+
+        self.xvel = self.tdx/20
+        self.yvel = self.tdy/20
+
+        self.pointx = self.x
+        self.pointy = self.y
+
+        self.triangle = [(self.pointx + self.width,self.pointy - self.height),
+                         (self.pointx - self.width,self.pointy - self.height),
+                         (self.pointx,self.pointy)]
+
+        pygame.draw.lines(win,red,True,self.triangle)
+
 
 class Fire:
     fireloc = []
@@ -261,7 +308,7 @@ class Drone:
                 if len(Fire.fireloc) < self.firelimit and self.fired == False:
                     self.fired = True
                     Fire.fireloc.append(Fire(self.x,self.y,e,EnemyBuilderDrone))
-        for e in Glitch.boss:
+        for e in Glitch.glitchboss:
             if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
                 self.image = pygame.image.load("Art\DroneAngry.png")
                 if len(Fire.fireloc) < self.firelimit and self.fired == False:
@@ -273,7 +320,12 @@ class Drone:
                 if len(Fire.fireloc) < self.firelimit and self.fired == False:
                     self.fired = True
                     Fire.fireloc.append(Fire(self.x,self.y,e,EnemyBuilderDrone))
-
+        for e in Boid.boidbosses:
+            if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
+                self.image = pygame.image.load ( "Art\DroneAngry.png" )
+                if len(Fire.fireloc) < self.firelimit and self.fired == False:
+                    self.fired = True
+                    Fire.fireloc.append(Fire(self.x,self.y,e,EnemyBuilderDrone))
 
         if self.x > windowwidth - self.width:
             self.x = windowwidth - self.width
