@@ -94,6 +94,11 @@ class Tower():
         self.timer = 0
         self.win = win
         Tower.towers.append(self)
+        self.width = 25
+        self.height = 25
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        self.image = pygame.image.load("Art/Turret.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image, (self.width, self.height))
     def findRobot(self):
         self.closest = False
         for robot in Robot.robots:
@@ -109,6 +114,8 @@ class Tower():
                 newFire = TowerFire((self.closest.x,self.closest.y),(self.x,self.y),win)
                 self.closest.health -= self.damage
                 self.timer = 0
+        win.blit(self.image, (self.x, self.y))
+
 
 
 
