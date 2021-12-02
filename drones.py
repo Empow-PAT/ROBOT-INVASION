@@ -191,14 +191,14 @@ class Boid:
             self.target = Drone.droneloc[self.targetnum]
         if self.dronelocLength != len(Drone.droneloc):
             self.targetnum = random.randint(0,len(Drone.droneloc) -1)
-        else:
-            self.target = Drone.droneloc[self.targetnum]
+
 
         self.futurex = self.xvel * 50
         self.futurey = self.yvel * 50
 
         self.wait += 1
         if self.wait >= 60:
+            self.target = Drone.droneloc[self.targetnum]
             self.firex = self.target.x + random.randint(-15, 15)
             self.firey = self.target.y + random.randint(-15, 15)
             self.xvel = (self.firex - self.x)
