@@ -22,6 +22,8 @@ class ShootingTower:
                 self.y = y
                 self.health = 400
                 self.width = 100
+                self.futurex = 0
+                self.futurey = 0
                 self.height = 100
                 self.image = pygame.image.load( "Art/TowerPlaceHolder.png")
                 self.rect = pygame.Rect( self.x, self.y, self.width, self.height )
@@ -112,6 +114,8 @@ class Tower():
         self.reloadTime = reloadTime
         self.x = x
         self.y = y
+        self.futurex = 0
+        self.futurey = 0
         self.closest = False
         self.timer = 0
         self.win = win
@@ -141,6 +145,8 @@ class BuilderTower:
                 self.health = 400
                 self.width = 50
                 self.height = 50
+                self.futurex = 0
+                self.futurey = 0
                 self.buildspawn = 0
                 self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
                 ShootingTower.towers.append(self)

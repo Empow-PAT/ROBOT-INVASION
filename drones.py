@@ -1,6 +1,6 @@
 import pygame
 import random
-import towers
+from towers import *
 import math
 
 windowwidth = 800
@@ -160,47 +160,70 @@ class Boid:
     def __init__(self):
         self.x = 400
         self.y = 600
+        self.wait = 0
         self.xvel = 0
         self.yvel = 0
         self.health = 10
         self.futurex = 0
         self.futurey = 0
         self.target = None
+        self.move = 0
         self.targetnum = random.randint(0,len(Drone.droneloc) -1)
+        self.dronelocLength = len(Drone.droneloc)
         self.width = 5
         self.height = 15
         self.triangle = [(self.x - self.width,self.y),
                          (self.x + self.width,self.y),
                          (self.x,self.y + self.height)]
 
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         Boid.boidbosses.append(self)
     def tick(self, win):
-
-        if self.target != Drone.droneloc[self.targetnum]:
+        if len(Drone.droneloc) <= 0:
+            Boid.boidbosses.remove(self)
+            return
+        if self.target == None:
             self.targetnum = random.randint(0,len(Drone.droneloc) -1)
+            self.target = Drone.droneloc[self.targetnum]
+        if self.dronelocLength != len(Drone.droneloc):
+            self.targetnum = random.randint(0,len(Drone.droneloc) -1)
+        else:
             self.target = Drone.droneloc[self.targetnum]
 
         self.futurex = self.xvel * 50
         self.futurey = self.yvel * 50
 
-        self.y += self.yvel
-        self.x += self.xvel
+
 
         self.tdx = self.target.x - self.x
         self.tdy = self.target.y - self.y
 
-        self.xvel = self.tdx/20
-        self.yvel = self.tdy/20
+
+
+        self.wait += 1
+        self.move += 1
+        if self.wait > 60:
+            self.wait = 0
+            self.xvel = self.tdx
+            self.yvel = self.tdy
+
+        if self.move >= 10:
+            self.y += self.yvel / 5
+            self.x += self.xvel / 5
+        elif self.move >= 20:
+            self.move = 0
+
+
 
         self.pointx = self.x
         self.pointy = self.y
 
+        self.rect = pygame.Rect(self.pointx - 2, self.pointy - self.height, self.width,self.height)
         self.triangle = [(self.pointx + self.width,self.pointy - self.height),
                          (self.pointx - self.width,self.pointy - self.height),
                          (self.pointx,self.pointy)]
 
         pygame.draw.lines(win,red,True,self.triangle)
-
 
 class Fire:
     fireloc = []
@@ -278,7 +301,7 @@ class Drone:
         Drone.droneloc.append(self)
 
 
-    def tick(self, keys, win):
+    def tick(self, keys, win,EnemyBuilderDrone,ShootingTower):
         if self.skin == 0:
             #print("Javi is in the general viciinity of the place he was before.")
             self.image = pygame.image.load("Art\Drone.png").convert_alpha()
@@ -329,7 +352,7 @@ class Drone:
             self.y += 1
         if self.y > self.ygoal:
             self.y += -1
-        for e in ShootingTower.enemyloc:
+        for e in ShootingTower.towers:
             if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
                 self.image = pygame.image.load ( "Art\DroneAngry.png" )
                 if len(Fire.fireloc) < self.firelimit and self.fired == False:
@@ -368,7 +391,7 @@ class Drone:
             self.fired = False
             self.reload = 0
 
-        for e in ShootingTower.enemyloc:
+        for e in ShootingTower.towers:
             if e.rect.colliderect(self.rect):
                 self.health -= 1
                 e.health -= 1

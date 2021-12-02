@@ -102,15 +102,15 @@ def Play():
     wave = 0
     money = 40
     hero = BlazeBot()
+    bosscount = 0
     #EDrones and Shooting towers
-    for i in range(0):
+    for i in range(1):
         shootingtower = ShootingTower(random.randint(100,700),random.randint(100,700))
         buildertower = BuilderTower()
     #Drones you control
     for i in range(35):
         drone = Drone(drone_skin)
-    for i in range(0):
-        drone = Drone()
+
     #Enemy Tower
     for i in range(1):
         enemy = Enemy_tower()
@@ -199,8 +199,8 @@ def Play():
                 spawnStart = False
 
         for d in Drone.droneloc:
-            d.tick(keys, win)
-        for shoot in ShootingTower.enemyloc:
+            d.tick(keys, win,EnemyBuilderDrone,ShootingTower)
+        for shoot in ShootingTower.towers:
             shoot.tick(keys, win)
         for r in Robot.robots:
             r.tick(win)

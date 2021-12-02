@@ -1,6 +1,7 @@
 import pygame
 import random
 import math
+from towers import *
 from drones import *
 
 windowwidth = 800
@@ -22,7 +23,7 @@ class Enemy_tower:
         self.futurex = 0
         self.futurey = 0
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        ShootingTower.enemyloc.append(self)
+        ShootingTower.towers.append(self)
     def tick(self, keys, win):
         self.projectile_timer += 1
         if self.projectile_timer == 10:
@@ -30,7 +31,7 @@ class Enemy_tower:
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         pygame.draw.rect(win, RandoColor, self.rect)
         if self.health <= 0:
-            ShootingTower.enemyloc.remove(self)
+            ShootingTower.towers.remove(self)
 
 class Enemy_projectile:
     eproj = []
