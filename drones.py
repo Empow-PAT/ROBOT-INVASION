@@ -160,16 +160,19 @@ class Boid:
     def __init__(self):
         self.x = 400
         self.y = 600
-        self.wait = 0
         self.xvel = 0
         self.yvel = 0
         self.health = 10
         self.futurex = 0
         self.futurey = 0
-        self.target = None
-        self.move = 0
+        self.wait = 0
         self.targetnum = random.randint(0,len(Drone.droneloc) -1)
+        self.target = Drone.droneloc[self.targetnum]
         self.dronelocLength = len(Drone.droneloc)
+        self.firex = self.target.x + random.randint(-15, 15)
+        self.firey = self.target.y + random.randint(-15, 15)
+        self.xvel = (self.firex - self.x)
+        self.yvel = (self.firey - self.y)
         self.width = 5
         self.height = 15
         self.triangle = [(self.x - self.width,self.y),
@@ -179,6 +182,7 @@ class Boid:
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         Boid.boidbosses.append(self)
     def tick(self, win):
+
         if len(Drone.droneloc) <= 0:
             Boid.boidbosses.remove(self)
             return
@@ -193,30 +197,22 @@ class Boid:
         self.futurex = self.xvel * 50
         self.futurey = self.yvel * 50
 
+        self.wait += 1
+        if self.wait >= 60:
+            self.firex = self.target.x + random.randint(-15, 15)
+            self.firey = self.target.y + random.randint(-15, 15)
+            self.xvel = (self.firex - self.x)
+            self.yvel = (self.firey - self.y)
 
+        self.x += self.xvel / 50
+        self.y += self.yvel / 50
 
         self.tdx = self.target.x - self.x
         self.tdy = self.target.y - self.y
 
-
-
-        self.wait += 1
-        self.move += 1
-        if self.wait > 60:
-            self.wait = 0
-            self.xvel = self.tdx
-            self.yvel = self.tdy
-
-        if self.move >= 10:
-            self.y += self.yvel / 5
-            self.x += self.xvel / 5
-        elif self.move >= 20:
-            self.move = 0
-
-
-
         self.pointx = self.x
         self.pointy = self.y
+
 
         self.rect = pygame.Rect(self.pointx - 2, self.pointy - self.height, self.width,self.height)
         self.triangle = [(self.pointx + self.width,self.pointy - self.height),
