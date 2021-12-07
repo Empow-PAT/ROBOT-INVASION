@@ -303,7 +303,7 @@ class Drone:
             self.image = pygame.image.load("Art\Drone.png").convert_alpha()
             self.image = pygame.transform.scale(self.image, (self.width, self.height))
         elif self.skin == 1:
-            self.image = pygame.image.load("Art\DroneSkin.png").convert_alpha()
+            self.image = pygame.image.load("Art\Drone Skin.png").convert_alpha()
             self.image = pygame.transform.scale(self.image, (self.width, self.height))
         if self.skin == 0:
             if self.y == self.ygoal and self.x == self.xgoal:
@@ -312,9 +312,9 @@ class Drone:
                 self.image = pygame.image.load ( "Art\DroneMove.png" ).convert_alpha()
         if self.skin == 1:
             if self.y == self.ygoal and self.x == self.xgoal:
-                self.image = pygame.image.load ( "Art\DroneSkin.png" ).convert_alpha()
+                self.image = pygame.image.load ( "Art\Drone Skin.png" ).convert_alpha()
             if self.y != self.ygoal and self.x != self.xgoal:
-                self.image = pygame.image.load ( "Art\DroneSkin2.png" ).convert_alpha()
+                self.image = pygame.image.load ( "Art\Drone Skin2.png" ).convert_alpha()
         for d in Drone.droneloc:
             if d != self and d.rect.colliderect(self.rect):
                 xory = random.randint(0,3)
@@ -335,7 +335,7 @@ class Drone:
             if self.image == 0:
                 self.image = pygame.image.load ( "Art\DroneMove.png" ).convert_alpha()
             if self.image == 1:
-                self.image = pygame.image.load("Art\DroneSkin3.png").convert_alpha()
+                self.image = pygame.image.load("Art\Drone Skin3.png").convert_alpha()
             Mx,My = pygame.mouse.get_pos()
             Mx += -10
             My += -10
