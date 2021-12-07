@@ -221,52 +221,55 @@ class Boid:
 
         pygame.draw.lines(win,red,True,self.triangle)
 
+#class Dummy:
+ #   enemyloc = []
+  #  def __init__(self):
+   #     self.x = random.randint(0,400)
+    #    self.y = random.randint(0,400)
+     #   self.health = 20
+      #  self.width = 20
+       # self.height = 20
+        #self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+
+#        Dummy.enemyloc.append(self)
+ #   def tick(self, keys, win):
+  #      if self.health <= 0:
+   #         Dummy.enemyloc.remove(self)
+    #        return
+    #Import tower img here
+     #   self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+      #  pygame.draw.rect(win, mint_green, self.rect)
+
 class Fire:
     fireloc = []
-    def __init__(self,x,y,target,EnemyBuilderDrone):
-        self.color = purple_blue
-        self.testx = 0
-        self.testy = 0
+    def __init__(self,x,y,firey,firex):
         self.x = x
         self.y = y
         self.health = 1
-        self.width = 2
-        self.height = 2
-        self.die = 0
-        self.target = target
-        self.firex = target.x + target.futurex + random.randint(-15,15)
-        self.firey = target.y + target.futurey + random.randint(-15,15)
-        self.EnemyBuilderDrone = EnemyBuilderDrone
-        self.xvel = (self.firex - self.x)
-        self.yvel = (self.firey - self.y)
+        self.width = 1
+        self.height = 1
+        self.firex = firex
+        self.firey = firey
+        self.xvel = 0
+        self.yvel = 0
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        Fire.fireloc.append(self)
     def tick(self, win):
-
-        if self.target.rect.colliderect(self.rect):
-            self.target.health -= self.health
-            self.health = 0
+        if self.health <= 0:
             Fire.fireloc.remove(self)
             return
 
-        if self.x > windowwidth - self.width:
-            Fire.fireloc.remove(self)
-            return
-        if self.x < 0:
-            Fire.fireloc.remove(self)
-            return
-        if self.y > windowheight - self.height:
-            Fire.fireloc.remove(self)
-            return
-        if self.y < 0:
-            Fire.fireloc.remove(self)
-            return
-        if self.die >= 100:
-            Fire.fireloc.remove(self)
-            return
+        if self.firex < self.x:
+            self.xvel = -1
+        if self.firex > self.x:
+            self.xvel = 1
+        if self.firey < self.y:
+            self.yvel = -1
+        if self.firey > self.y:
+            self.yvel = 1
 
-        self.x += self.xvel/50
-        self.y += self.yvel/50
-        self.die += 1
+        self.x += self.xvel
+        self.y += self.yvel
 
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         pygame.draw.rect(win, yellow, self.rect)
@@ -285,12 +288,8 @@ class Drone:
         self.xgoal = 400
         self.ygoal = 400
         self.color = white
-        self.fired = False
-        self.firelimit = 30
-        self.reload = 0
-        self.ygrav = 0
-        self.xgrav = 0
-        self.image = pygame.image.load("Art\Drone.png")
+
+        self.image = pygame.image.load("Art\Drone.png").convert_alpha()
         self.image = pygame.transform.scale(self.image,(self.width, self.height))
 
 
