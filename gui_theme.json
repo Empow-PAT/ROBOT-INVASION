@@ -52,7 +52,19 @@
         "path": "Art/Drone Button.png"
       }
     }
+  },
+  "TurretImage": {
+    "images": {
+      "normal_image": {
+        "path": "Art/Turret.png"
+      },
+      "hovered_image": {
+        "path": "Art/Turret.png"
+      }
+    }
   }
 }
+
+
 
 
