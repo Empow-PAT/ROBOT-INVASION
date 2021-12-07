@@ -157,6 +157,8 @@ class Glitch:
             pygame.draw.rect(win, red, self.rect)
 class Boid:
     boidbosses = []
+class ShootingTower:
+    enemyloc = []
     def __init__(self):
         self.x = 400
         self.y = 600
@@ -259,6 +261,25 @@ class Boid:
      #   self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
       #  pygame.draw.rect(win, mint_green, self.rect)
 
+#class Dummy:
+ #   enemyloc = []
+  #  def __init__(self):
+   #     self.x = random.randint(0,400)
+    #    self.y = random.randint(0,400)
+     #   self.health = 20
+      #  self.width = 20
+       # self.height = 20
+        #self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+
+#        Dummy.enemyloc.append(self)
+ #   def tick(self, keys, win):
+  #      if self.health <= 0:
+   #         Dummy.enemyloc.remove(self)
+    #        return
+    #Import tower img here
+     #   self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+      #  pygame.draw.rect(win, mint_green, self.rect)
+
 class Fire:
     fireloc = []
     def __init__(self,x,y,firey,firex):
@@ -307,8 +328,12 @@ class Drone:
         self.xgoal = 400
         self.ygoal = 400
         self.color = white
-
-        self.image = pygame.image.load("Art\Drone.png").convert_alpha()
+        self.fired = False
+        self.firelimit = 30
+        self.reload = 0
+        self.ygrav = 0
+        self.xgrav = 0
+        self.image = pygame.image.load("Art\Drone.png")
         self.image = pygame.transform.scale(self.image,(self.width, self.height))
 
 
