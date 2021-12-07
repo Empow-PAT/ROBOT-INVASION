@@ -18,6 +18,8 @@ windowwidth = 800
 windowheight = 800
 Background = pygame.image.load("Art/Robot Invasion Title.jpg").convert_alpha()
 bglevel = pygame.image.load("Art/BackgroundPicture.png").convert_alpha()
+global drone_skin
+drone_skin = 0
 
 
 win = pygame.display.set_mode((windowwidth, windowheight))

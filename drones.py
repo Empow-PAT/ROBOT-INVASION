@@ -240,6 +240,25 @@ class Boid:
      #   self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
       #  pygame.draw.rect(win, mint_green, self.rect)
 
+#class Dummy:
+ #   enemyloc = []
+  #  def __init__(self):
+   #     self.x = random.randint(0,400)
+    #    self.y = random.randint(0,400)
+     #   self.health = 20
+      #  self.width = 20
+       # self.height = 20
+        #self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+
+#        Dummy.enemyloc.append(self)
+ #   def tick(self, keys, win):
+  #      if self.health <= 0:
+   #         Dummy.enemyloc.remove(self)
+    #        return
+    #Import tower img here
+     #   self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+      #  pygame.draw.rect(win, mint_green, self.rect)
+
 class Fire:
     fireloc = []
     def __init__(self,x,y,firey,firex):
