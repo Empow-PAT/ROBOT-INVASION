@@ -35,6 +35,7 @@ class ShootingTower:
                 win.blit ( self.image, (self.x - self.width/2, self.y - self.height/2) )
                 self.rect = pygame.Rect ( self.x, self.y, self.width, self.height )
 
+
 class EnemyBuilderDrone:
         eDrones = []
         def __init__(self,x,y):
@@ -114,8 +115,6 @@ class Tower():
         self.reloadTime = reloadTime
         self.x = x
         self.y = y
-        self.futurex = 0
-        self.futurey = 0
         self.closest = False
         self.timer = 0
         self.win = win
@@ -143,7 +142,9 @@ class Tower():
         win.blit(self.image, (self.x, self.y))
 
 
-
+class Turret(Tower):
+    def __init__(self):
+        Tower.__init__(self,1,100,10,0,0,win)
 
 class BuilderTower:
         def __init__(self):

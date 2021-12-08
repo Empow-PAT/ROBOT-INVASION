@@ -22,7 +22,7 @@ drone_skin = 0
 
 win = pygame.display.set_mode((windowwidth, windowheight))
 glitchBoss = False
-boidBoss = True
+boidBoss = False
 
 game_virus = False
 pygame.display.set_caption("Robot Invasion")
@@ -107,14 +107,14 @@ def Play():
     #EDrones and Shooting towers
     for i in range(1):
         shootingtower = ShootingTower(random.randint(100,700),random.randint(100,700))
-        buildertower = BuilderTower()
+      # buildertower = BuilderTower()
     #Drones you control
-    for i in range(35):
-        drone = Drone(drone_skin)
+    #for i in range(35):
+     #   drone = Drone(drone_skin)
 
     #Enemy Tower
-    for i in range(1):
-        enemy = Enemy_tower()
+    #for i in range(1):
+     #   enemy = Enemy_tower()
     # ROBOTBUYBUTTONS
     normal = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((0, 750), (100, 50)),
                                           text='Normal: $5',
