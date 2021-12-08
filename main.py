@@ -22,6 +22,7 @@ global drone_skin
 drone_skin = 0
 
 
+
 win = pygame.display.set_mode((windowwidth, windowheight))
 glitchBoss = False
 boidBoss = True

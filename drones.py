@@ -431,6 +431,7 @@ class Drone:
             self.reload = 0
 
         for e in ShootingTower.towers:
+        for e in ShootingTower.enemyloc:
             if e.rect.colliderect(self.rect):
                 self.health -= 1
                 e.health -= 1
