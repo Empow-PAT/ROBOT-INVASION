@@ -278,12 +278,11 @@ class Drone:
         self.skin = drone_skin
         self.x = 114
         self.y = 113
-
         self.width = 17
         self.height = 17
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        self.xgoal = 400
-        self.ygoal = 400
+        self.xgoal = self.x
+        self.ygoal = self.y
         self.color = white
         self.fired = False
         self.firelimit = 30
@@ -297,7 +296,8 @@ class Drone:
         Drone.droneloc.append(self)
 
 
-    def tick(self, keys, win,EnemyBuilderDrone,ShootingTower):
+    def tick(self, keys, win,EnemyBuilderDrone,ShootingTower,Tower,BuilderTower,AntiDroneTower):
+
         if self.skin == 0:
             #print("Javi is in the general viciinity of the place he was before.")
             self.image = pygame.image.load("Art\Drone.png").convert_alpha()
@@ -315,6 +315,7 @@ class Drone:
                 self.image = pygame.image.load ( "Art\Drone Skin.png" ).convert_alpha()
             if self.y != self.ygoal and self.x != self.xgoal:
                 self.image = pygame.image.load ( "Art\Drone Skin2.png" ).convert_alpha()
+
         for d in Drone.droneloc:
             if d != self and d.rect.colliderect(self.rect):
                 xory = random.randint(0,3)
@@ -348,30 +349,51 @@ class Drone:
             self.y += 1
         if self.y > self.ygoal:
             self.y += -1
-        for e in ShootingTower.towers:
-            if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
-                self.image = pygame.image.load ( "Art\DroneAngry.png" )
-                if len(Fire.fireloc) < self.firelimit and self.fired == False:
-                    self.fired = True
-                    Fire.fireloc.append(Fire(self.x,self.y,e,EnemyBuilderDrone))
-        for e in Glitch.glitchboss:
-            if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
-                self.image = pygame.image.load("Art\DroneAngry.png")
-                if len(Fire.fireloc) < self.firelimit and self.fired == False:
-                    self.fired = True
-                    Fire.fireloc.append(Fire(self.x, self.y,e,EnemyBuilderDrone))
-        for e in EnemyBuilderDrone.eDrones:
-            if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
-                self.image = pygame.image.load ( "Art\DroneAngry.png" )
-                if len(Fire.fireloc) < self.firelimit and self.fired == False:
-                    self.fired = True
-                    Fire.fireloc.append(Fire(self.x,self.y,e,EnemyBuilderDrone))
-        for e in Boid.boidbosses:
-            if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
-                self.image = pygame.image.load ( "Art\DroneAngry.png" )
-                if len(Fire.fireloc) < self.firelimit and self.fired == False:
-                    self.fired = True
-                    Fire.fireloc.append(Fire(self.x,self.y,e,EnemyBuilderDrone))
+        def fire():
+            for e in AntiDroneTower.AAtowers:
+                if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
+                    self.image = pygame.image.load("Art\DroneAngry.png")
+                    if len(Fire.fireloc) < self.firelimit and self.fired == False:
+                        self.fired = True
+                        Fire.fireloc.append(Fire(self.x, self.y, e, EnemyBuilderDrone))
+                        return
+            for e in ShootingTower.towers:
+                if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
+                    self.image = pygame.image.load ( "Art\DroneAngry.png" )
+                    if len(Fire.fireloc) < self.firelimit and self.fired == False:
+                        self.fired = True
+                        Fire.fireloc.append(Fire(self.x,self.y,e,EnemyBuilderDrone))
+                        return
+            for e in Glitch.glitchboss:
+                if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
+                    self.image = pygame.image.load("Art\DroneAngry.png")
+                    if len(Fire.fireloc) < self.firelimit and self.fired == False:
+                        self.fired = True
+                        Fire.fireloc.append(Fire(self.x, self.y,e,EnemyBuilderDrone))
+                        return
+            for e in EnemyBuilderDrone.eDrones:
+                if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
+                    self.image = pygame.image.load ( "Art\DroneAngry.png" )
+                    if len(Fire.fireloc) < self.firelimit and self.fired == False:
+                        self.fired = True
+                        Fire.fireloc.append(Fire(self.x,self.y,e,EnemyBuilderDrone))
+                        return
+            for e in Tower.towers:
+                if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
+                    self.image = pygame.image.load ( "Art\DroneAngry.png" )
+                    if len(Fire.fireloc) < self.firelimit and self.fired == False:
+                        self.fired = True
+                        Fire.fireloc.append(Fire(self.x,self.y,e,EnemyBuilderDrone))
+                        return
+            for e in BuilderTower.bTowers:
+                if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
+                    self.image = pygame.image.load ( "Art\DroneAngry.png" )
+                    if len(Fire.fireloc) < self.firelimit and self.fired == False:
+                        self.fired = True
+                        Fire.fireloc.append(Fire(self.x,self.y,e,EnemyBuilderDrone))
+                        return
+
+        fire()
 
         if self.x > windowwidth - self.width:
             self.x = windowwidth - self.width

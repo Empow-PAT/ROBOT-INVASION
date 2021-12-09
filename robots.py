@@ -24,10 +24,12 @@ class Robot():
        self.pathstep = 0
        self.x = path[0][self.pathstep]
        self.y = path[1][self.pathstep]
+       self.width = 20
+       self.height = 20
        Robot.robots.append(self)
     def draw(self,win):
-        rect = pygame.Rect(self.x,self.y,20,20)
-        pygame.draw.rect(win,self.color ,rect)
+        rect = pygame.Rect(self.x,self.y,self.width,self.height)
+        pygame.draw.rect(win,self.color,rect)
     def tick(self,win):
         self.draw(win)
         if self.x == path[0][self.pathstep] and self.y == path[1][self.pathstep]:
@@ -43,21 +45,22 @@ class Robot():
         if self.x < path[0][self.pathstep]:
             self.x += self.speed
         if self.x > path[0][self.pathstep]:
-            self.x += -self.speed
+            self.x += self.speed * -1
         if self.y < path[1][self.pathstep]:
             self.y += self.speed
         if self.y > path[1][self.pathstep]:
-            self.y += -self.speed
-        mousePos = pygame.mouse.get_pos()
-        manager2 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
+            self.y += self.speed * -1
+
+        #mousePos = pygame.mouse.get_pos()
+        #manager2 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
         #if mousePos[0] > self.x and mousePos[0] < self.x+20 or mousePos[0] < self.x and mousePos[0] > self.x-20:
           #  if mousePos[1] > self.y and mousePos[1] < self.y+20 or mousePos[1] < self.y and mousePos[1] > self.y-20:
-        ShowHealth = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((200,200),(50, 50)),
-                                                    text=str(self.health)+"/"+str(self.maxHealth),
-                                                    manager=manager2)
-        if self.health <=0:
+        #ShowHealth = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((200,200),(50, 50)),
+                                                    #text=str(self.health)+"/"+str(self.maxHealth),
+                                                    #manager=manager2)
+        if self.health <= 0:
             Robot.robots.remove(self)
-            del self
+            return
 
 
 class Normal(Robot):

@@ -37,12 +37,21 @@ class ShootingTower:
 
 class EnemyBuilderDrone:
         eDrones = []
-        def __init__(self,x,y):
+        def __init__(self,x,y,toSpawn):
                 self.x = x
                 self.y = y
-                self.xgoal = random.randint(100,700)
-                self.ygoal = random.randint(100,700)
+                self.pathchoice = random.randint(1,3)
+                if self.pathchoice == 1:
+                    self.ygoal = random.randint(200,325)
+                    self.xgoal = random.randint(0,450)
+                if self.pathchoice == 2:
+                    self.ygoal = random.randint(0, 800)
+                    self.xgoal = random.randint(600, 700)
+                if self.pathchoice == 3:
+                    self.ygoal = random.randint(400, 800)
+                    self.xgoal = random.randint(300, 450)
                 self.health = 5
+                self.tower = toSpawn
                 self.futurex = 0
                 self.futurey = 0
                 self.width = 10
@@ -62,7 +71,6 @@ class EnemyBuilderDrone:
 
         def tick(self, keys, win):
 
-
                 if self.x < self.xgoal:
                         self.x += 1
                 if self.x > self.xgoal:
@@ -76,10 +84,14 @@ class EnemyBuilderDrone:
                 self.futurey = self.yvel * 50
 
                 if self.y == self.ygoal and self.x == self.xgoal:
-                        shootingtower = ShootingTower(self.x,self.y)
-                        EnemyBuilderDrone.eDrones.remove(self)
-                        return
-
+                        if self.tower == Tower:
+                            shootingtower = self.tower(1,100,10,self.x,self.y,win)
+                            EnemyBuilderDrone.eDrones.remove(self)
+                            return
+                        else:
+                            spawnedTower = self.tower(self.x,self.y)
+                            EnemyBuilderDrone.eDrones.remove(self)
+                            return
 
 
                 if self.health <= 0:
@@ -104,7 +116,24 @@ class TowerFire():
         self.counter += 1
         if self.counter >= 2:
             TowerFire.towerFire.remove(self)
-            del self
+            return
+
+class AATowerFire():
+    AAtowerFire = []
+    def __init__(self,endPosition,startPosition,win):
+        self.endPosition = endPosition
+        self.startPosition = startPosition
+        self.win = win
+        self.counter = 0
+        AATowerFire.AAtowerFire.append(self)
+
+
+    def tick(self):
+        pygame.draw.line(win, green,self.startPosition, self.endPosition, 3)
+        self.counter += 1
+        if self.counter >= 2:
+            AATowerFire.AAtowerFire.remove(self)
+            return
 
 class Tower():
     towers = []
@@ -119,6 +148,7 @@ class Tower():
         self.closest = False
         self.timer = 0
         self.win = win
+        self.health = 30
         Tower.towers.append(self)
         self.width = 25
         self.height = 25
@@ -137,36 +167,109 @@ class Tower():
         self.findRobot()
         if self.timer >= self.reloadTime:
             if not self.closest == False:
-                newFire = TowerFire((self.closest.x,self.closest.y),(self.x,self.y),win)
+                newFire = TowerFire((self.closest.x + self.closest.width/2,self.closest.y + self.closest.height/2),(self.x + self.width/2,self.y + self.height/2),win)
                 self.closest.health -= self.damage
                 self.timer = 0
+
+        if self.health <= 0:
+            Tower.towers.remove(self)
+            return
+
+
         win.blit(self.image, (self.x, self.y))
 
 
+class AntiDroneTower():
+    AAtowers = []
+    def __init__(self,damage,range,reloadTime,x,y,win):
+        self.damage = damage
+        self.range = range
+        self.reloadTime = reloadTime
+        self.x = x
+        self.y = y
+        self.futurex = 0
+        self.futurey = 0
+        self.closest = False
+        self.timer = 0
+        self.color = mint_green
+        self.win = win
+        self.health = 20
+        AntiDroneTower.AAtowers.append(self)
+        self.width = 10
+        self.height = 10
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        #self.image = pygame.image.load("Art/Turret.png").convert_alpha()
+        #self.image = pygame.transform.scale(self.image, (self.width, self.height))
+    def findRobot(self):
+        self.closest = False
+        for d in Drone.droneloc:
+            dist = abs(d.x - self.x)+abs(d.y - self.y)
+            if dist < self.range:
+                self.closest = d
 
+    def tick(self):
+        self.timer += 1
+        self.findRobot()
+        if self.timer >= self.reloadTime:
+            if not self.closest == False:
+
+                newFire = AATowerFire((self.closest.x + self.closest.width/2,self.closest.y + self.closest.height/2),(self.x + self.width/2,self.y + self.height/2),win)
+                self.closest.health -= self.damage
+                self.timer = 0
+                self.color = green
+            else:
+                self.color = mint_green
+
+        if self.health <= 0:
+            AntiDroneTower.AAtowers.remove(self)
+            return
+
+        pygame.draw.rect(win,self.color,self.rect)
+        #win.blit(self.image, (self.x, self.y))
 
 class BuilderTower:
-        def __init__(self):
-                self.x = 400
-                self.y = 400
+        bTowers = []
+        def __init__(self,x,y):
+                self.x = x
+                self.y = y
                 self.health = 400
                 self.width = 50
                 self.height = 50
                 self.futurex = 0
                 self.futurey = 0
+                self.buildtimer = 100
                 self.buildspawn = 0
+                self.suduku = False
                 self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-                ShootingTower.towers.append(self)
+                BuilderTower.bTowers.append(self)
         def tick(self, keys, win):
 
                 self.buildspawn += 1
-                if self.buildspawn >= 100:
-                        self.buildspawn = 0
-                        builder = EnemyBuilderDrone(self.x, self.y)
+                if self.buildspawn >= self.buildtimer:
+                        if self.suduku == False:
+                            self.buildspawn = 0
+                            builder = EnemyBuilderDrone(self.x + self.width/2, self.y + self.height/2,Tower)
+                        elif self.suduku == True:
+                            for i in range(15):
+                                if i <= 12:
+                                    builder = EnemyBuilderDrone(self.x + self.width/2, self.y + self.height/2,Tower)
+                                elif i >= 13:
+                                    builder = EnemyBuilderDrone(self.x + self.width / 2, self.y + self.height / 2,
+                                                                BuilderTower)
+                            BuilderTower.bTowers.remove(self)
+                            return
+
+                if self.health <= 0:
+                    BuilderTower.bTowers.remove(self)
+                    return
+
 
                 #self.image = pygame.transform.scale( self.image, (self.width, self.height))
                 #win.blit(self.image, (self.x, self.y))
                 self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-                pygame.draw.rect(win, blue, self.rect)
+                if self.suduku == False:
+                    pygame.draw.rect(win, blue, self.rect)
+                elif self.suduku == True:
+                    pygame.draw.rect(win, red, self.rect)
 
 

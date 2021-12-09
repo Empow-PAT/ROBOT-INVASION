@@ -21,10 +21,13 @@ global drone_skin
 drone_skin = 0
 
 win = pygame.display.set_mode((windowwidth, windowheight))
-glitchBoss = False
-boidBoss = True
 
+#Gabriels functions (Touch at own risk)
+glitchBoss = False
+boidBoss = False
+helpfulMarkings = False
 game_virus = False
+
 pygame.display.set_caption("Robot Invasion")
 black = (0, 0, 0)
 deadgreen = (120, 150, 0)
@@ -98,23 +101,29 @@ def Play():
     moneytime = 0
     robotTime = 0
     tower = Tower(1,100,10,120,280,win)
+
     # WAVESTUFF
     waveQueue = []
     wave = 0
     money = 10
     hero = BlazeBot()
     bosscount = 0
+
     #EDrones and Shooting towers
     for i in range(1):
-        shootingtower = ShootingTower(random.randint(100,700),random.randint(100,700))
-        buildertower = BuilderTower()
+        buildertower = BuilderTower(400,200)
+    #Anti drone Towers
+    for i in range(10):
+        a = AntiDroneTower(1,150,10,400 + random.randint(-20,50),200 + random.randint(-20,50),win)
+    for i in range(5):
+        tower = Tower(1, 100, 10, 400 + random.randint(-50,20), 200 + random.randint(50,70), win)
     #Drones you control
     for i in range(35):
         drone = Drone(drone_skin)
-
     #Enemy Tower
     for i in range(1):
         enemy = Enemy_tower()
+
     # ROBOTBUYBUTTONS
     normal = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((0, 750), (100, 50)),
                                           text='Normal: $5',
@@ -142,7 +151,6 @@ def Play():
     run = True
     while run:
         time_delta = clock.tick(30) / 1000.0
-
         #pygame.time.delay(6)
 
         for event in pygame.event.get():
@@ -183,10 +191,7 @@ def Play():
             manager2.process_events(event)
         manager2.update(time_delta)
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_h] == True:
-            Drone.droneloc = []
-            for i in range ( 35 ):
-                drone = Drone ()
+
 
         win.blit(bglevel, (0, 0))
 
@@ -200,7 +205,7 @@ def Play():
                 spawnStart = False
 
         for d in Drone.droneloc:
-            d.tick(keys, win,EnemyBuilderDrone,ShootingTower)
+            d.tick(keys, win,EnemyBuilderDrone,ShootingTower,Tower,BuilderTower,AntiDroneTower)
         for shoot in ShootingTower.towers:
             shoot.tick(keys, win)
         for r in Robot.robots:
@@ -225,13 +230,37 @@ def Play():
         if boidBoss == True:
             for b in Boid.boidbosses:
                 b.tick(win)
-
-
+        for b in BuilderTower.bTowers:
+            b.tick(keys, win)
+        for ed in EnemyBuilderDrone.eDrones:
+            ed.tick(keys, win)
         for f in TowerFire.towerFire:
             f.tick()
+        for f in AATowerFire.AAtowerFire:
+            f.tick()
+        for ad in AntiDroneTower.AAtowers:
+            ad.tick()
         for t in Tower.towers:
             t.tick()
         hero.tick(win,keys)
+        #Map marking
+
+
+        if helpfulMarkings == True:
+            for i in range(8):
+                font = pygame.font.Font(None, 25)
+                text = font.render(str(i * 100), False, black)
+                rect = pygame.Rect(20, i * 100, 20, 20)
+                pygame.draw.rect(win, red, rect)
+                win.blit(text, (20,i * 100))
+            for i in range(8):
+                font = pygame.font.Font(None, 25)
+                text = font.render(str(i * 100), False, black)
+                rect = pygame.Rect(i * 100, 20, 20, 20)
+                pygame.draw.rect(win, red, rect)
+                win.blit(text, (i * 100,20))
+
+
         moneytime += 1
         robotTime += 1
         if moneytime == 40:
