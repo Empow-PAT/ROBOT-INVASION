@@ -116,7 +116,7 @@ def Play():
     for i in range(10):
         a = AntiDroneTower(1,150,10,400 + random.randint(-20,50),200 + random.randint(-20,50),win)
     for i in range(5):
-        tower = Tower(1, 100, 10, 400 + random.randint(-50,20), 200 + random.randint(50,70), win)
+        tower = Tower(1, 100, 10, 400 + random.randint(-50,20), 200 + random.randint(70,90), win)
     #Drones you control
     for i in range(35):
         drone = Drone(drone_skin)
