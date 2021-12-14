@@ -143,8 +143,6 @@ class Tower():
         self.reloadTime = reloadTime
         self.x = x
         self.y = y
-        self.futurex = 0
-        self.futurey = 0
         self.closest = False
         self.timer = 0
         self.win = win
@@ -226,6 +224,10 @@ class AntiDroneTower():
 
         pygame.draw.rect(win,self.color,self.rect)
         #win.blit(self.image, (self.x, self.y))
+
+class Turret(Tower):
+    def __init__(self):
+        Tower.__init__(self,1,100,10,0,0,win)
 
 class BuilderTower:
         bTowers = []
