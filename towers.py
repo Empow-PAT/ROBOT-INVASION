@@ -143,6 +143,11 @@ class Tower():
         self.reloadTime = reloadTime
         self.x = x
         self.y = y
+        #adding a futurex so Gabe's new boss code does not break
+        #this should be added differently
+        self.futurex = 0
+        self.futurey = 0
+
         self.closest = False
         self.timer = 0
         self.win = win
