@@ -138,6 +138,14 @@ def Play():
         enemy = Enemy_tower()
 
     # ROBOTBUYBUTTONS
+
+    manager4 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
+
+
+    ExitButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((20,20), (90, 50)),
+                                              text='Exit',
+                                              object_id="back_button",
+                                              manager=manager4)
     normal = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((0, 750), (100, 50)),
                                           text='Normal: $5',
                                           manager=manager2)
@@ -204,7 +212,10 @@ def Play():
             manager2.process_events(event)
         manager2.update(time_delta)
         keys = pygame.key.get_pressed()
-
+        if keys[pygame.K_h] == True:
+            Drone.droneloc = []
+            for i in range ( 35 ):
+                drone = Drone (drone_skin)
 
         win.blit(bglevel, (0, 0))
 
