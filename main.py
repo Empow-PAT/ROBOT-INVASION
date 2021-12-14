@@ -19,6 +19,8 @@ Background = pygame.image.load("Art/Robot Invasion Title.jpg").convert_alpha()
 bglevel = pygame.image.load("Art/BackgroundPicture.png").convert_alpha()
 global drone_skin
 drone_skin = 0
+#global hero_skin
+#hero_skin = 0
 
 win = pygame.display.set_mode((windowwidth, windowheight))
 
@@ -70,10 +72,18 @@ def Store():
                                               text='',
                                               object_id="back_button",
                                               manager=manager4)
-    DroneButton1 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((200, 100), (120, 70)),
+    DroneButton1 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((20, 100), (120, 70)),
                                               text='',
                                               object_id="drone_button1",
                                               manager=manager4)
+    HeroButton1 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((160, 100), (120, 70)),
+                                                text='',
+                                                object_id="hero_button1",
+                                                manager=manager4)
+    StoreImage = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 100), (150, 100)),
+                                               text='',
+                                               object_id="store_image",
+                                               manager=manager4)
 
     while run4:
         time_delta = clock.tick(60) / 1000.0
@@ -90,6 +100,9 @@ def Store():
                     if event.ui_element == DroneButton1:
                         global drone_skin
                         drone_skin = 1
+                    if event.ui_element == HeroButton1:
+                        global hero_skin
+                        hero_skin = 1
             manager4.process_events(event)
         manager4.update(time_delta)
         win.fill(gray)
