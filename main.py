@@ -142,7 +142,7 @@ def Play():
     manager4 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
 
 
-    ExitButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((20,20), (90, 50)),
+    exitbutton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((20,20), (90, 50)),
                                               text='Exit',
                                               object_id="back_button",
                                               manager=manager4)
@@ -201,6 +201,8 @@ def Play():
                         if money >= 100000:
                             waveQueue.append("DeathGuard")
                             money -= 100000
+                    if event.ui_element == exitbutton:
+                        run2 = False
                     if event.ui_element == waveStart:
                         if len(Robot.robots) == 0:
                             spawnStart = True
@@ -321,6 +323,8 @@ run2 = True
 while run2:
     time_delta = clock.tick(60) / 1000.0
     pygame.time.delay(25)
+
+
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
