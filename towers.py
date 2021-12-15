@@ -66,7 +66,8 @@ class EnemyBuilderDrone:
                         self.yvel = 1
                 if self.y > self.ygoal:
                         self.yvel = -1
-                self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+                self.image = pygame.image.load("Art/Turret.png").convert_alpha()
+                self.image = pygame.transform.scale(self.image, (self.width, self.height))
                 EnemyBuilderDrone.eDrones.append(self)
 
         def tick(self, keys, win):
@@ -100,6 +101,7 @@ class EnemyBuilderDrone:
                 # win.blit(self.image, (self.x, self.y))
                 self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
                 pygame.draw.rect(win, red, self.rect)
+                win.blit(self.image, (self.x, self.y))
 
 class TowerFire():
     towerFire = []
