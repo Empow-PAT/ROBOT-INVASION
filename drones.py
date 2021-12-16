@@ -223,24 +223,40 @@ class Boid:
 
 class Fire:
     fireloc = []
-    def __init__(self,x,y,target,EnemyBuilderDrone):
+    def __init__(self,x,y,target,accuracy):
         self.color = purple_blue
         self.testx = 0
         self.testy = 0
         self.x = x
         self.y = y
+        self.accuracy = accuracy
         self.health = 1
         self.width = 2
         self.height = 2
         self.die = 0
         self.target = target
-        self.firex = target.x + target.futurex + random.randint(-15,15)
-        self.firey = target.y + target.futurey + random.randint(-15,15)
-        self.EnemyBuilderDrone = EnemyBuilderDrone
-        self.xvel = (self.firex - self.x)
-        self.yvel = (self.firey - self.y)
+        self.LocState = "1"
+
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
     def tick(self, win):
+
+        if self.LocState == "1":
+            self.ex = self.target.x
+            self.ey = self.target.y
+            self.LocState = "2"
+            return
+        if self.LocState == "2":
+            self.exvel = self.ex - self.target.x
+            self.eyvel = self.ey - self.target.y
+            self.LocState = "3"
+            return
+        if self.LocState == "3":
+            self.firex = self.target.x + self.exvel + random.randint(-self.accuracy, self.accuracy)
+            self.firey = self.target.y + self.exvel + random.randint(-self.accuracy, self.accuracy)
+            self.xvel = (self.firex - self.x)
+            self.yvel = (self.firey - self.y)
+            self.LocState = "0"
+            return
 
         if self.target.rect.colliderect(self.rect):
             self.target.health -= self.health
@@ -278,7 +294,7 @@ class Drone:
         self.skin = drone_skin
         self.x = 114
         self.y = 113
-
+        self.accuracy = 15
         self.width = 17
         self.height = 17
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
@@ -359,7 +375,7 @@ class Drone:
                         self.image = pygame.image.load("Art\Drone Skin3.png").convert_alpha()
                     if len(Fire.fireloc) < self.firelimit and self.fired == False:
                         self.fired = True
-                        Fire.fireloc.append(Fire(self.x, self.y, e, EnemyBuilderDrone))
+                        Fire.fireloc.append(Fire(self.x, self.y, e, self.accuracy))
                         return
             for e in ShootingTower.towers:
                 if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
@@ -369,7 +385,7 @@ class Drone:
                         self.image = pygame.image.load("Art\Drone Skin3.png").convert_alpha()
                     if len(Fire.fireloc) < self.firelimit and self.fired == False:
                         self.fired = True
-                        Fire.fireloc.append(Fire(self.x,self.y,e,EnemyBuilderDrone))
+                        Fire.fireloc.append(Fire(self.x,self.y,e,self.accuracy))
                         return
             for e in Glitch.glitchboss:
                 if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
@@ -379,7 +395,7 @@ class Drone:
                         self.image = pygame.image.load("Art\Drone Skin3.png").convert_alpha()
                     if len(Fire.fireloc) < self.firelimit and self.fired == False:
                         self.fired = True
-                        Fire.fireloc.append(Fire(self.x, self.y,e,EnemyBuilderDrone))
+                        Fire.fireloc.append(Fire(self.x, self.y,e,self.accuracy))
                         return
             for e in EnemyBuilderDrone.eDrones:
                 if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
@@ -389,7 +405,7 @@ class Drone:
                         self.image = pygame.image.load("Art\Drone Skin3.png").convert_alpha()
                     if len(Fire.fireloc) < self.firelimit and self.fired == False:
                         self.fired = True
-                        Fire.fireloc.append(Fire(self.x,self.y,e,EnemyBuilderDrone))
+                        Fire.fireloc.append(Fire(self.x,self.y,e,self.accuracy))
                         return
             for e in Tower.towers:
                 if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
@@ -399,7 +415,7 @@ class Drone:
                         self.image = pygame.image.load("Art\Drone Skin3.png").convert_alpha()
                     if len(Fire.fireloc) < self.firelimit and self.fired == False:
                         self.fired = True
-                        Fire.fireloc.append(Fire(self.x,self.y,e,EnemyBuilderDrone))
+                        Fire.fireloc.append(Fire(self.x,self.y,e,self.accuracy))
                         return
             for e in BuilderTower.bTowers:
                 if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
@@ -409,7 +425,7 @@ class Drone:
                         self.image = pygame.image.load("Art\Drone Skin3.png").convert_alpha()
                     if len(Fire.fireloc) < self.firelimit and self.fired == False:
                         self.fired = True
-                        Fire.fireloc.append(Fire(self.x,self.y,e,EnemyBuilderDrone))
+                        Fire.fireloc.append(Fire(self.x,self.y,e,self.accuracy))
                         return
 
         fire()

@@ -127,7 +127,7 @@ def Play():
         buildertower = BuilderTower(400,200)
     #Anti drone Towers
     for i in range(10):
-        a = AntiDroneTower(1,150,10,400 + random.randint(-20,50),200 + random.randint(-20,50),win)
+        a = AntiDroneTower(5,25,600 + random.randint(-50,50),400 + random.randint(-200,200),win)
     for i in range(5):
         tower = Tower(1, 100, 10, 400 + random.randint(-50,20), 200 + random.randint(70,90), win)
     #Drones you control

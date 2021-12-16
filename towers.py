@@ -145,9 +145,6 @@ class Tower():
         self.y = y
         #adding a futurex so Gabe's new boss code does not break
         #this should be added differently
-        self.futurex = 0
-        self.futurey = 0
-
         self.closest = False
         self.timer = 0
         self.win = win
@@ -184,19 +181,17 @@ class Tower():
 
 class AntiDroneTower():
     AAtowers = []
-    def __init__(self,damage,range,reloadTime,x,y,win):
+    def __init__(self,damage,reloadTime,x,y,win):
         self.damage = damage
-        self.range = range
+        self.range = 200
         self.reloadTime = reloadTime
         self.x = x
         self.y = y
-        self.futurex = 0
-        self.futurey = 0
         self.closest = False
         self.timer = 0
         self.color = mint_green
         self.win = win
-        self.health = 20
+        self.health = 15
         AntiDroneTower.AAtowers.append(self)
         self.width = 10
         self.height = 10
@@ -242,8 +237,6 @@ class BuilderTower:
                 self.health = 400
                 self.width = 50
                 self.height = 50
-                self.futurex = 0
-                self.futurey = 0
                 self.buildtimer = 100
                 self.buildspawn = 0
                 self.suduku = False
