@@ -69,7 +69,7 @@ class Normal(Robot):
 
 class Speedy(Robot):
     def __init__(self):
-        Robot.__init__(self,0,4,3,blue,6)
+        Robot.__init__(self,0,4,3,blue,10)
 
 class Slow(Robot):
     def __init__(self):
