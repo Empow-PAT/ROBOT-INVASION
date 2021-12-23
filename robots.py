@@ -45,11 +45,11 @@ class Robot():
         if self.x < path[0][self.pathstep]:
             self.x += self.speed
         if self.x > path[0][self.pathstep]:
-            self.x += self.speed * -1
+            self.x -= self.speed
         if self.y < path[1][self.pathstep]:
             self.y += self.speed
         if self.y > path[1][self.pathstep]:
-            self.y += self.speed * -1
+            self.y -= self.speed
 
         #mousePos = pygame.mouse.get_pos()
         #manager2 = pygame_gui.UIManager((800, 800), 'gui_theme.json')

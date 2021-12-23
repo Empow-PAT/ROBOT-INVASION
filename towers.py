@@ -157,10 +157,13 @@ class Tower():
         self.image = pygame.transform.scale(self.image, (self.width, self.height))
     def findRobot(self):
         self.closest = False
+        if len(Robot.robots) <= 0:
+            return
         for robot in Robot.robots:
             dist = abs(robot.x - self.x)+abs(robot.y - self.y)
             if dist < self.range:
                 self.closest = robot
+                return
 
     def tick(self):
         self.timer += 1
@@ -243,33 +246,32 @@ class BuilderTower:
                 self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
                 BuilderTower.bTowers.append(self)
         def tick(self, keys, win):
+            self.buildspawn += 1
+            if self.buildspawn >= self.buildtimer:
+                    if self.suduku == False:
+                        self.buildspawn = 0
+                        builder = EnemyBuilderDrone(self.x + self.width/2, self.y + self.height/2,Tower)
+                    elif self.suduku == True:
+                        for i in range(15):
+                            if i <= 12:
+                                builder = EnemyBuilderDrone(self.x + self.width/2, self.y + self.height/2,Tower)
+                            elif i >= 13:
+                                builder = EnemyBuilderDrone(self.x + self.width / 2, self.y + self.height / 2,
+                                                            BuilderTower)
+                        BuilderTower.bTowers.remove(self)
+                        return
 
-                self.buildspawn += 1
-                if self.buildspawn >= self.buildtimer:
-                        if self.suduku == False:
-                            self.buildspawn = 0
-                            builder = EnemyBuilderDrone(self.x + self.width/2, self.y + self.height/2,Tower)
-                        elif self.suduku == True:
-                            for i in range(15):
-                                if i <= 12:
-                                    builder = EnemyBuilderDrone(self.x + self.width/2, self.y + self.height/2,Tower)
-                                elif i >= 13:
-                                    builder = EnemyBuilderDrone(self.x + self.width / 2, self.y + self.height / 2,
-                                                                BuilderTower)
-                            BuilderTower.bTowers.remove(self)
-                            return
-
-                if self.health <= 0:
-                    BuilderTower.bTowers.remove(self)
-                    return
+            if self.health <= 0:
+                BuilderTower.bTowers.remove(self)
+                return
 
 
-                #self.image = pygame.transform.scale( self.image, (self.width, self.height))
-                #win.blit(self.image, (self.x, self.y))
-                self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-                if self.suduku == False:
-                    pygame.draw.rect(win, blue, self.rect)
-                elif self.suduku == True:
-                    pygame.draw.rect(win, red, self.rect)
+            #self.image = pygame.transform.scale( self.image, (self.width, self.height))
+            #win.blit(self.image, (self.x, self.y))
+            self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+            if self.suduku == False:
+                pygame.draw.rect(win, blue, self.rect)
+            elif self.suduku == True:
+                pygame.draw.rect(win, red, self.rect)
 
 
