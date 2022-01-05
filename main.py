@@ -173,10 +173,20 @@ def Play():
     run = True
     while run:
         keys = pygame.key.get_pressed()
+        if keys[pygame.K_j] == True:
+            money+= 1000
+
+        keys = pygame.key.get_pressed()
         if keys[pygame.K_n] == True:
             if money >= 5:
                 waveQueue.append("Normal")
                 money -= 5
+
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_p] == True:
+            if money >= 10:
+                waveQueue.append("Speedy")
+                money -= 10
         time_delta = clock.tick(30) / 1000.0
         #pygame.time.delay(6)
 
@@ -224,7 +234,7 @@ def Play():
 
         win.blit(bglevel, (0, 0))
 
-        if spawnStart:
+        if spawnStart == False:
             for r in waveQueue:
                 if robotTime>10:
                     robotTime = 0
