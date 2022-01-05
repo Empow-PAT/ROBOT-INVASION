@@ -85,6 +85,7 @@ class EnemyBuilderDrone:
                 self.futurey = self.yvel * 50
 
                 if self.y == self.ygoal and self.x == self.xgoal:
+                        self.tower = self.tower()
                         self.tower.x = self.x
                         self.tower.y = self.y
                         EnemyBuilderDrone.eDrones.remove(self)
@@ -263,7 +264,7 @@ class BuilderTower:
                         if self.suduku == False:
                             self.buildspawn = 0
                             #builder = EnemyBuilderDrone(self.x + self.width/2, self.y + self.height/2,Tower)
-                            builder = EnemyBuilderDrone(self.x, self.y, FastFiringTurret())
+                            builder = EnemyBuilderDrone(self.x, self.y, FastFiringTurret)
                         elif self.suduku == True:
                             for i in range(15):
                                 if i <= 12:
