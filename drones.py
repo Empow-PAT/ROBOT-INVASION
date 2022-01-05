@@ -307,7 +307,7 @@ class Drone:
         self.firelimit = 30
         self.targetSize = 10
         self.buffer = False
-        self.start = True
+        self.goToBuffer = False
         self.toggle = False
         self.reload = 0
         self.ygrav = 0
@@ -423,15 +423,19 @@ class Drone:
                    #self.y = d.y - d.height - droned
                    self.ygoal = d.ygoal - d.height - droned
 
-        if keys[pygame.K_e] == True and self.start == False:
+        if keys[pygame.K_e] == False:
+            self.goToBuffer = False
+
+        if keys[pygame.K_e] == True and self.goToBuffer == False:
             self.animation = 0
+            self.goToBuffer = True
             if self.image == 0:
                 self.image = pygame.image.load ( "Art\DroneMove.png" ).convert_alpha()
             if self.image == 1:
                 self.image = pygame.image.load("Art\Drone Skin3.png").convert_alpha()
             Mx,My = pygame.mouse.get_pos()
-            Mx += self.width
-            My += self.height
+            Mx += self.width/2
+            My += self.height/2
             self.xgoal,self.ygoal = Mx,My
 
         if keys[pygame.K_q] == True and self.buffer == False and self.toggle != True:
@@ -443,6 +447,10 @@ class Drone:
         if self.toggle == True:
             Mx, My = pygame.mouse.get_pos()
             pygame.draw.circle(win,red,(Mx,My),self.targetSize,int(self.targetSize/5))
+            if (self.x - self.target.x <= 150 and self.x - self.target.x >= -150) and (
+                    self.y - self.target.y <= 150 and self.y - self.target.y >= -150):
+                pygame.draw.line(win, red, (self.x + self.width / 2, self.y + self.height / 2),
+                                 (self.target.x + self.target.width / 2, self.target.y + self.target.height / 2))
             self.targetRect = (Mx - self.targetSize/2,My - self.targetSize/2,self.targetSize,self.targetSize)
             self.CrossRect1 = (Mx - self.targetSize,My - int(self.targetSize/5)/2,self.targetSize * 2,int(self.targetSize/5))
             self.CrossRect2 = (Mx - int(self.targetSize/5)/2,My - self.targetSize,int(self.targetSize/5),self.targetSize * 2)
@@ -465,6 +473,8 @@ class Drone:
 
 
         def fire():
+            if self.toggle == True:
+                return
             for e in AntiDroneTower.AAtowers:
                 if (self.x - e.x <= 150 and self.x - e.x >= -150) and (self.y - e.y <= 150 and self.y - e.y >= -150):
                     if self.image == 0:
@@ -575,9 +585,7 @@ class Drone:
                 self.animation = 0
                 return
 
-        if (self.x - self.target.x <= 150 and self.x - self.target.x >= -150) and (self.y - self.target.y <= 150 and self.y - self.target.y >= -150):
-            pygame.draw.line(win, red, (self.x + self.width / 2, self.y + self.height / 2),
-                             (self.target.x + self.target.width / 2, self.target.y + self.target.height / 2))
+
         self.image = pygame.transform.scale (self.image, (self.width, self.height))
         win.blit(self.image, (self.x, self.y))
         self.rect = pygame.Rect(self.xgoal , self.ygoal, 1, 1)
