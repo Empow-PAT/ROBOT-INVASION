@@ -310,6 +310,7 @@ class Drone:
         self.goToBuffer = False
         self.toggle = False
         self.reload = 0
+        self.checkCooldown = 10
         self.ygrav = 0
         self.xgrav = 0
         self.image = pygame.image.load("Art\Drone.png")
@@ -317,7 +318,6 @@ class Drone:
         Drone.droneloc.append(self)
 
     def tick(self, keys, win,EnemyBuilderDrone,ShootingTower,Tower,BuilderTower,AntiDroneTower):
-
 
         if self.skin == 0:
             #print("Javi is in the general viciinity of the place he was before.")
@@ -337,6 +337,26 @@ class Drone:
             if self.y != self.ygoal and self.x != self.xgoal:
                 self.image = pygame.image.load ( "Art\Drone Skin2.png" ).convert_alpha()
 
+        def Check():
+            for e in AntiDroneTower.AAtowers:
+                if e == self.target:
+                    return
+            for e in ShootingTower.towers:
+                if e == self.target:
+                    return
+            for e in Glitch.glitchboss:
+                if e == self.target:
+                    return
+            for e in EnemyBuilderDrone.eDrones:
+                if e == self.target:
+                    return
+            for e in Tower.towers:
+                if e == self.target:
+                    return
+            for e in BuilderTower.bTowers:
+                if e == self.target:
+                    return
+            self.target = None
 
         def Target():
             for e in AntiDroneTower.AAtowers:
@@ -447,10 +467,13 @@ class Drone:
         if self.toggle == True:
             Mx, My = pygame.mouse.get_pos()
             pygame.draw.circle(win,red,(Mx,My),self.targetSize,int(self.targetSize/5))
-            if (self.x - self.target.x <= 150 and self.x - self.target.x >= -150) and (
-                    self.y - self.target.y <= 150 and self.y - self.target.y >= -150):
-                pygame.draw.line(win, red, (self.x + self.width / 2, self.y + self.height / 2),
-                                 (self.target.x + self.target.width / 2, self.target.y + self.target.height / 2))
+
+            if self.target != None:
+                if (self.x - self.target.x <= 150 and self.x - self.target.x >= -150) and (
+                        self.y - self.target.y <= 150 and self.y - self.target.y >= -150):
+                    pygame.draw.line(win, red, (self.x + self.width / 2, self.y + self.height / 2),
+                                     (self.target.x + self.target.width / 2, self.target.y + self.target.height / 2))
+
             self.targetRect = (Mx - self.targetSize/2,My - self.targetSize/2,self.targetSize,self.targetSize)
             self.CrossRect1 = (Mx - self.targetSize,My - int(self.targetSize/5)/2,self.targetSize * 2,int(self.targetSize/5))
             self.CrossRect2 = (Mx - int(self.targetSize/5)/2,My - self.targetSize,int(self.targetSize/5),self.targetSize * 2)
@@ -565,6 +588,10 @@ class Drone:
         if self.health <= 0:
             Drone.droneloc.remove(self)
 
+        self.checkCooldown += 1
+        if self.checkCooldown >= 100:
+            Check()
+            self.checkCooldown = 0
 
         def Animate():
             if self.animation <= 5:

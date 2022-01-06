@@ -109,6 +109,9 @@ def Store():
         manager4.draw_ui(win)
         pygame.display.update()
 def Play():
+    formationType = 0
+    wait = 0
+    gameBuffer = False
     global run2
     manager2 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
     moneytime = 0
@@ -267,8 +270,60 @@ def Play():
         for t in Tower.towers:
             t.tick()
         hero.tick(win,keys)
-        #Map marking
 
+
+        if keys[pygame.K_f] == True and gameBuffer == False:
+            i = 0
+            i2 = 0
+            formationType += 1
+            if formationType == 1:
+                for d in Drone.droneloc:
+                    GX,GY = pygame.mouse.get_pos()
+                    d.xgoal,d.ygoal = GX,GY
+                    d.xgoal += i * 10
+                    d.ygoal += i2 * 10
+                    i += 1
+            elif formationType == 2:
+                for d in Drone.droneloc:
+                    GX,GY = pygame.mouse.get_pos()
+                    d.xgoal,d.ygoal = GX,GY
+                    d.ygoal += i * 10
+                    d.xgoal += i2 * 10
+                    i += 1
+            elif formationType == 3:
+                for d in Drone.droneloc:
+                    GX,GY = pygame.mouse.get_pos()
+                    d.xgoal,d.ygoal = GX,GY
+                    d.ygoal += i * 10
+                    d.xgoal += i2 * 10
+                    i += 1
+                    if i >= 10:
+                        i = 0
+                        i2 += 1
+            elif formationType == 4:
+                for d in Drone.droneloc:
+                    GX,GY = pygame.mouse.get_pos()
+                    d.xgoal,d.ygoal = GX,GY
+                    d.xgoal += i * 10
+                    d.ygoal += i2 * 10
+                    i += 1
+                    if i >= 10:
+                        i = 0
+                        i2 += 1
+            if formationType >= 4:
+                formationType = 0
+                i = 0
+                i2 = 0
+            wait = 0
+            gameBuffer = True
+
+        if keys[pygame.K_f] == False:
+            wait += 1
+            if wait >= 50:
+                gameBuffer = False
+
+
+        #Map marking
 
         if helpfulMarkings == True:
             for i in range(8):
