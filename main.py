@@ -36,6 +36,135 @@ deadgreen = (120, 150, 0)
 white = (255,255,255)
 gray = (40, 40,40)
 red = (255,0,0)
+
+
+class DummyTwo:
+    dums = []
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.width = 20
+        self.height = 20
+        self.xgoal = x
+        self.ygoal = y
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        DummyTwo.dums.append(self)
+
+    def tick(self, win):
+
+        if self.x < self.xgoal:
+            self.x += 1
+        if self.x > self.xgoal:
+            self.x += -1
+        if self.y < self.ygoal:
+            self.y += 1
+        if self.y > self.ygoal:
+            self.y += -1
+
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        pygame.draw.rect(win, yellow, self.rect)
+
+
+class Buttons:
+    buttons = []
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.width = 15
+        self.height = 15
+        self.buttons = 100
+        self.pressed = []
+        self.pressed2 = []
+        self.rects = []
+        self.run4 = False
+        self.positions = []
+        self.i2 = 0
+        self.i3 = 0
+        self.panelWidth = 10
+        for i in range(self.buttons):
+            self.i2 += 1
+            if self.i2 < self.panelWidth:
+                self.rects.append(
+                    pygame.Rect(self.x + self.i2 * 20, self.y + self.i3 * 20, self.width, self.height))
+                self.positions.append((self.i2 * 30, self.i3 * 30))
+            elif self.i2 > 5:
+                self.i2 = 0
+                self.i3 += 1
+
+            self.pressed.append(False)
+            self.pressed2.append(False)
+            d = DummyTwo(400, 100)
+        Buttons.buttons.append(self)
+
+    def apply(self, win, keys, Drone):
+        self.pos = pygame.mouse.get_pos()
+        self.i2 = 0
+        self.i3 = 0
+        self.index = Drone.droneloc.index(Drone.droneloc[-1])
+        for i in range(self.index):
+            self.i2 = i
+            if self.pressed2[self.i2] == True:
+                Drone.droneloc[i].xgoal = self.positions[self.i2][0] + self.pos[0]
+                Drone.droneloc[i].ygoal = self.positions[self.i2][1] + self.pos[1]
+            else:
+                self.run4 = True
+
+            while self.run4 == True:
+                if self.pressed2[self.i2] == True:
+                        Drone.droneloc[i].xgoal = self.positions[self.i2][0] + self.pos[0]
+                        Drone.droneloc[i].ygoal = self.positions[self.i2][1] + self.pos[1]
+                        self.run4 = False
+                else:
+                    self.i2 += 1
+                    if self.i2 >= self.index:
+                        return
+
+
+
+    def tick(self, win, keys):
+
+        self.pos = pygame.mouse.get_pos()
+
+        for i in self.rects:
+
+            self.index = self.rects.index(i)
+
+            if keys[pygame.K_r] == True:
+                self.pressed[self.index] = True
+                self.pressed2[self.index] = False
+                DummyTwo.dums[self.index].xgoal = 400
+                DummyTwo.dums[self.index].ygoal = 100
+
+            if pygame.mouse.get_pressed()[0] == True and self.pressed[self.index] == False and i.collidepoint(
+                    self.pos) and self.pressed2[self.index] == False:
+                self.pressed[self.index] = True
+                self.pressed2[self.index] = True
+                DummyTwo.dums[self.index].xgoal = self.positions[self.index][0] + 300
+                DummyTwo.dums[self.index].ygoal = self.positions[self.index][1] + 300
+
+            if pygame.mouse.get_pressed()[0] == True and self.pressed2[self.index] == True and i.collidepoint(
+                    self.pos) and self.pressed[self.index] == False:
+                self.pressed[self.index] = True
+                self.pressed2[self.index] = False
+                DummyTwo.dums[self.index].xgoal = 400
+                DummyTwo.dums[self.index].ygoal = 100
+
+            if pygame.mouse.get_pressed()[0] == False and self.pressed[self.index] == True:
+                self.pressed[self.index] = False
+
+        for i in self.rects:
+
+            self.index = self.rects.index(i)
+
+            if self.pressed2[self.index] == True:
+                pygame.draw.rect(win, black, i)
+            if self.pressed2[self.index] == False:
+                pygame.draw.rect(win, white, i)
+
+b = Buttons(500,500)
+
 def HowToPlay():
     run3 = True
     manager3 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
@@ -68,104 +197,6 @@ def Form():
     run5 = True
     manager3 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
 
-    class DummyTwo:
-        dums = []
-
-        def __init__(self, x, y):
-            self.x = x
-            self.y = y
-            self.width = 20
-            self.height = 20
-            self.xgoal = x
-            self.ygoal = y
-            self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-            DummyTwo.dums.append(self)
-
-        def tick(self, win):
-
-            if self.x < self.xgoal:
-                self.x += 1
-            if self.x > self.xgoal:
-                self.x += -1
-            if self.y < self.ygoal:
-                self.y += 1
-            if self.y > self.ygoal:
-                self.y += -1
-
-            self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-            pygame.draw.rect(win, yellow, self.rect)
-
-    class Buttons:
-        buttons = []
-
-        def __init__(self, x, y):
-            self.x = x
-            self.y = y
-            self.width = 15
-            self.height = 15
-            self.buttons = 100
-            self.pressed = []
-            self.pressed2 = []
-            self.rects = []
-            self.positions = []
-            self.i2 = 0
-            self.i3 = 0
-            self.panelWidth = 10
-            for i in range(self.buttons):
-                self.i2 += 1
-                if self.i2 < self.panelWidth:
-                    self.rects.append(
-                        pygame.Rect(self.x + self.i2 * 20, self.y + self.i3 * 20, self.width, self.height))
-                    self.positions.append((300 + self.i2 * 20, 300 + self.i3 * 20))
-                elif self.i2 > 5:
-                    self.i2 = 0
-                    self.i3 += 1
-
-                self.pressed.append(False)
-                self.pressed2.append(False)
-                d = DummyTwo(400, 100)
-            Buttons.buttons.append(self)
-
-        def tick(self, win, keys):
-
-            self.pos = pygame.mouse.get_pos()
-
-            for i in self.rects:
-
-                self.index = self.rects.index(i)
-
-                if keys[pygame.K_r] == True:
-                    self.pressed[self.index] = True
-                    self.pressed2[self.index] = False
-                    DummyTwo.dums[self.index].xgoal = 400
-                    DummyTwo.dums[self.index].ygoal = 100
-
-                if pygame.mouse.get_pressed()[0] == True and self.pressed[self.index] == False and i.collidepoint(
-                        self.pos) and self.pressed2[self.index] == False:
-                    self.pressed[self.index] = True
-                    self.pressed2[self.index] = True
-                    DummyTwo.dums[self.index].xgoal = self.positions[self.index][0]
-                    DummyTwo.dums[self.index].ygoal = self.positions[self.index][1]
-
-                if pygame.mouse.get_pressed()[0] == True and self.pressed2[self.index] == True and i.collidepoint(
-                        self.pos) and self.pressed[self.index] == False:
-                    self.pressed[self.index] = True
-                    self.pressed2[self.index] = False
-                    DummyTwo.dums[self.index].xgoal = 400
-                    DummyTwo.dums[self.index].ygoal = 100
-
-                if pygame.mouse.get_pressed()[0] == False and self.pressed[self.index] == True:
-                    self.pressed[self.index] = False
-
-            for i in self.rects:
-
-                self.index = self.rects.index(i)
-
-                if self.pressed2[self.index] == True:
-                    pygame.draw.rect(win, black, i)
-                if self.pressed2[self.index] == False:
-                    pygame.draw.rect(win, white, i)
-    b = Buttons(500,500)
     BackButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((20,20), (90, 50)),
                                                   text='',
                                                   object_id="back_button",
@@ -405,55 +436,10 @@ def Play():
         hero.tick(win,keys)
 
 
-        if keys[pygame.K_f] == True and gameBuffer == False:
-            i = 0
-            i2 = 0
-            formationType += 1
-            if formationType == 1:
-                for d in Drone.droneloc:
-                    GX,GY = pygame.mouse.get_pos()
-                    d.xgoal,d.ygoal = GX,GY
-                    d.xgoal += i * 10
-                    d.ygoal += i2 * 10
-                    i += 1
-            elif formationType == 2:
-                for d in Drone.droneloc:
-                    GX,GY = pygame.mouse.get_pos()
-                    d.xgoal,d.ygoal = GX,GY
-                    d.ygoal += i * 10
-                    d.xgoal += i2 * 10
-                    i += 1
-            elif formationType == 3:
-                for d in Drone.droneloc:
-                    GX,GY = pygame.mouse.get_pos()
-                    d.xgoal,d.ygoal = GX,GY
-                    d.ygoal += i * 10
-                    d.xgoal += i2 * 10
-                    i += 1
-                    if i >= 10:
-                        i = 0
-                        i2 += 1
-            elif formationType == 4:
-                for d in Drone.droneloc:
-                    GX,GY = pygame.mouse.get_pos()
-                    d.xgoal,d.ygoal = GX,GY
-                    d.xgoal += i * 10
-                    d.ygoal += i2 * 10
-                    i += 1
-                    if i >= 10:
-                        i = 0
-                        i2 += 1
-            if formationType >= 4:
-                formationType = 0
-                i = 0
-                i2 = 0
-            wait = 0
-            gameBuffer = True
+        if keys[pygame.K_f] == True:
+            for b in Buttons.buttons:
+                b.apply(win,keys,Drone)
 
-        if keys[pygame.K_f] == False:
-            wait += 1
-            if wait >= 50:
-                gameBuffer = False
 
 
         #Map marking
