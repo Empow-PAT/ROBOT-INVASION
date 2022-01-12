@@ -247,7 +247,7 @@ class BuilderTower:
                 self.buildtimer = 100
                 self.buildspawn = 0
                 self.suduku = False
-                self.image = pygame.image.load("Art\Builder Tower - I guess.png")
+                self.image = pygame.image.load("Art/BuilderTower.png")
                 self.image = pygame.transform.scale(self.image, (self.width, self.height))
                 BuilderTower.bTowers.append(self)
         def tick(self, keys, win):
@@ -278,6 +278,6 @@ class BuilderTower:
                 win.blit(self.image, (self.x, self.y))
                 self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
                 if self.suduku == False:
-                    self.image = pygame.image.load("Art\Builder Tower - I guess.png")
+                    self.image = pygame.image.load("Art\BuilderTower.png")
                 elif self.suduku == True:
-                    self.image = pygame.image.load("Art\Builder Tower - I guess - Red.png")
+                    self.image = pygame.image.load("Art\BuilderTower-Red.png")
