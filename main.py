@@ -36,7 +36,6 @@ deadgreen = (120, 150, 0)
 white = (255,255,255)
 gray = (40, 40,40)
 red = (255,0,0)
-
 def HowToPlay():
     run3 = True
     manager3 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
@@ -143,7 +142,7 @@ def Play():
     manager4 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
 
 
-    exitbutton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((20,20), (90, 50)),
+    ExitButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((20,20), (90, 50)),
                                               text='Exit',
                                               object_id="back_button",
                                               manager=manager4)
@@ -172,11 +171,6 @@ def Play():
     spawnStart = False
     run = True
     while run:
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_n] == True:
-            if money >= 5:
-                waveQueue.append("Normal")
-                money -= 5
         time_delta = clock.tick(30) / 1000.0
         #pygame.time.delay(6)
 
@@ -186,7 +180,8 @@ def Play():
                 run2 = False
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                    if event.ui_elemewnt == normal:
+
+                    if event.ui_element == normal:
                         if money >= 5:
                             waveQueue.append("Normal")
                             money -= 5
@@ -206,13 +201,13 @@ def Play():
                         if money >= 100000:
                             waveQueue.append("DeathGuard")
                             money -= 100000
-
-                    if event.ui_element == exitbutton:
-                        run2 = False
                     if event.ui_element == waveStart:
                         if len(Robot.robots) == 0:
                             spawnStart = True
                             wave += 1
+
+
+
 
             manager2.process_events(event)
         manager2.update(time_delta)
@@ -326,8 +321,6 @@ run2 = True
 while run2:
     time_delta = clock.tick(60) / 1000.0
     pygame.time.delay(25)
-
-
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
