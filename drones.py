@@ -298,7 +298,6 @@ class Drone:
         self.accuracy = 15
         self.width = 17
         self.height = 17
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.xgoal = self.x
         self.ygoal = self.y
         self.color = white
@@ -315,6 +314,8 @@ class Drone:
         self.xgrav = 0
         self.image = pygame.image.load("Art\Drone.png")
         self.image = pygame.transform.scale(self.image,(self.width, self.height))
+        self.Frect = pygame.Rect(self.xgoal, self.ygoal, 1, 1)
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         Drone.droneloc.append(self)
 
     def tick(self, keys, win,EnemyBuilderDrone,ShootingTower,Tower,BuilderTower,AntiDroneTower):
@@ -428,7 +429,7 @@ class Drone:
 
 
         for d in Drone.droneloc:
-            if d != self and d.rect.colliderect(self.rect):
+            if d != self and d.Frect.colliderect(self.Frect):
                 xory = random.randint(0,3)
                 if xory == 1:
                     #self.x = d.x + d.width + droned
@@ -615,7 +616,8 @@ class Drone:
 
         self.image = pygame.transform.scale (self.image, (self.width, self.height))
         win.blit(self.image, (self.x, self.y))
-        self.rect = pygame.Rect(self.xgoal , self.ygoal, 1, 1)
+        self.Frect = pygame.Rect(self.xgoal , self.ygoal, 1, 1)
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.distance = math.hypot(self.xgoal - self.x, self.ygoal - self.y)
         if not self.distance <= 4:
             Animate()
