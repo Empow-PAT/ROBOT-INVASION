@@ -92,36 +92,23 @@ class Buttons:
             elif self.i2 > 5:
                 self.i2 = 0
                 self.i3 += 1
-
             self.pressed.append(False)
             self.pressed2.append(False)
             d = DummyTwo(400, 100)
         Buttons.buttons.append(self)
 
     def apply(self, win, keys, Drone):
+
         self.pos = pygame.mouse.get_pos()
-        self.i2 = 0
-        self.i3 = 0
-        self.index = Drone.droneloc.index(Drone.droneloc[-1])
-        for i in range(self.index):
-            self.i2 = i
-            if self.pressed2[self.i2] == True:
-                Drone.droneloc[i].xgoal = self.positions[self.i2][0] + self.pos[0]
-                Drone.droneloc[i].ygoal = self.positions[self.i2][1] + self.pos[1]
+        for d in Drone.droneloc:
+            if True in self.pressed2:
+                for i in self.pressed2:
+                    if i == True and self.done == False:
+                        d.xgoal = self.positions[self.pressed2.index(i)][0] + self.pos[0]
+                        d.ygoal = self.positions[self.pressed2.index(i)][1] + self.pos[1]
+                        self.done = True
             else:
-                self.run4 = True
-
-            while self.run4 == True:
-                if self.pressed2[self.i2] == True:
-                        Drone.droneloc[i].xgoal = self.positions[self.i2][0] + self.pos[0]
-                        Drone.droneloc[i].ygoal = self.positions[self.i2][1] + self.pos[1]
-                        self.run4 = False
-                else:
-                    self.i2 += 1
-                    if self.i2 >= self.index:
-                        return
-
-
+                return
 
     def tick(self, win, keys):
 
@@ -275,6 +262,7 @@ def Store():
 def Play():
     formationType = 0
     wait = 0
+    buffer = False
     gameBuffer = False
     global run2
     manager2 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
@@ -435,11 +423,13 @@ def Play():
             t.tick()
         hero.tick(win,keys)
 
-
-        if keys[pygame.K_f] == True:
+        if keys[pygame.K_f] == True and buffer == False:
             for b in Buttons.buttons:
                 b.apply(win,keys,Drone)
+            buffer = True
 
+        if keys[pygame.K_f] == False and buffer == True:
+            buffer = False
 
 
         #Map marking
