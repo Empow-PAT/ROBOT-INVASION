@@ -38,120 +38,6 @@ gray = (40, 40,40)
 red = (255,0,0)
 
 
-class DummyTwo:
-    dums = []
-
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.width = 20
-        self.height = 20
-        self.xgoal = x
-        self.ygoal = y
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        DummyTwo.dums.append(self)
-
-    def tick(self, win):
-
-        if self.x < self.xgoal:
-            self.x += 1
-        if self.x > self.xgoal:
-            self.x += -1
-        if self.y < self.ygoal:
-            self.y += 1
-        if self.y > self.ygoal:
-            self.y += -1
-
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        pygame.draw.rect(win, yellow, self.rect)
-
-
-class Buttons:
-    buttons = []
-
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.width = 15
-        self.height = 15
-        self.buttons = 100
-        self.pressed = []
-        self.pressed2 = []
-        self.rects = []
-        self.run4 = False
-        self.positions = []
-        self.i2 = 0
-        self.i3 = 0
-        self.panelWidth = 10
-        for i in range(self.buttons):
-            self.i2 += 1
-            if self.i2 < self.panelWidth:
-                self.rects.append(
-                    pygame.Rect(self.x + self.i2 * 20, self.y + self.i3 * 20, self.width, self.height))
-                self.positions.append((self.i2 * 30, self.i3 * 30))
-            elif self.i2 > 5:
-                self.i2 = 0
-                self.i3 += 1
-            self.pressed.append(False)
-            self.pressed2.append(False)
-            d = DummyTwo(400, 100)
-        Buttons.buttons.append(self)
-
-    def apply(self, win, keys, Drone):
-
-        self.pos = pygame.mouse.get_pos()
-        for d in Drone.droneloc:
-            if True in self.pressed2:
-                for i in self.pressed2:
-                    if i == True and self.done == False:
-                        d.xgoal = self.positions[self.pressed2.index(i)][0] + self.pos[0]
-                        d.ygoal = self.positions[self.pressed2.index(i)][1] + self.pos[1]
-                        self.done = True
-            else:
-                return
-
-    def tick(self, win, keys):
-
-        self.pos = pygame.mouse.get_pos()
-
-        for i in self.rects:
-
-            self.index = self.rects.index(i)
-
-            if keys[pygame.K_r] == True:
-                self.pressed[self.index] = True
-                self.pressed2[self.index] = False
-                DummyTwo.dums[self.index].xgoal = 400
-                DummyTwo.dums[self.index].ygoal = 100
-
-            if pygame.mouse.get_pressed()[0] == True and self.pressed[self.index] == False and i.collidepoint(
-                    self.pos) and self.pressed2[self.index] == False:
-                self.pressed[self.index] = True
-                self.pressed2[self.index] = True
-                DummyTwo.dums[self.index].xgoal = self.positions[self.index][0] + 300
-                DummyTwo.dums[self.index].ygoal = self.positions[self.index][1] + 300
-
-            if pygame.mouse.get_pressed()[0] == True and self.pressed2[self.index] == True and i.collidepoint(
-                    self.pos) and self.pressed[self.index] == False:
-                self.pressed[self.index] = True
-                self.pressed2[self.index] = False
-                DummyTwo.dums[self.index].xgoal = 400
-                DummyTwo.dums[self.index].ygoal = 100
-
-            if pygame.mouse.get_pressed()[0] == False and self.pressed[self.index] == True:
-                self.pressed[self.index] = False
-
-        for i in self.rects:
-
-            self.index = self.rects.index(i)
-
-            if self.pressed2[self.index] == True:
-                pygame.draw.rect(win, black, i)
-            if self.pressed2[self.index] == False:
-                pygame.draw.rect(win, white, i)
-
-b = Buttons(500,500)
-
 def HowToPlay():
     run3 = True
     manager3 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
@@ -178,41 +64,6 @@ def HowToPlay():
         manager3.update(time_delta)
         win.blit(pygame.image.load("Art/MenuBackground.jpg"), (0,0))
         manager3.draw_ui(win)
-        pygame.display.update()
-
-def Form():
-    run5 = True
-    manager3 = pygame_gui.UIManager((800, 800), 'gui_theme.json')
-
-    BackButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((20,20), (90, 50)),
-                                                  text='',
-                                                  object_id="back_button",
-                                                  manager=manager3)
-    while run5:
-        time_delta = clock.tick(60) / 1000.0
-
-        pygame.time.delay(25)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run5 = False
-            if event.type == pygame.USEREVENT:
-                if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                    if event.ui_element == BackButton:
-                        run5 = False
-            manager3.process_events(event)
-
-        win.fill(grey)
-        manager3.update(time_delta)
-        manager3.draw_ui(win)
-        keys = pygame.key.get_pressed()
-
-        for d in DummyTwo.dums:
-            d.tick(win)
-        for b in Buttons.buttons:
-            b.tick(win, keys)
-
-
         pygame.display.update()
 
 def Store():
@@ -423,14 +274,6 @@ def Play():
             t.tick()
         hero.tick(win,keys)
 
-        if keys[pygame.K_f] == True and buffer == False:
-            for b in Buttons.buttons:
-                b.apply(win,keys,Drone)
-            buffer = True
-
-        if keys[pygame.K_f] == False and buffer == True:
-            buffer = False
-
 
         #Map marking
 
@@ -478,9 +321,7 @@ store_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((350, 410)
                                            text='',
                                            object_id="Store_Button",
                                            manager=manager)
-formation_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((350, 510), (120, 75)),
-                                           text="formation",
-                                           manager=manager)
+
 clock = pygame.time.Clock()
 
 
@@ -501,8 +342,6 @@ while run2:
                     HowToPlay()
                 if event.ui_element ==store_button:
                     Store()
-                if event.ui_element == formation_button:
-                    Form()
         manager.process_events(event)
     manager.update(time_delta)
 
