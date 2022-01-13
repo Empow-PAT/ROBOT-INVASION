@@ -291,7 +291,6 @@ def Play():
                 pygame.draw.rect(win, red, rect)
                 win.blit(text, (i * 100,20))
 
-
         moneytime += 1
         robotTime += 1
         if moneytime == 40:
